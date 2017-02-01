@@ -24,15 +24,12 @@ public class AboutActivity extends AppCompatActivity {
         .isRTL(false)
         .addItem(new Element().setTitle("Version 1.0"))
         .addItem(adsElement)
+        .setDescription("MevzuBahis")
         .addGroup("Contact")
-
+        .addEmail("officialmevzubahis@gmail.com")
         .addFacebook("mevzubahisofficial")
         .addTwitter("mevzubahisOFC")
-
-
-
         .addGitHub("egek92")
-
         .create();
 
     setContentView(aboutPage);
