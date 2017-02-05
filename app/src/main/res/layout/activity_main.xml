@@ -12,9 +12,15 @@
     tools:context="ege.mevzubahis.MainActivity"
     >
 
-  <TextView
-      android:layout_width="wrap_content"
+  <Button
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:text="Hello World!"
+      android:id="@+id/createBetButton"
+      android:text="@string/create_new_bet"
+      android:textColor="@android:color/white"
+      android:background="@color/colorPrimary"
+      android:layout_centerVertical="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
       />
 </RelativeLayout>
