@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
+
 android {
   compileSdkVersion 25
   buildToolsVersion "25.0.2"
@@ -40,4 +41,6 @@ dependencies {
   releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
   testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
   compile 'com.github.medyo:android-about-page:1.1.1'
+  compile 'com.github.paolorotolo:appintro:4.0.0'
+
 }
