@@ -1,7 +1,9 @@
 package ege.mevzubahis;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -23,11 +25,13 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ege.mevzubahis.Activities.AboutActivity;
+import ege.mevzubahis.Activities.DefaultIntro;
 import ege.mevzubahis.Fragments.GetCoinFragment;
 import ege.mevzubahis.Fragments.HomeFragment;
 import ege.mevzubahis.Fragments.NotificationsFragment;
 import ege.mevzubahis.Fragments.SettingsFragment;
 import ege.mevzubahis.Fragments.StatsFragment;
+import ege.mevzubahis.Managers.Config;
 import ege.mevzubahis.Utils.CircleTransform;
 
 public class MainActivity extends AppCompatActivity {
@@ -69,6 +73,26 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    Thread t = new Thread(new Runnable() {
+      @Override public void run() {
+
+        SharedPreferences sharedPreferences =
+            getSharedPreferences(Config.FLAG, Context.MODE_PRIVATE);
+
+        if (sharedPreferences.getBoolean(Config.FLAG, true)) {
+
+          startActivity(new Intent(MainActivity.this, DefaultIntro.class));
+
+          SharedPreferences.Editor e = sharedPreferences.edit();
+
+          e.putBoolean(Config.FLAG, false);
+
+          e.apply();
+        }
+      }
+    });
+    t.start();
 
     mHandler = new Handler();
 
