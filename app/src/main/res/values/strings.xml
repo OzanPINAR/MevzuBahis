@@ -35,4 +35,13 @@
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
   <string name="other">Other</string>
+  <string name="statistics">Statistics</string>
+  <string name="total_coins">Total Coins</string>
+  <string name="win_lose_ratio">Win/Lose Ratio</string>
+  <string name="bets_lost">Bets Lost</string>
+  <string name="bets_won">Bets Won</string>
+  <string name="total_coins1">Total Coins:</string>
+  <string name="bets_won1">Bets Won:</string>
+  <string name="bets_lost1">Bets Lost:</string>
+  <string name="win_lose_ratio1">Win/Lose Ratio:</string>
 </resources>

@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
   private static final String urlNavHeaderBg = "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
-  private static final String urlProfileImg = "https://lh3.googleusercontent.com/eCtE_G34M9ygdkmOpYvCag1vBARCmZwnVS6rS5t4JLzJ6QgQSBquM0nuTsCpLhYbKljoyS-txg";
+  private static final String urlProfileImg = "https://avatars3.githubusercontent.com/u/10755037?v=3&s=460";
 
 
   public static int navItemIndex = 0;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        Snackbar.make(view, "Buraya createNewBetActivity gelcek", Snackbar.LENGTH_LONG)
             .setAction("Action", null).show();
       }
     });
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
 
   private void loadNavHeader() {
-    // name, website
+
     txtName.setText("Ege Kuzubasioglu");
     txtWebsite.setText("example@example.com");
 
