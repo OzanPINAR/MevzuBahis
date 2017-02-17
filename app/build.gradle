@@ -21,6 +21,10 @@ android {
   }
 }
 
+repositories {
+  mavenCentral()
+}
+
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -28,6 +32,7 @@ dependencies {
   })
 
   compile 'com.android.support:appcompat-v7:25.1.0'
+  compile 'com.facebook.android:facebook-android-sdk:4.14.0'
   compile 'com.google.code.gson:gson:2.7'
   compile 'com.squareup.retrofit2:retrofit:2.1.0'
   compile 'com.squareup.retrofit2:converter-gson:2.1.0'

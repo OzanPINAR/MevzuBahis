@@ -24,8 +24,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+
 import ege.mevzubahis.Activities.AboutActivity;
 import ege.mevzubahis.Activities.DefaultIntro;
+import ege.mevzubahis.Activities.LoginActivity;
 import ege.mevzubahis.Fragments.GetCoinFragment;
 import ege.mevzubahis.Fragments.HomeFragment;
 import ege.mevzubahis.Fragments.NotificationsFragment;
@@ -70,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    FacebookSdk.sdkInitialize(getApplicationContext());
     setContentView(R.layout.activity_main);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
       @Override public void run() {
 
         SharedPreferences sharedPreferences =
-            getSharedPreferences(Config.FLAG, Context.MODE_PRIVATE);
+                getSharedPreferences(Config.FLAG, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getBoolean(Config.FLAG, true)) {
 
@@ -114,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
       @Override
       public void onClick(View view) {
         Snackbar.make(view, "Buraya createNewBetActivity gelcek", Snackbar.LENGTH_LONG)
-            .setAction("Action", null).show();
+                .setAction("Action", null).show();
       }
     });
 
@@ -129,6 +135,20 @@ public class MainActivity extends AppCompatActivity {
       CURRENT_TAG = TAG_HOME;
       loadHomeFragment();
     }
+
+    if(AccessToken.getCurrentAccessToken()==null){
+      goLoginScreen();
+    }
+  }
+
+  private void goLoginScreen() {
+    Intent intent = new Intent(this, LoginActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+  }
+  public void logout(View view){
+    LoginManager.getInstance().logOut();
+    goLoginScreen();
   }
 
 
@@ -139,17 +159,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     Glide.with(this).load(urlNavHeaderBg)
-        .crossFade()
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .into(imgNavHeaderBg);
+            .crossFade()
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imgNavHeaderBg);
 
 
     Glide.with(this).load(urlProfileImg)
-        .crossFade()
-        .thumbnail(0.5f)
-        .bitmapTransform(new CircleTransform(this))
-        .diskCacheStrategy(DiskCacheStrategy.ALL)
-        .into(imgProfile);
+            .crossFade()
+            .thumbnail(0.5f)
+            .bitmapTransform(new CircleTransform(this))
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .into(imgProfile);
 
 
     navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
@@ -180,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
         Fragment fragment = getHomeFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-            android.R.anim.fade_out);
+                android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
         fragmentTransaction.commitAllowingStateLoss();
       }
@@ -369,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
     //noinspection SimplifiableIfStatement
     if (id == R.id.action_logout) {
       Toast.makeText(getApplicationContext(), "Logout user!", Toast.LENGTH_LONG).show();
+      logout();
       return true;
     }
 
@@ -385,6 +406,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     return super.onOptionsItemSelected(item);
+  }
+
+  private void logout() {
+    LoginManager.getInstance().logOut();
+    goLoginScreen();
   }
 
   // show or hide the fab
