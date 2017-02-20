@@ -47,4 +47,6 @@
     <string name="win_lose_ratio1">Win/Lose Ratio:</string>
     <string name="cancel_login">Login Cancelled</string>
     <string name="error_login">Login Error</string>
+    <string name="watch_ads_to_get_coins">Watch Ads to Get Coins!</string>
+    <string name="watch_ads">Watch Ads!</string>
 </resources>
