@@ -24,11 +24,7 @@ public class StatsFragment extends Fragment {
   // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
-  @BindView(R.id.textView2) TextView textView2;
-  @BindView(R.id.textView3) TextView textView3;
-  @BindView(R.id.textView6) TextView textView6;
-  @BindView(R.id.textView5) TextView textView5;
-  @BindView(R.id.textView4) TextView textView4;
+
 
   // TODO: Rename and change types of parameters
   private String mParam1;
