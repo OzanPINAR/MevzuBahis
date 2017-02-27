@@ -29,6 +29,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 
 import ege.mevzubahis.Activities.AboutActivity;
+import ege.mevzubahis.Activities.BetsActivity;
 import ege.mevzubahis.Activities.DefaultIntro;
 import ege.mevzubahis.Activities.LoginActivity;
 import ege.mevzubahis.Fragments.GetCoinFragment;
@@ -119,8 +120,7 @@ public class MainActivity extends AppCompatActivity {
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Snackbar.make(view, "Buraya createNewBetActivity gelcek", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        goBets();
       }
     });
 
@@ -146,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
   }
+
+  public void goBets() {
+    Intent intent = new Intent(this, BetsActivity.class);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+    startActivity(intent);
+  }
   public void logout(View view){
     LoginManager.getInstance().logOut();
     goLoginScreen();
@@ -154,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
 
   private void loadNavHeader() {
 
-    txtName.setText("Ege Kuzubasioglu");
-    txtWebsite.setText("example@example.com");
+    txtName.setText(LoginActivity.Name);
+    txtWebsite.setText(LoginActivity.FEmail);
 
 
     Glide.with(this).load(urlNavHeaderBg)
