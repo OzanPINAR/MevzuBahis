@@ -38,7 +38,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ege.mevzubahis.MainActivity" />
         </activity>
-    </application>
+
 
     <meta-data
         android:name="com.facebook.sdk.ApplicationId"
