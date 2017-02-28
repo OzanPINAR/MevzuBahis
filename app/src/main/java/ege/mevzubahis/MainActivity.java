@@ -1,9 +1,14 @@
 package ege.mevzubahis;
 
-
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.icu.util.Calendar;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
@@ -26,6 +31,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.internal.ImageRequest;
 import com.facebook.login.LoginManager;
 
 import ege.mevzubahis.Activities.AboutActivity;
@@ -39,6 +46,9 @@ import ege.mevzubahis.Fragments.SettingsFragment;
 import ege.mevzubahis.Fragments.StatsFragment;
 import ege.mevzubahis.Managers.Config;
 import ege.mevzubahis.Utils.CircleTransform;
+import java.net.URL;
+
+import static ege.mevzubahis.Activities.LoginActivity.userId;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,13 +60,11 @@ public class MainActivity extends AppCompatActivity {
   private Toolbar toolbar;
   private FloatingActionButton fab;
 
-
-  private static final String urlNavHeaderBg = "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
-  private static final String urlProfileImg = "https://avatars3.githubusercontent.com/u/10755037?v=3&s=460";
-
+  private static final String urlNavHeaderBg =
+      "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
+  /*private static final String urlProfileImg;*/
 
   public static int navItemIndex = 0;
-
 
   private static final String TAG_HOME = "home";
   private static final String TAG_PHOTOS = "photos";
@@ -65,16 +73,12 @@ public class MainActivity extends AppCompatActivity {
   private static final String TAG_SETTINGS = "settings";
   public static String CURRENT_TAG = TAG_HOME;
 
-
   private String[] activityTitles;
-
 
   private boolean shouldLoadHomeFragOnBackPress = true;
   private Handler mHandler;
 
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     FacebookSdk.sdkInitialize(getApplicationContext());
     setContentView(R.layout.activity_main);
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
       @Override public void run() {
 
         SharedPreferences sharedPreferences =
-                getSharedPreferences(Config.FLAG, Context.MODE_PRIVATE);
+            getSharedPreferences(Config.FLAG, Context.MODE_PRIVATE);
 
         if (sharedPreferences.getBoolean(Config.FLAG, true)) {
 
@@ -107,19 +111,18 @@ public class MainActivity extends AppCompatActivity {
     navigationView = (NavigationView) findViewById(R.id.nav_view);
     fab = (FloatingActionButton) findViewById(R.id.fab);
 
-
     navHeader = navigationView.getHeaderView(0);
     txtName = (TextView) navHeader.findViewById(R.id.name);
     txtWebsite = (TextView) navHeader.findViewById(R.id.website);
     imgNavHeaderBg = (ImageView) navHeader.findViewById(R.id.img_header_bg);
     imgProfile = (ImageView) navHeader.findViewById(R.id.img_profile);
 
-
     activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
 
+
+
     fab.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View view) {
+      @Override public void onClick(View view) {
         goBets();
       }
     });
@@ -136,77 +139,79 @@ public class MainActivity extends AppCompatActivity {
       loadHomeFragment();
     }
 
-    if(AccessToken.getCurrentAccessToken()==null){
+    if (AccessToken.getCurrentAccessToken() == null) {
       goLoginScreen();
     }
   }
 
   private void goLoginScreen() {
     Intent intent = new Intent(this, LoginActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+        | Intent.FLAG_ACTIVITY_CLEAR_TASK
+        | Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
   }
 
   public void goBets() {
     Intent intent = new Intent(this, BetsActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+        | Intent.FLAG_ACTIVITY_CLEAR_TASK
+        | Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
   }
-  public void logout(View view){
+
+
+
+  public void logout(View view) {
     LoginManager.getInstance().logOut();
     goLoginScreen();
   }
-
 
   private void loadNavHeader() {
 
     txtName.setText(LoginActivity.Name);
     txtWebsite.setText(LoginActivity.FEmail);
 
+    Glide.with(this)
+        .load(urlNavHeaderBg)
+        .crossFade()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(imgNavHeaderBg);
 
-    Glide.with(this).load(urlNavHeaderBg)
-            .crossFade()
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(imgNavHeaderBg);
 
 
-    Glide.with(this).load(urlProfileImg)
-            .crossFade()
-            .thumbnail(0.5f)
-            .bitmapTransform(new CircleTransform(this))
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(imgProfile);
-
+    Glide.with(this)
+        .load("https://graph.facebook.com/" + userId+ "/picture?type=large")
+        .crossFade()
+        .thumbnail(0.5f)
+        .bitmapTransform(new CircleTransform(this))
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .into(imgProfile);
 
     navigationView.getMenu().getItem(3).setActionView(R.layout.menu_dot);
   }
+
 
 
   private void loadHomeFragment() {
 
     selectNavMenu();
 
-
     setToolbarTitle();
-
 
     if (getSupportFragmentManager().findFragmentByTag(CURRENT_TAG) != null) {
       drawer.closeDrawers();
-
 
       toggleFab();
       return;
     }
 
-
     Runnable mPendingRunnable = new Runnable() {
-      @Override
-      public void run() {
+      @Override public void run() {
 
         Fragment fragment = getHomeFragment();
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in,
-                android.R.anim.fade_out);
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
         fragmentTransaction.replace(R.id.frame, fragment, CURRENT_TAG);
         fragmentTransaction.commitAllowingStateLoss();
       }
@@ -216,9 +221,7 @@ public class MainActivity extends AppCompatActivity {
       mHandler.post(mPendingRunnable);
     }
 
-
     toggleFab();
-
 
     drawer.closeDrawers();
 
@@ -264,78 +267,77 @@ public class MainActivity extends AppCompatActivity {
 
   private void setUpNavigationView() {
     //Setting Navigation View Item Selected Listener to handle the item click of the navigation menu
-    navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+    navigationView.setNavigationItemSelectedListener(
+        new NavigationView.OnNavigationItemSelectedListener() {
 
-      // This method will trigger on item Click of navigation menu
-      @Override
-      public boolean onNavigationItemSelected(MenuItem menuItem) {
+          // This method will trigger on item Click of navigation menu
+          @Override public boolean onNavigationItemSelected(MenuItem menuItem) {
 
-        //Check to see which item was being clicked and perform appropriate action
-        switch (menuItem.getItemId()) {
-          //Replacing the main content with ContentFragment Which is our Inbox View;
-          case R.id.nav_home:
-            navItemIndex = 0;
-            CURRENT_TAG = TAG_HOME;
-            break;
-          case R.id.nav_photos:
-            navItemIndex = 1;
-            CURRENT_TAG = TAG_PHOTOS;
-            break;
-          case R.id.nav_movies:
-            navItemIndex = 2;
-            CURRENT_TAG = TAG_MOVIES;
-            break;
-          case R.id.nav_notifications:
-            navItemIndex = 3;
-            CURRENT_TAG = TAG_NOTIFICATIONS;
-            break;
-          case R.id.nav_settings:
-            navItemIndex = 4;
-            CURRENT_TAG = TAG_SETTINGS;
-            break;
-          case R.id.nav_about_us:
-            // launch new intent instead of loading fragment
-            startActivity(new Intent(MainActivity.this, AboutActivity.class));
-            drawer.closeDrawers();
+            //Check to see which item was being clicked and perform appropriate action
+            switch (menuItem.getItemId()) {
+              //Replacing the main content with ContentFragment Which is our Inbox View;
+              case R.id.nav_home:
+                navItemIndex = 0;
+                CURRENT_TAG = TAG_HOME;
+                break;
+              case R.id.nav_photos:
+                navItemIndex = 1;
+                CURRENT_TAG = TAG_PHOTOS;
+                break;
+              case R.id.nav_movies:
+                navItemIndex = 2;
+                CURRENT_TAG = TAG_MOVIES;
+                break;
+              case R.id.nav_notifications:
+                navItemIndex = 3;
+                CURRENT_TAG = TAG_NOTIFICATIONS;
+                break;
+              case R.id.nav_settings:
+                navItemIndex = 4;
+                CURRENT_TAG = TAG_SETTINGS;
+                break;
+              case R.id.nav_about_us:
+                // launch new intent instead of loading fragment
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                drawer.closeDrawers();
+                return true;
+              case R.id.nav_privacy_policy:
+                // launch new intent instead of loading fragment
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                drawer.closeDrawers();
+                return true;
+              default:
+                navItemIndex = 0;
+            }
+
+            //Checking if the item is in checked state or not, if not make it in checked state
+            if (menuItem.isChecked()) {
+              menuItem.setChecked(false);
+            } else {
+              menuItem.setChecked(true);
+            }
+            menuItem.setChecked(true);
+
+            loadHomeFragment();
+
             return true;
-          case R.id.nav_privacy_policy:
-            // launch new intent instead of loading fragment
-            startActivity(new Intent(MainActivity.this, AboutActivity.class));
-            drawer.closeDrawers();
-            return true;
-          default:
-            navItemIndex = 0;
-        }
+          }
+        });
 
-        //Checking if the item is in checked state or not, if not make it in checked state
-        if (menuItem.isChecked()) {
-          menuItem.setChecked(false);
-        } else {
-          menuItem.setChecked(true);
-        }
-        menuItem.setChecked(true);
+    ActionBarDrawerToggle actionBarDrawerToggle =
+        new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer,
+            R.string.closeDrawer) {
 
-        loadHomeFragment();
+          @Override public void onDrawerClosed(View drawerView) {
+            // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
+            super.onDrawerClosed(drawerView);
+          }
 
-        return true;
-      }
-    });
-
-
-    ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openDrawer, R.string.closeDrawer) {
-
-      @Override
-      public void onDrawerClosed(View drawerView) {
-        // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
-        super.onDrawerClosed(drawerView);
-      }
-
-      @Override
-      public void onDrawerOpened(View drawerView) {
-        // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
-        super.onDrawerOpened(drawerView);
-      }
-    };
+          @Override public void onDrawerOpened(View drawerView) {
+            // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+            super.onDrawerOpened(drawerView);
+          }
+        };
 
     //Setting the actionbarToggle to drawer layout
     drawer.setDrawerListener(actionBarDrawerToggle);
@@ -344,8 +346,7 @@ public class MainActivity extends AppCompatActivity {
     actionBarDrawerToggle.syncState();
   }
 
-  @Override
-  public void onBackPressed() {
+  @Override public void onBackPressed() {
     if (drawer.isDrawerOpen(GravityCompat.START)) {
       drawer.closeDrawers();
       return;
@@ -367,8 +368,7 @@ public class MainActivity extends AppCompatActivity {
     super.onBackPressed();
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
 
     // show menu only when home fragment is selected
@@ -383,10 +383,7 @@ public class MainActivity extends AppCompatActivity {
     return true;
   }
 
-
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
     // Handle action bar item clicks here. The action bar will
     // automatically handle clicks on the Home/Up button, so long
     // as you specify a parent activity in AndroidManifest.xml.
@@ -402,7 +399,8 @@ public class MainActivity extends AppCompatActivity {
     // user is in notifications fragment
     // and selected 'Mark all as Read'
     if (id == R.id.action_mark_all_read) {
-      Toast.makeText(getApplicationContext(), "All notifications marked as read!", Toast.LENGTH_LONG).show();
+      Toast.makeText(getApplicationContext(), "All notifications marked as read!",
+          Toast.LENGTH_LONG).show();
     }
 
     // user is in notifications fragment
@@ -421,12 +419,10 @@ public class MainActivity extends AppCompatActivity {
 
   // show or hide the fab
   private void toggleFab() {
-    if (navItemIndex == 0)
+    if (navItemIndex == 0) {
       fab.show();
-    else
+    } else {
       fab.hide();
+    }
   }
-
-
-
 }
