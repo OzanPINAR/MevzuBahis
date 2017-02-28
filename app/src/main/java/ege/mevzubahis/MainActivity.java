@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
   private void loadNavHeader() {
 
-    txtName.setText("Ege Kuzubasioglu");
+    txtName.setText("asdEge Kuzubasioglu");
     txtWebsite.setText("example@example.com");
 
 
