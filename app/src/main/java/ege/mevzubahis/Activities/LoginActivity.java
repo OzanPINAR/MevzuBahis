@@ -17,6 +17,7 @@ import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.squareup.haha.perflib.Main;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.v("Name = ", " " + Name);
                                     FEmail = object.getString("email");
                                     Log.v("Email = ", " " + FEmail);
+                                    MainActivity.txtName.setText(Name);
+                                    MainActivity.txtWebsite.setText(FEmail);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
