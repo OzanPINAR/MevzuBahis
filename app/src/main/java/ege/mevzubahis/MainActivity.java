@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
   private DrawerLayout drawer;
   private View navHeader;
   private ImageView imgNavHeaderBg, imgProfile;
-  private TextView txtName, txtWebsite;
+  public static TextView txtName, txtWebsite;
   private Toolbar toolbar;
   private FloatingActionButton fab;
 
