@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-
                 SharedPreferences sharedPreferences =
                         getSharedPreferences(Config.FLAG, Context.MODE_PRIVATE);
 
