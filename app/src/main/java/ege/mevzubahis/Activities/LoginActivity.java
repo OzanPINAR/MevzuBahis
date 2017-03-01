@@ -1,9 +1,12 @@
 package ege.mevzubahis.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,80 +27,97 @@ import com.squareup.haha.perflib.Main;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
 
+import static android.R.attr.tag;
+import static com.facebook.FacebookSdk.sdkInitialize;
+
 public class LoginActivity extends AppCompatActivity {
-  LoginButton LoginButton;
-  CallbackManager callbackManager;
-  public static String Name;
-  public static String FEmail;
-  public static String userId;
 
-  @Override protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    FacebookSdk.sdkInitialize(getApplicationContext());
-    setContentView(R.layout.activity_login);
-    LoginButton = (LoginButton) findViewById(R.id.fb_login_button);
-    callbackManager = CallbackManager.Factory.create();
-    LoginButton.setReadPermissions(Arrays.asList("email"));
+    private static final String TAG = LoginActivity.class.getName();
 
-    LoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-      @Override public void onSuccess(LoginResult loginResult) {
-        AccessToken accessToken = loginResult.getAccessToken();
-        Profile profile = Profile.getCurrentProfile();
+    @BindView(R.id.fb_login_button)
+    LoginButton loginButton;
 
-        userId = loginResult.getAccessToken().getUserId();
+    CallbackManager callbackManager;
+    public static String Name;
+    public static String FEmail;
+    public static String userId;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
+        callbackManager = CallbackManager.Factory.create();
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
 
-        GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
-            new GraphRequest.GraphJSONObjectCallback() {
-              @Override public void onCompleted(JSONObject object, GraphResponse response) {
-                Log.v("LoginActivity Response ", response.toString());
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                AccessToken accessToken = loginResult.getAccessToken();
+                Profile profile = Profile.getCurrentProfile();
 
-                try {
+                userId = loginResult.getAccessToken().getUserId();
 
-                  Name = object.getString("name");
-                  Log.v("Name = ", " " + Name);
-                  FEmail = object.getString("email");
-                  Log.v("Email = ", " " + FEmail);
-                  MainActivity.txtName.setText(Name);
-                  MainActivity.txtWebsite.setText(FEmail);
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                Log.v("LoginActivity Response ", response.toString());
 
-                } catch (JSONException e) {
-                  e.printStackTrace();
-                }
-              }
-            });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender, birthday");
-        request.setParameters(parameters);
-        request.executeAsync();
-        goMainScreen();
-      }
+                                try {
 
-      @Override public void onCancel() {
-        Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_SHORT).show();
-      }
+                                    Name = object.getString("name");
+                                    Log.v("Name = ", " " + Name);
+                                    FEmail = object.getString("email");
+                                    Log.v("Email = ", " " + FEmail);
+                                    MainActivity.txtName.setText(Name);
+                                    MainActivity.txtWebsite.setText(FEmail);
 
-      @Override public void onError(FacebookException error) {
-        Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_SHORT).show();
-      }
-    });
-  }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday");
+                request.setParameters(parameters);
+                request.executeAsync();
+                goMainScreen();
+            }
 
-  private void goMainScreen() {
-    Intent intent = new Intent(this, MainActivity.class);
-    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-        | Intent.FLAG_ACTIVITY_CLEAR_TASK
-        | Intent.FLAG_ACTIVITY_NEW_TASK);
-    startActivity(intent);
-  }
+            @Override
+            public void onCancel() {
+                Toast.makeText(getApplicationContext(), R.string.cancel_login, Toast.LENGTH_SHORT).show();
+            }
 
-  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-    super.onActivityResult(requestCode, resultCode, data);
-    callbackManager.onActivityResult(requestCode, resultCode, data);
-  }
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG, "onError: " + error.getMessage());
+                Toast.makeText(getApplicationContext(), R.string.error_login, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void goMainScreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 }
