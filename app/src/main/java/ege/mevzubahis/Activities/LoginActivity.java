@@ -1,6 +1,7 @@
 package ege.mevzubahis.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
   public static String Name;
   public static String FEmail;
   public static String userId;
+  SharedPreferences sharedPreferences;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     LoginButton = (LoginButton) findViewById(R.id.fb_login_button);
     callbackManager = CallbackManager.Factory.create();
     LoginButton.setReadPermissions(Arrays.asList("email"));
+    sharedPreferences = getSharedPreferences("MyPrefs", 0);
 
     LoginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
       @Override public void onSuccess(LoginResult loginResult) {
@@ -52,19 +55,23 @@ public class LoginActivity extends AppCompatActivity {
         userId = loginResult.getAccessToken().getUserId();
 
 
+
         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
             new GraphRequest.GraphJSONObjectCallback() {
               @Override public void onCompleted(JSONObject object, GraphResponse response) {
                 Log.v("LoginActivity Response ", response.toString());
 
                 try {
-
+                  SharedPreferences.Editor editor=sharedPreferences.edit();
                   Name = object.getString("name");
+                  editor.putString("nameKey",Name);
                   Log.v("Name = ", " " + Name);
                   FEmail = object.getString("email");
+                  editor.putString("emailKey",FEmail);
                   Log.v("Email = ", " " + FEmail);
-                  MainActivity.txtName.setText(Name);
-                  MainActivity.txtWebsite.setText(FEmail);
+                  editor.putString("userIdKey",userId);
+
+                  editor.commit();
 
                 } catch (JSONException e) {
                   e.printStackTrace();

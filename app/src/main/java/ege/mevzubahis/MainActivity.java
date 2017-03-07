@@ -60,9 +60,12 @@ public class MainActivity extends AppCompatActivity {
   private Toolbar toolbar;
   private FloatingActionButton fab;
 
+  private String username;
+  private String usermail;
+  private String urlProfileImg;
+  SharedPreferences pref;
   private static final String urlNavHeaderBg =
       "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
-  /*private static final String urlProfileImg;*/
 
   public static int navItemIndex = 0;
 
@@ -84,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+    pref = getSharedPreferences("MyPrefs", 0);
+
+    username=pref.getString("nameKey",null);
+    usermail=pref.getString("emailKey",null);
+    userId=pref.getString("userIdKey",null);
+    urlProfileImg="https://graph.facebook.com/" + userId+ "/picture?type=large";
 
     Thread t = new Thread(new Runnable() {
       @Override public void run() {
@@ -164,13 +173,15 @@ public class MainActivity extends AppCompatActivity {
 
   public void logout(View view) {
     LoginManager.getInstance().logOut();
+    SharedPreferences.Editor myEditor = pref.edit();
+    myEditor.clear();
     goLoginScreen();
   }
 
   private void loadNavHeader() {
 
-    txtName.setText(LoginActivity.Name);
-    txtWebsite.setText(LoginActivity.FEmail);
+    txtName.setText(username);
+    txtWebsite.setText(usermail);
 
     Glide.with(this)
         .load(urlNavHeaderBg)
@@ -181,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     Glide.with(this)
-        .load("https://graph.facebook.com/" + userId+ "/picture?type=large")
+        .load(urlProfileImg)
         .crossFade()
         .thumbnail(0.5f)
         .bitmapTransform(new CircleTransform(this))
@@ -414,6 +425,8 @@ public class MainActivity extends AppCompatActivity {
 
   private void logout() {
     LoginManager.getInstance().logOut();
+    SharedPreferences.Editor myEditor = pref.edit();
+    myEditor.clear();
     goLoginScreen();
   }
 
