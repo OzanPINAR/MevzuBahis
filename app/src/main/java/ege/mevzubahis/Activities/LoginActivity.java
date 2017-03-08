@@ -54,8 +54,6 @@ public class LoginActivity extends AppCompatActivity {
 
         userId = loginResult.getAccessToken().getUserId();
 
-
-
         GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(),
             new GraphRequest.GraphJSONObjectCallback() {
               @Override public void onCompleted(JSONObject object, GraphResponse response) {
@@ -65,14 +63,13 @@ public class LoginActivity extends AppCompatActivity {
                   SharedPreferences.Editor editor=sharedPreferences.edit();
                   Name = object.getString("name");
                   editor.putString("nameKey",Name);
-                  Log.v("Name = ", " " + Name);
+                  Log.e("Name = ", " " + Name);
                   FEmail = object.getString("email");
                   editor.putString("emailKey",FEmail);
-                  Log.v("Email = ", " " + FEmail);
+                  Log.e("Email = ", " " + FEmail);
+                  editor.putString("userIDKey",userId);
 
-
-
-                  editor.apply();
+                  editor.commit();
 
                 } catch (JSONException e) {
                   e.printStackTrace();

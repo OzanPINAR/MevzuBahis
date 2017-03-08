@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
   private String username;
   private String usermail;
   private String urlProfileImg;
+  private String userID;
 
   SharedPreferences pref;
   private static final String urlNavHeaderBg =
@@ -92,17 +93,20 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+    Log.e("MainActivity onCreate= ","");
     pref = getSharedPreferences("MyPrefs", 0);
 
-
-
     String token = FirebaseInstanceId.getInstance().getToken();
-    Log.d("FCMAPP", "Token is "+token);
+    Log.e("FCMAPP", "Token is "+token);
 
     username=pref.getString("nameKey",null);
+    Log.e("username = ", " " + username);
     usermail=pref.getString("emailKey",null);
+    Log.e("usermail = ", " " + usermail);
+    userID=pref.getString("userIDKey",null);
+    Log.e("userID = ", " " + userID);
 
-    urlProfileImg="https://graph.facebook.com/" + userId+ "/picture?type=large";
+    urlProfileImg="https://graph.facebook.com/" + userID+ "/picture?type=large";
 
     Thread t = new Thread(new Runnable() {
       @Override public void run() {
@@ -148,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
     // load nav menu header data
     loadNavHeader();
+    Log.e("loadNavHeader", " " );
 
     // initializing navigation menu
     setUpNavigationView();
@@ -435,6 +440,7 @@ public class MainActivity extends AppCompatActivity {
 
   private void logout() {
     LoginManager.getInstance().logOut();
+    Log.e("logout", " ");
     SharedPreferences.Editor myEditor = pref.edit();
     myEditor.clear();
     goLoginScreen();
