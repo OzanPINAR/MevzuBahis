@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
   private String username;
   private String usermail;
   private String urlProfileImg;
+
   SharedPreferences pref;
   private static final String urlNavHeaderBg =
       "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
@@ -91,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
     username=pref.getString("nameKey",null);
     usermail=pref.getString("emailKey",null);
-    userId=pref.getString("userIdKey",null);
+
     urlProfileImg="https://graph.facebook.com/" + userId+ "/picture?type=large";
 
     Thread t = new Thread(new Runnable() {

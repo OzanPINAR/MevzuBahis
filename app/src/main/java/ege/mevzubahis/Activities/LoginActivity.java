@@ -69,9 +69,10 @@ public class LoginActivity extends AppCompatActivity {
                   FEmail = object.getString("email");
                   editor.putString("emailKey",FEmail);
                   Log.v("Email = ", " " + FEmail);
-                  editor.putString("userIdKey",userId);
 
-                  editor.commit();
+
+
+                  editor.apply();
 
                 } catch (JSONException e) {
                   e.printStackTrace();
