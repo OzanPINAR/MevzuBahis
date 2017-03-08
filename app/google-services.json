@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "716145010717",
+    "firebase_url": "https://mevzubahis-9b236.firebaseio.com",
+    "project_id": "mevzubahis-9b236",
+    "storage_bucket": "mevzubahis-9b236.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716145010717:android:68f216b847d3882d",
+        "android_client_info": {
+          "package_name": "ege.mevzubahis"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716145010717-inalotl4no16tn0sdfrg3u6k6go4sftd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ege.mevzubahis",
+            "certificate_hash": "9caf7dba2a41dddcdc0f3b5c8bf5786f190df72a"
+          }
+        },
+        {
+          "client_id": "716145010717-ps87ektbka9lm8m2gbupj1vepl1pp8bk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXeG2DSFhJwvyu1xmyKtnPRCbpx7cLNOo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716145010717-ps87ektbka9lm8m2gbupj1vepl1pp8bk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

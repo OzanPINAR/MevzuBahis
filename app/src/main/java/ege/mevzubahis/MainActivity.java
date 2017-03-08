@@ -21,6 +21,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +36,9 @@ import com.facebook.Profile;
 import com.facebook.internal.ImageRequest;
 import com.facebook.login.LoginManager;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.storage.FirebaseStorage;
 import ege.mevzubahis.Activities.AboutActivity;
 import ege.mevzubahis.Activities.BetsActivity;
 import ege.mevzubahis.Activities.DefaultIntro;
@@ -89,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
     pref = getSharedPreferences("MyPrefs", 0);
+
+
+
+    String token = FirebaseInstanceId.getInstance().getToken();
+    Log.d("FCMAPP", "Token is "+token);
 
     username=pref.getString("nameKey",null);
     usermail=pref.getString("emailKey",null);
