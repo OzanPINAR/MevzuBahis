@@ -39,18 +39,18 @@ MevzuBahis
 
 
 ### Third party libraries
-* see [LIBRARIES](https://github.com/username/appname/blob/master/LIBRARIES.md) files
+* see [LIBRARIES](https://github.com/result/appname/blob/master/LIBRARIES.md) files
 
 ## Permissions
 * Internet and Network Access.
 
 ## License 
-* see [LICENSE](https://github.com/username/appname/blob/master/LICENSE.md) file
+* see [LICENSE](https://github.com/result/appname/blob/master/LICENSE.md) file
 
 ## Version 
 * Version 1.0
 
 ## How-to use this app
-* see [INSTRUCTIONS](https://github.com/username/appname/blob/master/INSTRUCTIONS.md) file
+* see [INSTRUCTIONS](https://github.com/result/appname/blob/master/INSTRUCTIONS.md) file
 
 
