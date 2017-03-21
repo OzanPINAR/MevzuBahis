@@ -15,7 +15,7 @@ public class Bets {
   }
 
   public Bets() {
-  } // you MUST have an empty constructor
+  }
 
   public String getResult() {
     return result;
