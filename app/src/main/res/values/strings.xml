@@ -51,4 +51,9 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
   <string name="watch_ads">watch ads</string>
+  <string name="place_holder_match">Loading Matches</string>
+  <string name="home_wins">Home Wins</string>
+  <string name="draw">Draw</string>
+  <string name="away_wins">Away Wins</string>
+
 </resources>

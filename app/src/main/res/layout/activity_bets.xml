@@ -8,6 +8,10 @@
     android:fitsSystemWindows="true"
     tools:context="ege.mevzubahis.Activities.BetsActivity">
 
+
+
+
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
@@ -45,5 +49,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_home_white_24dp" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>
