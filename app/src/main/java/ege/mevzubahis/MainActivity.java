@@ -11,6 +11,7 @@ import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -67,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
   private String username;
   private String usermail;
   private String urlProfileImg;
+  private String userID;
 
   SharedPreferences pref;
   private static final String urlNavHeaderBg =
@@ -92,17 +94,20 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
     toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    pref = getSharedPreferences("MyPrefs", 0);
-
-
+    Log.e("MainActivity onCreate= ","");
+    pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
     String token = FirebaseInstanceId.getInstance().getToken();
-    Log.d("FCMAPP", "Token is "+token);
+    Log.e("FCMAPP", "Token is "+token);
 
     username=pref.getString("nameKey",null);
+    Log.e("3username = ", " " + username);
     usermail=pref.getString("emailKey",null);
+    Log.e("4usermail = ", " " + usermail);
+    userID=pref.getString("userIDKey",null);
+    Log.e("5userID = ", " " + userID);
 
-    urlProfileImg="https://graph.facebook.com/" + userId+ "/picture?type=large";
+    urlProfileImg="https://graph.facebook.com/" + userID+ "/picture?type=large";
 
     Thread t = new Thread(new Runnable() {
       @Override public void run() {
@@ -148,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
     // load nav menu header data
     loadNavHeader();
+    Log.e("6loadNavHeader", " " );
 
     // initializing navigation menu
     setUpNavigationView();
@@ -435,8 +441,10 @@ public class MainActivity extends AppCompatActivity {
 
   private void logout() {
     LoginManager.getInstance().logOut();
+    Log.e("logout", " ");
     SharedPreferences.Editor myEditor = pref.edit();
     myEditor.clear();
+    Log.e("CLEAR", " ");
     goLoginScreen();
   }
 
