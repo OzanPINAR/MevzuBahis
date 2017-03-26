@@ -113,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
                             //giriş yapan kullanıcı daha önceden kayıtlı değilse
                           }catch(Throwable t){
                             Log.e("trycatchFAIL","b");
-                            Log.e("Create user", FEmail);
-                            mDatabase.child("Users").child(userId).child("name").setValue(Name);
+                            Log.e("Creating user", FEmail);
+                            createNewUser(userId,Name,FEmail,1000,0,0);
                             goMainScreen();
                           }
                         }
@@ -150,7 +150,13 @@ public class LoginActivity extends AppCompatActivity {
     });
   }
 
-
+  private void createNewUser(String userid,String name,String email,int coin,int win,int lost){
+    mDatabase.child("Users").child(userid).child("name").setValue(name);
+    mDatabase.child("Users").child(userid).child("email").setValue(email);
+    mDatabase.child("Users").child(userid).child("coin").setValue(coin);
+    mDatabase.child("Users").child(userid).child("win").setValue(win);
+    mDatabase.child("Users").child(userid).child("lost").setValue(lost);
+  }
   private void goMainScreen() {
     Intent intent = new Intent(this, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
