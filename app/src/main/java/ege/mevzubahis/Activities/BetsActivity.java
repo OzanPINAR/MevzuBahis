@@ -62,8 +62,8 @@ public class BetsActivity extends AppCompatActivity {
   private void goMainScreen() {
     Intent intent = new Intent(this, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-        | Intent.FLAG_ACTIVITY_CLEAR_TASK
-        | Intent.FLAG_ACTIVITY_NEW_TASK);
+            | Intent.FLAG_ACTIVITY_CLEAR_TASK
+            | Intent.FLAG_ACTIVITY_NEW_TASK);
     startActivity(intent);
   }
 
@@ -100,7 +100,7 @@ public class BetsActivity extends AppCompatActivity {
     }
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-        Bundle savedInstanceState) {
+                                       Bundle savedInstanceState) {
       View rootView = inflater.inflate(R.layout.fragment_bets, container, false);
 
       FirebaseDatabase database = FirebaseDatabase.getInstance();
