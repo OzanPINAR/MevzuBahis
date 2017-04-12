@@ -10,50 +10,84 @@
   <android.support.v7.widget.CardView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_margin="30dp"
       android:layout_gravity="center"
-      >
+      android:layout_margin="30dp">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bets_won"
-        android:id="@+id/betsWon"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_alignParentTop="true"
-        android:layout_margin="20dp"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/bets_lost"
-        android:id="@+id/betsLost"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_below="@id/betsWon"
-        android:layout_margin="20dp"
-        />
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/win_lose_ratio"
-        android:id="@+id/winloseratio"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_below="@id/betsLost"
-        android:layout_margin="20dp"
-        />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/total_coins"
-        android:id="@+id/totalcoins"
-        android:textColor="@color/colorPrimaryText"
-        android:layout_below="@id/winloseratio"
-        android:layout_margin="20dp"
-        />
+      <TextView
+          android:id="@+id/betsWon"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentTop="true"
+          android:layout_margin="20dp"
+          android:text="@string/bets_won"
+          android:textColor="@color/colorPrimaryText" />
+
+      <TextView
+          android:id="@+id/betsLost"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/betsWon"
+          android:layout_margin="20dp"
+          android:text="@string/bets_lost"
+          android:textColor="@color/colorPrimaryText" />
+
+      <TextView
+          android:id="@+id/winloseratio"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/betsLost"
+          android:layout_margin="20dp"
+          android:text="@string/win_lose_ratio"
+          android:textColor="@color/colorPrimaryText" />
+
+      <TextView
+          android:id="@+id/totalcoins"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/winloseratio"
+          android:layout_margin="20dp"
+          android:text="@string/total_coins"
+          android:textColor="@color/colorPrimaryText" />
+
+      <TextView
+          android:id="@+id/winText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBaseline="@+id/betsWon"
+          android:layout_alignBottom="@+id/betsWon"
+          android:layout_centerHorizontal="true" />
+
+      <TextView
+          android:id="@+id/lostText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBaseline="@+id/betsLost"
+          android:layout_alignBottom="@+id/betsLost"
+          android:layout_alignLeft="@+id/winText"
+          android:layout_alignStart="@+id/winText" />
+
+      <TextView
+          android:id="@+id/ratioText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBaseline="@+id/winloseratio"
+          android:layout_alignBottom="@+id/winloseratio"
+          android:layout_alignLeft="@+id/lostText"
+          android:layout_alignStart="@+id/lostText" />
+
+      <TextView
+          android:id="@+id/coinText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBaseline="@+id/totalcoins"
+          android:layout_alignBottom="@+id/totalcoins"
+          android:layout_alignLeft="@+id/ratioText"
+          android:layout_alignStart="@+id/ratioText" />
+
     </RelativeLayout>
 
   </android.support.v7.widget.CardView>
