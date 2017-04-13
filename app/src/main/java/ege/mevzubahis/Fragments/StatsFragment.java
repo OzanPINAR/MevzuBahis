@@ -89,7 +89,7 @@ public class StatsFragment extends Fragment {
                                      Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_stats, container, false);
-    final TextView winText = (TextView) view.findViewById(R.id.winText);
+     final TextView winText = (TextView) view.findViewById(R.id.winText);
      final TextView lostText = (TextView) view.findViewById(R.id.lostText);
      final TextView ratioText = (TextView) view.findViewById(R.id.ratioText);
      final TextView coinText = (TextView) view.findViewById(R.id.coinText);
@@ -107,7 +107,13 @@ public class StatsFragment extends Fragment {
 
          winText.setText(winValue.toString());
          lostText.setText(lostValue.toString());
-         //ratioText.setText();
+         float ratioValue = winValue.floatValue()/lostValue.floatValue();
+         //check for 0/0 = infinity
+         if(lostValue.floatValue()==0){
+           ratioText.setText(Float.toString(winValue));
+         }else {
+           ratioText.setText(Float.toString(ratioValue));
+         }
          coinText.setText(coinValue.toString());
        }
 
@@ -122,11 +128,6 @@ public class StatsFragment extends Fragment {
     ButterKnife.bind(this, view);
     return view;
   }
-  public void changeText(String text){
-    //TextView tv = (TextView) getView().findViewById(R.id.winText);
-    //tv.setText(text);
-  }
-
 
   // TODO: Rename method, update argument and hook method into UI event
   public void onButtonPressed(Uri uri) {
