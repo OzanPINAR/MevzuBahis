@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -26,6 +27,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
+
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.Network.Bets;
 import ege.mevzubahis.R;
@@ -35,6 +39,8 @@ public class BetsActivity extends AppCompatActivity {
   private SectionsPagerAdapter mSectionsPagerAdapter;
 
   private ViewPager mViewPager;
+  private ListView mListview;
+  String[] bets = {"football1","football2","football3","basketball1","basketball2","basketball3"};
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -42,6 +48,10 @@ public class BetsActivity extends AppCompatActivity {
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    mListview = (ListView) findViewById(R.id.listview);
+    MyAdapter myAdapter=new MyAdapter(BetsActivity.this, bets);
+    mListview.setAdapter(myAdapter);
 
     mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -83,10 +93,9 @@ public class BetsActivity extends AppCompatActivity {
   public static class PlaceholderFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    @BindView(R.id.match1) TextView match1;
-    @BindView(R.id.button2) Button button2;
-    @BindView(R.id.button3) Button button3;
-    @BindView(R.id.button4) Button button4;
+
+
+
 
     public PlaceholderFragment() {
     }
@@ -103,6 +112,10 @@ public class BetsActivity extends AppCompatActivity {
                                        Bundle savedInstanceState) {
       View rootView = inflater.inflate(R.layout.fragment_bets, container, false);
 
+
+
+
+
       FirebaseDatabase database = FirebaseDatabase.getInstance();
       DatabaseReference reference = database.getReference("bets");
 
@@ -114,7 +127,7 @@ public class BetsActivity extends AppCompatActivity {
 
           String msgText = msg.getEvent();
 
-          match1.setText(msgText);
+
         }
 
         @Override public void onCancelled(DatabaseError databaseError) {
@@ -126,19 +139,7 @@ public class BetsActivity extends AppCompatActivity {
       return rootView;
     }
 
-    @OnClick({ R.id.button2, R.id.button3, R.id.button4 }) public void onClick(View view) {
-      switch (view.getId()) {
-        case R.id.button2:
-          Toast.makeText(getActivity(), "firebase e yolla", Toast.LENGTH_SHORT).show();
-          break;
-        case R.id.button3:
-          Toast.makeText(getActivity(), "firebase e yolla", Toast.LENGTH_SHORT).show();
-          break;
-        case R.id.button4:
-          Toast.makeText(getActivity(), "firebase e yolla", Toast.LENGTH_SHORT).show();
-          break;
-      }
-    }
+
   }
 
   public class SectionsPagerAdapter extends FragmentPagerAdapter {

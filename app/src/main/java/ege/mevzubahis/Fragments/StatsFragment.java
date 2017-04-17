@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -94,6 +96,15 @@ public class StatsFragment extends Fragment {
      final TextView ratioText = (TextView) view.findViewById(R.id.ratioText);
      final TextView coinText = (TextView) view.findViewById(R.id.coinText);
      Log.e("user id is: ",userID);
+
+     Button frndBtn = (Button) view.findViewById(R.id.friendBtn);
+     frndBtn.setOnClickListener(new View.OnClickListener() {
+       @Override
+       public void onClick(View v) {
+         Toast.makeText(getActivity(),"BUTOON",Toast.LENGTH_SHORT).show();
+       }
+     });
+
      mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
        @Override
        public void onDataChange(DataSnapshot dataSnapshot) {
@@ -164,4 +175,5 @@ public class StatsFragment extends Fragment {
     // TODO: Update argument type and name
     void onFragmentInteraction(Uri uri);
   }
+
 }
