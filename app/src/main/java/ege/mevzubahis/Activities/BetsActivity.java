@@ -1,6 +1,7 @@
 package ege.mevzubahis.Activities;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -15,23 +16,23 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
 
+import butterknife.ButterKnife;
 import ege.mevzubahis.MainActivity;
-import ege.mevzubahis.Network.Bets;
 import ege.mevzubahis.R;
 
 public class BetsActivity extends AppCompatActivity {
@@ -39,8 +40,6 @@ public class BetsActivity extends AppCompatActivity {
   private SectionsPagerAdapter mSectionsPagerAdapter;
 
   private ViewPager mViewPager;
-  private ListView mListview;
-  String[] bets = {"football1","football2","football3","basketball1","basketball2","basketball3"};
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -48,10 +47,6 @@ public class BetsActivity extends AppCompatActivity {
 
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-
-    mListview = (ListView) findViewById(R.id.listview);
-    MyAdapter myAdapter=new MyAdapter(BetsActivity.this, bets);
-    mListview.setAdapter(myAdapter);
 
     mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -94,9 +89,6 @@ public class BetsActivity extends AppCompatActivity {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-
-
-
     public PlaceholderFragment() {
     }
 
@@ -110,36 +102,72 @@ public class BetsActivity extends AppCompatActivity {
 
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
+
       View rootView = inflater.inflate(R.layout.fragment_bets, container, false);
 
+      final ListView fragmentBetsListview;
+      final ArrayList<String> betsList = new ArrayList<>();
+      final ArrayAdapter arrayAdapter;
 
+      fragmentBetsListview = (ListView) rootView.findViewById(R.id.ListviewBerkay);
 
+      arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, betsList){
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+          View view =super.getView(position, convertView, parent);
 
+          TextView textView=(TextView) view.findViewById(android.R.id.text1);
+          textView.setTextColor(Color.BLACK);
 
-      FirebaseDatabase database = FirebaseDatabase.getInstance();
-      DatabaseReference reference = database.getReference("bets");
+          return view;
+        }
+      };
 
-      reference.addValueEventListener(new ValueEventListener() {
-        @Override public void onDataChange(DataSnapshot dataSnapshot) {
+      fragmentBetsListview.setAdapter(arrayAdapter);
 
-          Bets msg = dataSnapshot.getValue(Bets.class);
-          Log.d("Database:", msg.getResult() + " " + msg.getEvent());
+      final FirebaseDatabase database = FirebaseDatabase.getInstance();
+      final DatabaseReference reference = database.getReference("bets");
 
-          String msgText = msg.getEvent();
-
-
+      reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+          for (DataSnapshot child : dataSnapshot.getChildren()){
+            String betsItem = child.getKey();
+            Log.d("BetsActivity", betsItem);
+            betsList.add(betsItem);
+            arrayAdapter.notifyDataSetChanged();
+          }
         }
 
-        @Override public void onCancelled(DatabaseError databaseError) {
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
 
+        }
+      });
+
+      fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          String quizNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
+          reference.child(quizNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+              String duration = (String) map.get("duration");
+              Toast.makeText(getActivity(), duration , Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+          });
         }
       });
 
       ButterKnife.bind(this, rootView);
       return rootView;
     }
-
-
   }
 
   public class SectionsPagerAdapter extends FragmentPagerAdapter {
