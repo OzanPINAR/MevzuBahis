@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
   public static String Name;
   public static String FEmail;
   public static String userId;
+  public static String picture;
   private DatabaseReference mDatabase;
   SharedPreferences sharedPreferences;
 
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                       editor.putString("emailKey", FEmail);
                       Log.e("2Email = ", " " + FEmail);
                       editor.putString("userIDKey", userId);
-
+                      picture="https://graph.facebook.com/" + userId+ "/picture?type=large";
                       editor.apply();
 
                       //database de giriş yapan kullanıcının emailiyle kıyaslama yapmak
@@ -114,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                           }catch(Throwable t){
                             Log.e("trycatchFAIL","b");
                             Log.e("Creating user", FEmail);
-                            createNewUser(userId,Name,FEmail,1000,0,0);
+                            createNewUser(userId,Name,FEmail,1000,0,0,picture);
                             goMainScreen();
                           }
                         }
@@ -150,12 +151,13 @@ public class LoginActivity extends AppCompatActivity {
     });
   }
 
-  private void createNewUser(String userid,String name,String email,int coin,int win,int lost){
+  private void createNewUser(String userid,String name,String email,int coin,int win,int lost,String picture){
     mDatabase.child("Users").child(userid).child("name").setValue(name);
     mDatabase.child("Users").child(userid).child("email").setValue(email);
     mDatabase.child("Users").child(userid).child("coin").setValue(coin);
     mDatabase.child("Users").child(userid).child("win").setValue(win);
     mDatabase.child("Users").child(userid).child("lost").setValue(lost);
+    mDatabase.child("Users").child(userid).child("picture").setValue(picture);
   }
   private void goMainScreen() {
     Intent intent = new Intent(this, MainActivity.class);
