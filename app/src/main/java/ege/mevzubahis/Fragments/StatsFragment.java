@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -89,11 +91,20 @@ public class StatsFragment extends Fragment {
                                      Bundle savedInstanceState) {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_stats, container, false);
-    final TextView winText = (TextView) view.findViewById(R.id.winText);
+     final TextView winText = (TextView) view.findViewById(R.id.winText);
      final TextView lostText = (TextView) view.findViewById(R.id.lostText);
      final TextView ratioText = (TextView) view.findViewById(R.id.ratioText);
      final TextView coinText = (TextView) view.findViewById(R.id.coinText);
      Log.e("user id is: ",userID);
+
+     Button frndBtn = (Button) view.findViewById(R.id.friendBtn);
+     frndBtn.setOnClickListener(new View.OnClickListener() {
+       @Override
+       public void onClick(View v) {
+         Toast.makeText(getActivity(),"BUTOON",Toast.LENGTH_SHORT).show();
+       }
+     });
+
      mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
        @Override
        public void onDataChange(DataSnapshot dataSnapshot) {
@@ -107,7 +118,13 @@ public class StatsFragment extends Fragment {
 
          winText.setText(winValue.toString());
          lostText.setText(lostValue.toString());
-         //ratioText.setText();
+         float ratioValue = winValue.floatValue()/lostValue.floatValue();
+         //check for 0/0 = infinity
+         if(lostValue.floatValue()==0){
+           ratioText.setText(Float.toString(winValue));
+         }else {
+           ratioText.setText(Float.toString(ratioValue));
+         }
          coinText.setText(coinValue.toString());
        }
 
@@ -122,11 +139,6 @@ public class StatsFragment extends Fragment {
     ButterKnife.bind(this, view);
     return view;
   }
-  public void changeText(String text){
-    //TextView tv = (TextView) getView().findViewById(R.id.winText);
-    //tv.setText(text);
-  }
-
 
   // TODO: Rename method, update argument and hook method into UI event
   public void onButtonPressed(Uri uri) {
@@ -163,4 +175,5 @@ public class StatsFragment extends Fragment {
     // TODO: Update argument type and name
     void onFragmentInteraction(Uri uri);
   }
+
 }

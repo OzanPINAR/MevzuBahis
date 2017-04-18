@@ -1,6 +1,8 @@
 package ege.mevzubahis.Activities;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
@@ -15,24 +17,33 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+import butterknife.ButterKnife;
 import ege.mevzubahis.MainActivity;
-import ege.mevzubahis.Network.Bets;
 import ege.mevzubahis.R;
 
 public class BetsActivity extends AppCompatActivity {
 
   private SectionsPagerAdapter mSectionsPagerAdapter;
+
+
 
   private ViewPager mViewPager;
 
@@ -59,6 +70,23 @@ public class BetsActivity extends AppCompatActivity {
     });
   }
 
+  private void showDialog(){
+      final Dialog mydialog=new Dialog(this);
+      mydialog.setTitle("Enter Bet");
+      mydialog.setContentView(R.layout.custom_dialog);
+      TextView matchName=(TextView)mydialog.findViewById(R.id.matchName);
+      TextView duration=(TextView)mydialog.findViewById(R.id.duration);
+      TextView dbDuration=(TextView)mydialog.findViewById(R.id.databaseDuration);
+      TextView coin=(TextView)mydialog.findViewById(R.id.coin);
+      EditText editText=(EditText) mydialog.findViewById(R.id.editText);
+      RadioButton homeWins=(RadioButton)mydialog.findViewById(R.id.homeWins);
+      RadioButton draw=(RadioButton)mydialog.findViewById(R.id.draw);
+      RadioButton awayWins=(RadioButton)mydialog.findViewById(R.id.awayWins);
+      Button sendbet=(Button)mydialog.findViewById(R.id.button2);
+  }
+
+
+
   private void goMainScreen() {
     Intent intent = new Intent(this, MainActivity.class);
     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -80,45 +108,89 @@ public class BetsActivity extends AppCompatActivity {
     return true;
   }
 
-  public static class PlaceholderFragment extends Fragment {
+
+
+  public static class SportFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    @BindView(R.id.match1) TextView match1;
-    @BindView(R.id.button2) Button button2;
-    @BindView(R.id.button3) Button button3;
-    @BindView(R.id.button4) Button button4;
 
-    public PlaceholderFragment() {
+    public SportFragment() {
     }
 
-    public static PlaceholderFragment newInstance(int sectionNumber) {
-      PlaceholderFragment fragment = new PlaceholderFragment();
+
+
+    public static SportFragment newInstance(int sectionNumber) {
+      SportFragment fragment = new SportFragment();
       Bundle args = new Bundle();
       args.putInt(ARG_SECTION_NUMBER, sectionNumber);
       fragment.setArguments(args);
       return fragment;
     }
 
+
+
+
     @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                        Bundle savedInstanceState) {
+
       View rootView = inflater.inflate(R.layout.fragment_bets, container, false);
 
-      FirebaseDatabase database = FirebaseDatabase.getInstance();
-      DatabaseReference reference = database.getReference("bets");
+      final ListView fragmentBetsListview;
+      final ArrayList<String> betsList = new ArrayList<>();
+      final ArrayAdapter arrayAdapter;
 
-      reference.addValueEventListener(new ValueEventListener() {
-        @Override public void onDataChange(DataSnapshot dataSnapshot) {
+      fragmentBetsListview = (ListView) rootView.findViewById(R.id.ListviewBerkay);
 
-          Bets msg = dataSnapshot.getValue(Bets.class);
-          Log.d("Database:", msg.getResult() + " " + msg.getEvent());
+      arrayAdapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, betsList){
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+          View view =super.getView(position, convertView, parent);
 
-          String msgText = msg.getEvent();
+          TextView textView=(TextView) view.findViewById(android.R.id.text1);
+          textView.setTextColor(Color.BLACK);
 
-          match1.setText(msgText);
+          return view;
+        }
+      };
+
+      fragmentBetsListview.setAdapter(arrayAdapter);
+
+      final FirebaseDatabase database = FirebaseDatabase.getInstance();
+      final DatabaseReference reference = database.getReference("Bets").child("Sports");
+
+      reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+          for (DataSnapshot child : dataSnapshot.getChildren()){
+            String betsItem = child.getKey();
+            Log.e("SportActivity", betsItem);
+            betsList.add(betsItem);
+            arrayAdapter.notifyDataSetChanged();
+          }
         }
 
-        @Override public void onCancelled(DatabaseError databaseError) {
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
 
+        }
+      });
+
+      fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+          String quizNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
+          reference.child(quizNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+              Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+              String duration = (String) map.get("duration");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+          });
         }
       });
 
@@ -126,20 +198,93 @@ public class BetsActivity extends AppCompatActivity {
       return rootView;
     }
 
-    @OnClick({ R.id.button2, R.id.button3, R.id.button4 }) public void onClick(View view) {
-      switch (view.getId()) {
-        case R.id.button2:
-          Toast.makeText(getActivity(), "firebase e yolla", Toast.LENGTH_SHORT).show();
-          break;
-        case R.id.button3:
-          Toast.makeText(getActivity(), "firebase e yolla", Toast.LENGTH_SHORT).show();
-          break;
-        case R.id.button4:
-          Toast.makeText(getActivity(), "firebase e yolla", Toast.LENGTH_SHORT).show();
-          break;
-      }
-    }
   }
+
+
+    public static class SocialFragment extends Fragment {
+
+        private static final String ARG_SECTION_NUMBER = "section_number";
+
+        public SocialFragment() {
+        }
+
+        public static SocialFragment newInstance(int sectionNumber) {
+            SocialFragment fragment = new SocialFragment();
+            Bundle args = new Bundle();
+            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                           Bundle savedInstanceState) {
+
+            View rootView1 = inflater.inflate(R.layout.custom_bets, container, false);
+
+            final ListView fragmentBetsListview1;
+            final ArrayList<String> betsList1 = new ArrayList<>();
+            final ArrayAdapter arrayAdapter1;
+
+            fragmentBetsListview1 = (ListView) rootView1.findViewById(R.id.custom_listview);
+
+            arrayAdapter1 = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1, betsList1){
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view =super.getView(position, convertView, parent);
+
+                    TextView textView=(TextView) view.findViewById(android.R.id.text1);
+                    textView.setTextColor(Color.BLACK);
+
+                    return view;
+                }
+            };
+
+            fragmentBetsListview1.setAdapter(arrayAdapter1);
+
+            final FirebaseDatabase database = FirebaseDatabase.getInstance();
+            final DatabaseReference reference1 = database.getReference("Bets").child("Social");
+
+            reference1.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot child : dataSnapshot.getChildren()){
+                        String betsItem = child.getKey();
+                        Log.e("SocialActivity", betsItem);
+                        betsList1.add(betsItem);
+                        arrayAdapter1.notifyDataSetChanged();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            fragmentBetsListview1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String quizNameInPosition = fragmentBetsListview1.getItemAtPosition(position).toString();
+                    reference1.child(quizNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+                            String duration = (String) map.get("duration");
+                            Toast.makeText(getActivity(), duration , Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            });
+
+            ButterKnife.bind(this, rootView1);
+            return rootView1;
+        }
+    }
 
   public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -148,8 +293,18 @@ public class BetsActivity extends AppCompatActivity {
     }
 
     @Override public Fragment getItem(int position) {
+        Fragment fragment =null;
+        switch (position) {
+            case 0:
+                fragment = SportFragment.newInstance(position + 1);
+                break;
+            case 1:
+                fragment = SocialFragment.newInstance(position + 1);
+                break;
+                     }
+        return fragment;
 
-      return PlaceholderFragment.newInstance(position + 1);
+
     }
 
     @Override public int getCount() {
