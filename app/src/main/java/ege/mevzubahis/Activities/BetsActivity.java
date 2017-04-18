@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.support.v4.app.DialogFragment;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import ege.mevzubahis.Fragments.BetsDialogFragment;
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
 
@@ -70,20 +72,7 @@ public class BetsActivity extends AppCompatActivity {
     });
   }
 
-  private void showDialog(){
-      final Dialog mydialog=new Dialog(this);
-      mydialog.setTitle("Enter Bet");
-      mydialog.setContentView(R.layout.custom_dialog);
-      TextView matchName=(TextView)mydialog.findViewById(R.id.matchName);
-      TextView duration=(TextView)mydialog.findViewById(R.id.duration);
-      TextView dbDuration=(TextView)mydialog.findViewById(R.id.databaseDuration);
-      TextView coin=(TextView)mydialog.findViewById(R.id.coin);
-      EditText editText=(EditText) mydialog.findViewById(R.id.editText);
-      RadioButton homeWins=(RadioButton)mydialog.findViewById(R.id.homeWins);
-      RadioButton draw=(RadioButton)mydialog.findViewById(R.id.draw);
-      RadioButton awayWins=(RadioButton)mydialog.findViewById(R.id.awayWins);
-      Button sendbet=(Button)mydialog.findViewById(R.id.button2);
-  }
+
 
 
 
@@ -183,7 +172,13 @@ public class BetsActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
               Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-              String duration = (String) map.get("duration");
+              String duration = (String) map.get("duration").toString();
+                Toast.makeText(getActivity(), duration , Toast.LENGTH_SHORT).show();
+
+                FragmentManager myManager = getFragmentManager();
+                BetsDialogFragment betsDialog=new BetsDialogFragment();
+                betsDialog.show(myManager,"BetsDialogFragment");
+
             }
 
             @Override
@@ -269,7 +264,7 @@ public class BetsActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            String duration = (String) map.get("duration");
+                            String duration = (String) map.get("duration").toString();
                             Toast.makeText(getActivity(), duration , Toast.LENGTH_SHORT).show();
                         }
 
