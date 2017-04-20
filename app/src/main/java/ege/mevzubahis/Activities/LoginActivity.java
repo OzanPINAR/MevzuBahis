@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     setContentView(R.layout.activity_login);
     LoginButton = (LoginButton) findViewById(R.id.fb_login_button);
     callbackManager = CallbackManager.Factory.create();
-    LoginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+    LoginButton.setReadPermissions(Arrays.asList("email", "public_profile","user_friends"));
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     mDatabase = FirebaseDatabase.getInstance().getReference();
 
