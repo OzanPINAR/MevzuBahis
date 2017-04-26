@@ -2,96 +2,87 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+
     <TextView
-        android:id="@+id/matchName"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/tv_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:text="Match"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp"
-        android:text="matchName" />
-
+        />
     <TextView
-        android:id="@+id/duration"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_match"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:text="Due:"
+        />
+    <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="100dp"
-        android:text="duration" />
+        android:id="@+id/textInputLayout"
+        >
 
-    <RadioButton
-        android:id="@+id/homeWins"
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Coin amount"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="19dp"
-        android:text="homeWins"
-        android:layout_below="@+id/duration"
-        android:layout_toLeftOf="@+id/button2"
-        android:layout_toStartOf="@+id/button2" />
-
-    <RadioButton
-        android:id="@+id/draw"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="draw"
-        android:layout_alignBaseline="@+id/homeWins"
-        android:layout_alignBottom="@+id/homeWins"
-        android:layout_alignLeft="@+id/matchName"
-        android:layout_alignStart="@+id/matchName" />
-
-    <RadioButton
-        android:id="@+id/awayWins"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="awayWins"
-        android:layout_alignBaseline="@+id/draw"
-        android:layout_alignBottom="@+id/draw"
-        android:layout_toRightOf="@+id/matchName"
-        android:layout_toEndOf="@+id/matchName" />
-
-    <TextView
-        android:id="@+id/coin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignLeft="@+id/duration"
-        android:layout_alignStart="@+id/duration"
-        android:layout_below="@+id/homeWins"
-        android:layout_marginTop="56dp"
-        android:text="coin"></TextView>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textInputLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/radioGroup"
+        android:weightSum="1"
+        >
 
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:ems="10"
-        android:inputType="number"
-        android:layout_marginTop="0dp"
-        android:layout_below="@+id/coin"
-        android:layout_alignBottom="@+id/coin"
-        android:layout_toRightOf="@+id/duration"
-        android:layout_alignRight="@+id/awayWins"
-        android:layout_alignEnd="@+id/awayWins" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="Home Wins"
+            />
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Draw"
+            android:layout_weight="0.34"
+            />
+        <RadioButton
+            android:id="@+id/radioButton6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Away Wins"
+            />
+
+
+
+    </RadioGroup>
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="26dp"
-        android:text="Button"
-        android:layout_below="@+id/editText"
-        android:layout_alignLeft="@+id/draw"
-        android:layout_alignStart="@+id/draw" />
-
-    <TextView
-        android:id="@+id/databaseDuration"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBaseline="@+id/duration"
-        android:layout_alignBottom="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:text="Send"
+        android:layout_below="@+id/radioGroup"
         android:layout_centerHorizontal="true"
-        android:text="databaseDuration" />
+        />
 </RelativeLayout>
