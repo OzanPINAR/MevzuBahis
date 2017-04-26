@@ -8,4 +8,29 @@
     tools:context="ege.mevzubahis.Activities.FriendActivity"
     >
 
+    <RelativeLayout
+        android:layout_width="344dp"
+        android:layout_height="551dp"
+        tools:layout_editor_absoluteY="8dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+            android:id="@+id/choiceText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="83dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/coinText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/choiceText"
+            android:layout_alignRight="@+id/choiceText"
+            android:layout_below="@+id/choiceText"
+            android:layout_marginTop="105dp"
+            android:text="TextView" />
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

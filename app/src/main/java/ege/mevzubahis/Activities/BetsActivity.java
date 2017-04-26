@@ -109,11 +109,11 @@ public class BetsActivity extends AppCompatActivity {
 
 
     public static SportFragment newInstance(int sectionNumber) {
-      SportFragment fragment = new SportFragment();
+      SportFragment sportFrgmnt = new SportFragment();
       Bundle args = new Bundle();
       args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-      fragment.setArguments(args);
-      return fragment;
+      sportFrgmnt.setArguments(args);
+      return sportFrgmnt;
     }
 
 
@@ -167,16 +167,19 @@ public class BetsActivity extends AppCompatActivity {
       fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          String quizNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
-          reference.child(quizNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+          final String betNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
+          reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
               Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
               String duration = (String) map.get("duration").toString();
-                Toast.makeText(getActivity(), duration , Toast.LENGTH_SHORT).show();
+
+                Bundle args =new Bundle();
+                args.putString("betNameInPosition",betNameInPosition);
 
                 FragmentManager myManager = getFragmentManager();
                 BetsDialogFragment betsDialog=new BetsDialogFragment();
+                betsDialog.setArguments(args);
                 betsDialog.show(myManager,"BetsDialogFragment");
 
             }
@@ -265,7 +268,7 @@ public class BetsActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                             String duration = (String) map.get("duration").toString();
-                            Toast.makeText(getActivity(), duration , Toast.LENGTH_SHORT).show();
+
                         }
 
                         @Override
