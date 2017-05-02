@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
+
 import ege.mevzubahis.Activities.FriendActivity;
 import ege.mevzubahis.R;
 import java.util.Map;
+
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -75,7 +80,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
 
         coinValue = (Long) dataSnapshot.child("coin").getValue();
 
-        Log.v("coin value: ", coinValue.toString());
+        Log.e("coin value: ", coinValue.toString());
 
       }
 
@@ -99,7 +104,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
               String durationValue = (String) map.get("duration").toString();
               textView2.setText("Due to: " + durationValue);
 
-              coinValue = (Long) dataSnapshot.child("coin").getValue();
+              //coinValue = (Long) dataSnapshot.child("coin").getValue();
             } catch (Throwable t) {
               Log.e("trycatchFAIL", "b");
             }
@@ -116,7 +121,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
 
   @OnClick({ R.id.radioButton4, R.id.radioButton5, R.id.radioButton6})
   public void onClick(View view) {
-
+    boolean checked = ((RadioButton) view).isChecked();
     switch (view.getId()) {
       case R.id.radioButton4:
         choice = "home";
@@ -134,11 +139,20 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
     }
   }
 
+
+  //SEND button
   @OnClick(R.id.button2)
   public void onClickSendButton(View view){
-    String coinAmount = coinWrapper.getEditText().getText().toString();
 
-    Log.v("coinAmount",coinAmount);
+    String coinAmount = coinWrapper.getEditText().getText().toString();
+    Log.e("coinAmount",coinAmount);
+
+    //check if coin amount box is empty
+    if(TextUtils.isEmpty(coinAmount)){
+      coinWrapper.setError("Don't forget to put some coins");
+      return;
+    }
+
 
     long _coinValue;
     if (coinValue == null) {
@@ -147,13 +161,23 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
 
     else {
       _coinValue = coinValue;
+      Log.e("coinValue",Long.toString(_coinValue));
     }
 
-    if (Long.parseLong(coinAmount) >= _coinValue) {
+    //coin check from database
+    if (Long.parseLong(coinAmount) > _coinValue) {
 
       Toast.makeText(getApplicationContext(), "You don't have enough coins!",
           Toast.LENGTH_SHORT).show();
+    } else if(radioButton4.isChecked()==false && radioButton5.isChecked()==false && radioButton6.isChecked()==false){
+
+      //radio button check
+      Log.e("radiocheck",coinAmount);
+      Toast.makeText(getApplicationContext(), "Don't forget to select something!",
+              Toast.LENGTH_SHORT).show();
+
     } else {
+      //if everything is ok, proceed
 
       Intent intent = new Intent(getActivity(), FriendActivity.class);
       intent.putExtra("coin", coinAmount);
