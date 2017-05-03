@@ -87,8 +87,17 @@ public class FriendActivity extends AppCompatActivity {
                                       Log.e("deneme3", jsonObject.toString());
                                       JSONObject summary = jsonObject.getJSONObject("summary");
                                       Log.e("summary total", summary.getString("total_count"));
+                                      for(int i=0;i<jsonArray.length();i++){
+                                          try{
+                                              JSONObject oneObject=jsonArray.getJSONObject(i);
+                                              String name= oneObject.getString("name");
+                                              Log.e("forloopName",name);
+                                              friendList1.add(name);
+                                          }catch(JSONException e){
+                                            Log.e("OOps",e.toString());
+                                          }
+                                      }
 
-                                      friendList1.add(jsonArray.toString());
                                       arrayAdapter.notifyDataSetChanged();
                                   } catch (Exception e) {
                                       e.printStackTrace();

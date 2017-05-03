@@ -165,7 +165,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
     }
 
     //coin check from database
-    if (Long.parseLong(coinAmount) > _coinValue) {
+    if (Long.parseLong(coinAmount) >= _coinValue) {
 
       Toast.makeText(getApplicationContext(), "You don't have enough coins!",
           Toast.LENGTH_SHORT).show();
