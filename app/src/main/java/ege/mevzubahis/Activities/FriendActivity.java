@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 
 import ege.mevzubahis.R;
 
+import static android.support.constraint.R.id.parent;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FriendActivity extends AppCompatActivity {
@@ -48,7 +51,7 @@ public class FriendActivity extends AppCompatActivity {
     coinText = (TextView) findViewById(R.id.coinText);
     friendList = (ListView) findViewById(R.id.friendList);
 
-      arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, friendList1){
+      arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_multiple_choice, friendList1){
           @Override
           public View getView(int position, View convertView, ViewGroup parent) {
               View view =super.getView(position, convertView, parent);
@@ -62,6 +65,14 @@ public class FriendActivity extends AppCompatActivity {
       };
       friendList.setAdapter(arrayAdapter);
 
+      //friend list check stuff
+      friendList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+              CheckedTextView check = (CheckedTextView)view;
+              check.setChecked(!check.isChecked());
+          }
+      });
 
 
       Bundle b = getIntent().getExtras();
@@ -87,6 +98,8 @@ public class FriendActivity extends AppCompatActivity {
                                       Log.e("deneme3", jsonObject.toString());
                                       JSONObject summary = jsonObject.getJSONObject("summary");
                                       Log.e("summary total", summary.getString("total_count"));
+
+                                      //writing friend data to listview
                                       for(int i=0;i<jsonArray.length();i++){
                                           try{
                                               JSONObject oneObject=jsonArray.getJSONObject(i);
@@ -117,6 +130,7 @@ public class FriendActivity extends AppCompatActivity {
 
       Bundle parameters = new Bundle();
       parameters.putString("fields", "id,name,link,picture");
+
   }
 }
 
