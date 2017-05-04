@@ -1,6 +1,6 @@
 MevzuBahis 
 ======
-**MevzuBahis** is a social betting application.
+**MevzuBahis** is Turkey's first social betting platform. Holds [TUSIAD](http://www.tusiad.us/) 2017 Entrepreneurship Flag. Built with passion and love..
 
 #### Screenshot
 ![Screenshot Android](http://url/screenshot-appname-android.png "screenshot Android")
