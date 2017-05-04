@@ -18,6 +18,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
@@ -113,13 +114,14 @@ public class HomeFragment extends Fragment {
     fragmentBetsListview.setAdapter(arrayAdapter);
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final DatabaseReference reference = database.getReference("Bets").child("Sports");
+    final DatabaseReference reference = database.getReference();
+    Query myQuery= reference.child("Deals").orderByChild("matchName");
 
-    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+    myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-          String betsItem = child.getKey();
+          String betsItem = String.valueOf(child.child("matchName").getValue());
           Log.e("SportActivity", betsItem);
           betsList.add(betsItem);
           arrayAdapter.notifyDataSetChanged();
