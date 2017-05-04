@@ -18,17 +18,19 @@
       <intent-filter>
         <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
       </intent-filter>
+
+    </activity>
+    <activity android:name=".Activities.AboutActivity"/>
+    <activity
+        android:name=".Activities.DefaultIntro">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
         <category android:name="android.intent.category.LAUNCHER"/>
       </intent-filter>
     </activity>
-    <activity android:name=".Activities.AboutActivity"/>
-    <activity
-        android:name=".Activities.DefaultIntro"
-        android:label="Intro Label"
-        android:theme="@style/FullscreenTheme"/>
+    android:label="Intro Label"
+    android:theme="@style/FullscreenTheme"/>
     <activity android:name=".Activities.LoginActivity"/>
 
     <meta-data

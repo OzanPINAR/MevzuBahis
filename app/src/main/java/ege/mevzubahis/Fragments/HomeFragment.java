@@ -1,13 +1,29 @@
 package ege.mevzubahis.Fragments;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
+
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -32,11 +48,13 @@ public class HomeFragment extends Fragment {
   private String mParam1;
   private String mParam2;
 
+
   private OnFragmentInteractionListener mListener;
 
   public HomeFragment() {
     // Required empty public constructor
   }
+
 
   /**
    * Use this factory method to create a new instance of
@@ -56,20 +74,68 @@ public class HomeFragment extends Fragment {
     return fragment;
   }
 
-  @Override public void onCreate(Bundle savedInstanceState) {
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
     }
+
+
   }
 
-  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
-      Bundle savedInstanceState) {
+  @Override
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View view = inflater.inflate(R.layout.fragment_home, container, false);
-    ButterKnife.bind(this, view);
-    return view;
+    View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+    final ListView fragmentBetsListview;
+    final ArrayList<String> betsList = new ArrayList<>();
+    final ArrayAdapter arrayAdapter;
+
+    fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
+
+    arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, betsList) {
+      @Override
+      public View getView(int position, View convertView, ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+
+        TextView textView = (TextView) view.findViewById(android.R.id.text1);
+        textView.setTextColor(Color.BLACK);
+
+        return view;
+      }
+    };
+
+    fragmentBetsListview.setAdapter(arrayAdapter);
+
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference reference = database.getReference("Bets").child("Sports");
+
+    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+          String betsItem = child.getKey();
+          Log.e("SportActivity", betsItem);
+          betsList.add(betsItem);
+          arrayAdapter.notifyDataSetChanged();
+        }
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+
+    ButterKnife.bind(this, rootView);
+    return rootView;
+
+
   }
 
   // TODO: Rename method, update argument and hook method into UI event
