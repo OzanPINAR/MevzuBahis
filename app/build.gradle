@@ -59,7 +59,7 @@ dependencies {
   apt 'org.parceler:parceler:1.1.1'
   debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
   releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-  compile 'com.github.florent37:diagonallayout:1.0.4'
+  compile 'com.github.florent37:arclayout:1.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

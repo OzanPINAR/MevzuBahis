@@ -1,17 +1,17 @@
 package ege.mevzubahis.Fragments;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.google.android.gms.ads.InterstitialAd;
 import ege.mevzubahis.R;
 
 /**
@@ -73,6 +73,9 @@ public class GetCoinFragment extends Fragment  {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_get_coin, container, false);
     ButterKnife.bind(this, view);
+
+    final Animation myAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+    watchAdButton.setAnimation(myAnim);
     return view;
   }
 

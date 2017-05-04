@@ -41,7 +41,7 @@
         android:name=".Activities.BetsActivity"
         android:label="@string/title_activity_bets"
         android:parentActivityName=".MainActivity"
-        android:theme="@style/AppTheme">
+        >
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
           android:value="ege.mevzubahis.MainActivity"/>

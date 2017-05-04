@@ -4,28 +4,25 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
+import butterknife.ButterKnife;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ege.mevzubahis.R;
+import ege.mevzubahis.Utils.CircleTransform;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static ege.mevzubahis.Activities.LoginActivity.userId;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,11 +40,17 @@ public class StatsFragment extends Fragment {
 
   private DatabaseReference mDatabase;
   SharedPreferences sharedPreferences;
-  private String userID;
+
 
   // TODO: Rename and change types of parameters
   private String mParam1;
   private String mParam2;
+
+  private String urlProfileImg;
+  private String userID;
+  SharedPreferences pref;
+  private ImageView imgProfile2;
+  private String username2;
 
   private String deneme ="dENEME";
 
@@ -83,8 +86,17 @@ public class StatsFragment extends Fragment {
       mParam2 = getArguments().getString(ARG_PARAM2);
     }
     mDatabase = FirebaseDatabase.getInstance().getReference();
+
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     userID=sharedPreferences.getString("userIDKey",null);
+
+    userID=pref.getString("userIDKey",null);
+    Log.e("5userID = ", " " + userID);
+
+    username2=pref.getString("nameKey",null);
+
+    urlProfileImg="https://graph.facebook.com/" + userID+ "/picture?type=large";
   }
 
    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -95,15 +107,20 @@ public class StatsFragment extends Fragment {
      final TextView lostText = (TextView) view.findViewById(R.id.lostText);
      final TextView ratioText = (TextView) view.findViewById(R.id.ratioText);
      final TextView coinText = (TextView) view.findViewById(R.id.coinText);
+     final TextView nameText = (TextView) view.findViewById(R.id.nameText);
      Log.e("user id is: ",userID);
 
-     Button frndBtn = (Button) view.findViewById(R.id.friendBtn);
-     frndBtn.setOnClickListener(new View.OnClickListener() {
-       @Override
-       public void onClick(View v) {
-         Toast.makeText(getActivity(),"BUTOON",Toast.LENGTH_SHORT).show();
-       }
-     });
+     imgProfile2 = (ImageView) view.findViewById(R.id.img_profile);
+
+     Glide.with(this)
+         .load(urlProfileImg)
+         .crossFade()
+         .thumbnail(0.5f)
+         .bitmapTransform(new CircleTransform(getActivity()))
+         .diskCacheStrategy(DiskCacheStrategy.ALL)
+         .into(imgProfile2);
+
+
 
      mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
        @Override
@@ -115,6 +132,8 @@ public class StatsFragment extends Fragment {
          Log.e("Database ", winValue.toString());
          Log.e("Database ", lostValue.toString());
          Log.e("Database ", coinValue.toString());
+
+         nameText.setText(username2);
 
          winText.setText(winValue.toString());
          lostText.setText(lostValue.toString());

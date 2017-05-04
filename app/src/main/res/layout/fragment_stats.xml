@@ -1,104 +1,135 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/lib/com.github.florent37.arclayout.ArcLayout"
     tools:context="ege.mevzubahis.Fragments.StatsFragment"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+
+<com.github.florent37.arclayout.ArcLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    app:arc_cropDirection="cropInside"
+    app:arc_height="90dp"
+    app:arc_padding="30dp"
+
     >
 
-
-  <android.support.v7.widget.CardView
+  <ImageView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="center"
-      android:layout_margin="30dp">
+      android:scaleType="centerCrop"
+      android:src="@color/colorPrimary"
+      />
+  <ImageView
+      android:id="@+id/img_profile"
+      android:layout_width="@dimen/profile_width"
+      android:layout_height="@dimen/profile_height"
+      android:layout_gravity="center_horizontal"
+      android:paddingTop="@dimen/nav_header_vertical_spacing"
 
-    <RelativeLayout
+
+      />
+
+
+
+
+</com.github.florent37.arclayout.ArcLayout>
+
+
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:padding="40dp"
+      android:id="@+id/relativeLayout"
+      >
+
+    <TextView
+        android:id="@+id/betsWon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+        android:text="@string/bets_won"
+        android:textColor="@color/colorPrimaryText" />
 
-      <TextView
-          android:id="@+id/betsWon"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_alignParentTop="true"
-          android:layout_margin="20dp"
-          android:text="@string/bets_won"
-          android:textColor="@color/colorPrimaryText" />
+    <TextView
+        android:id="@+id/betsLost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/betsWon"
+        android:layout_margin="20dp"
+        android:text="@string/bets_lost"
+        android:textColor="@color/colorPrimaryText" />
 
-      <TextView
-          android:id="@+id/betsLost"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/betsWon"
-          android:layout_margin="20dp"
-          android:text="@string/bets_lost"
-          android:textColor="@color/colorPrimaryText" />
+    <TextView
+        android:id="@+id/winloseratio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/betsLost"
+        android:layout_margin="20dp"
+        android:text="@string/win_lose_ratio"
+        android:textColor="@color/colorPrimaryText" />
 
-      <TextView
-          android:id="@+id/winloseratio"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/betsLost"
-          android:layout_margin="20dp"
-          android:text="@string/win_lose_ratio"
-          android:textColor="@color/colorPrimaryText" />
+    <TextView
+        android:id="@+id/totalcoins"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/winloseratio"
+        android:layout_margin="20dp"
+        android:text="@string/total_coins"
+        android:textColor="@color/colorPrimaryText" />
 
-      <TextView
-          android:id="@+id/totalcoins"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:layout_below="@id/winloseratio"
-          android:layout_margin="20dp"
-          android:text="@string/total_coins"
-          android:textColor="@color/colorPrimaryText" />
+    <TextView
+        android:id="@+id/winText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/betsWon"
+        android:layout_alignBottom="@+id/betsWon"
+        android:layout_centerHorizontal="true" />
 
-      <TextView
-          android:id="@+id/winText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignBaseline="@+id/betsWon"
-          android:layout_alignBottom="@+id/betsWon"
-          android:layout_centerHorizontal="true" />
+    <TextView
+        android:id="@+id/lostText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/betsLost"
+        android:layout_alignBottom="@+id/betsLost"
+        android:layout_alignLeft="@+id/winText"
+        android:layout_alignStart="@+id/winText" />
 
-      <TextView
-          android:id="@+id/lostText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignBaseline="@+id/betsLost"
-          android:layout_alignBottom="@+id/betsLost"
-          android:layout_alignLeft="@+id/winText"
-          android:layout_alignStart="@+id/winText" />
+    <TextView
+        android:id="@+id/ratioText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/winloseratio"
+        android:layout_alignBottom="@+id/winloseratio"
+        android:layout_alignLeft="@+id/lostText"
+        android:layout_alignStart="@+id/lostText" />
 
-      <TextView
-          android:id="@+id/ratioText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignBaseline="@+id/winloseratio"
-          android:layout_alignBottom="@+id/winloseratio"
-          android:layout_alignLeft="@+id/lostText"
-          android:layout_alignStart="@+id/lostText" />
-
-      <TextView
-          android:id="@+id/coinText"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignBaseline="@+id/totalcoins"
-          android:layout_alignBottom="@+id/totalcoins"
-          android:layout_alignLeft="@+id/ratioText"
-          android:layout_alignStart="@+id/ratioText" />
-
-      <Button
-          android:id="@+id/friendBtn"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/totalcoins"
-          android:layout_centerHorizontal="true"
-          android:text="Show Friends" />
-
-    </RelativeLayout>
-
-  </android.support.v7.widget.CardView>
+    <TextView
+        android:id="@+id/coinText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/totalcoins"
+        android:layout_alignBottom="@+id/totalcoins"
+        android:layout_alignLeft="@+id/ratioText"
+        android:layout_alignStart="@+id/ratioText" />
 
 
-</android.support.design.widget.CoordinatorLayout>
+
+  </RelativeLayout>
+  <TextView
+      android:id="@+id/nameText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/relativeLayout"
+      android:layout_centerHorizontal="true"
+      android:layout_marginBottom="18dp"
+      android:text="name"
+      />
+</RelativeLayout>

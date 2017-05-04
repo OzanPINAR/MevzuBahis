@@ -1,20 +1,13 @@
 package ege.mevzubahis;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.icu.util.Calendar;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -33,13 +26,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.internal.ImageRequest;
 import com.facebook.login.LoginManager;
-
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.storage.FirebaseStorage;
 import ege.mevzubahis.Activities.AboutActivity;
 import ege.mevzubahis.Activities.BetsActivity;
 import ege.mevzubahis.Activities.DefaultIntro;
@@ -51,9 +39,6 @@ import ege.mevzubahis.Fragments.SettingsFragment;
 import ege.mevzubahis.Fragments.StatsFragment;
 import ege.mevzubahis.Managers.Config;
 import ege.mevzubahis.Utils.CircleTransform;
-import java.net.URL;
-
-import static ege.mevzubahis.Activities.LoginActivity.userId;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
   SharedPreferences pref;
   private static final String urlNavHeaderBg =
-      "http://api.androidhive.info/images/nav-menu-header-bg.jpg";
+      "https://www.beautycolorcode.com/03a9f4-2048x1536.png";
 
   public static int navItemIndex = 0;
 
