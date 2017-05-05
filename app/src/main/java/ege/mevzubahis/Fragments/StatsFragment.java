@@ -1,6 +1,7 @@
 package ege.mevzubahis.Fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.BlurMaskFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -116,14 +119,14 @@ public class StatsFragment extends Fragment {
      imgProfile2 = (ImageView) view.findViewById(R.id.img_profile);
      imgProfile3 = (ImageView) view.findViewById(R.id.img_profile1);
 
-     Glide.with(this)
-             .load(urlProfileImg)
-             .crossFade()
-             .thumbnail(0.5f)
-             .diskCacheStrategy(DiskCacheStrategy.ALL)
-             .into(imgProfile3);
+       Glide.with(this)
+               .load(urlProfileImg)
+               .crossFade()
+               .thumbnail(0.5f)
+               .diskCacheStrategy(DiskCacheStrategy.ALL)
+               .into(imgProfile3);
 
-     Glide.with(this)
+       Glide.with(this)
          .load(urlProfileImg)
          .crossFade()
          .thumbnail(0.5f)
