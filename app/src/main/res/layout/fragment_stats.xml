@@ -19,11 +19,10 @@
     >
 
   <ImageView
+      android:id="@+id/img_profile1"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:scaleType="centerCrop"
-      android:src="@color/colorPrimary"
-      />
+      android:scaleType="centerCrop" />
 
   <ImageView
       android:id="@+id/img_profile"
@@ -55,7 +54,7 @@
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
         android:text="@string/bets_won"
-        android:textColor="@color/colorPrimaryText" />
+        android:textColor="@color/about_item_text_color" />
 
     <TextView
         android:id="@+id/betsLost"
@@ -64,7 +63,7 @@
         android:layout_below="@id/betsWon"
         android:layout_margin="20dp"
         android:text="@string/bets_lost"
-        android:textColor="@color/colorPrimaryText" />
+        android:textColor="@color/about_item_text_color" />
 
     <TextView
         android:id="@+id/winloseratio"
@@ -73,7 +72,7 @@
         android:layout_below="@id/betsLost"
         android:layout_margin="20dp"
         android:text="@string/win_lose_ratio"
-        android:textColor="@color/colorPrimaryText" />
+        android:textColor="@color/about_item_text_color" />
 
     <TextView
         android:id="@+id/totalcoins"
@@ -82,7 +81,7 @@
         android:layout_below="@id/winloseratio"
         android:layout_margin="20dp"
         android:text="@string/total_coins"
-        android:textColor="@color/colorPrimaryText" />
+        android:textColor="@color/about_item_text_color" />
 
     <TextView
         android:id="@+id/winText"

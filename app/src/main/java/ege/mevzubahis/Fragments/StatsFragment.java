@@ -47,9 +47,11 @@ public class StatsFragment extends Fragment {
   private String mParam2;
 
   private String urlProfileImg;
+  private String urlProfileImg1;
   private String userID;
   SharedPreferences pref;
   private ImageView imgProfile2;
+  private ImageView imgProfile3;
   private String username2;
 
   private String deneme ="dENEME";
@@ -97,6 +99,7 @@ public class StatsFragment extends Fragment {
     username2=pref.getString("nameKey",null);
 
     urlProfileImg="https://graph.facebook.com/" + userID+ "/picture?type=large";
+
   }
 
    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,6 +114,14 @@ public class StatsFragment extends Fragment {
      Log.e("user id is: ",userID);
 
      imgProfile2 = (ImageView) view.findViewById(R.id.img_profile);
+     imgProfile3 = (ImageView) view.findViewById(R.id.img_profile1);
+
+     Glide.with(this)
+             .load(urlProfileImg)
+             .crossFade()
+             .thumbnail(0.5f)
+             .diskCacheStrategy(DiskCacheStrategy.ALL)
+             .into(imgProfile3);
 
      Glide.with(this)
          .load(urlProfileImg)
