@@ -1,6 +1,7 @@
 package ege.mevzubahis.Fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.BlurMaskFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -47,9 +50,11 @@ public class StatsFragment extends Fragment {
   private String mParam2;
 
   private String urlProfileImg;
+  private String urlProfileImg1;
   private String userID;
   SharedPreferences pref;
   private ImageView imgProfile2;
+  private ImageView imgProfile3;
   private String username2;
 
   private String deneme ="dENEME";
@@ -97,6 +102,7 @@ public class StatsFragment extends Fragment {
     username2=pref.getString("nameKey",null);
 
     urlProfileImg="https://graph.facebook.com/" + userID+ "/picture?type=large";
+
   }
 
    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,8 +117,16 @@ public class StatsFragment extends Fragment {
      Log.e("user id is: ",userID);
 
      imgProfile2 = (ImageView) view.findViewById(R.id.img_profile);
+     imgProfile3 = (ImageView) view.findViewById(R.id.img_profile1);
 
-     Glide.with(this)
+       Glide.with(this)
+               .load(urlProfileImg)
+               .crossFade()
+               .thumbnail(0.5f)
+               .diskCacheStrategy(DiskCacheStrategy.ALL)
+               .into(imgProfile3);
+
+       Glide.with(this)
          .load(urlProfileImg)
          .crossFade()
          .thumbnail(0.5f)
