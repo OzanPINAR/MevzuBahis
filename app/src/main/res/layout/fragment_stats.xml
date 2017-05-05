@@ -7,45 +7,46 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+  <com.github.florent37.arclayout.ArcLayout
 
-<com.github.florent37.arclayout.ArcLayout
-
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    app:arc_cropDirection="cropInside"
-    app:arc_height="90dp"
-    app:arc_padding="30dp"
-
-    >
-
-  <ImageView
-      android:id="@+id/img_profile1"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:scaleType="centerCrop" />
+      android:layout_height="200dp"
+      app:arc_cropDirection="cropInside"
+      app:arc_height="90dp"
+      app:arc_padding="30dp"
 
-  <ImageView
-      android:id="@+id/img_profile"
-      android:layout_width="@dimen/profile_width"
-      android:layout_height="192dp"
-      android:layout_gravity="center_horizontal"
-      android:paddingTop="@dimen/nav_header_vertical_spacing"
+      >
+
+    <ImageView
+        android:id="@+id/img_profile1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0.4"/>
+
+    <ImageView
+        android:id="@+id/img_profile"
+        android:layout_width="@dimen/profile_width"
+        android:layout_height="192dp"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="@dimen/nav_header_vertical_spacing"
 
 
-      />
+        />
 
 
-</com.github.florent37.arclayout.ArcLayout>
+  </com.github.florent37.arclayout.ArcLayout>
 
 
 
   <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
       android:padding="40dp"
       android:id="@+id/relativeLayout"
-      >
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true">
 
     <TextView
         android:id="@+id/betsWon"
