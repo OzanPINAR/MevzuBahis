@@ -44,7 +44,7 @@
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
       android:textSize="16sp"
-      android:text="Pick your coin amount, add your friends!"/>
+      android:text="Set coin amount, send and invite your friends to double the fun!"/>
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="64dp" />
