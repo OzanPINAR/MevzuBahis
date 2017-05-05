@@ -31,8 +31,7 @@
         android:layout_gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:src="@drawable/like"
-        />
+        android:src="@drawable/likee" />
   </LinearLayout>
   <TextView
       android:layout_width="wrap_content"
