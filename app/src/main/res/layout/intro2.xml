@@ -44,7 +44,7 @@
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
       android:textSize="16sp"
-      android:text="It can be a popular sports event or a custom one!"/>
+      android:text="Choose a popular sport event or custom one!"/>
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="64dp" />

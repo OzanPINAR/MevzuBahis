@@ -85,5 +85,8 @@
         android:text="Send"
         android:layout_below="@+id/radioGroup"
         android:layout_centerHorizontal="true"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
+        android:padding="10dp"
         />
 </RelativeLayout>
