@@ -1,50 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLight"
     android:layout_weight="10"
-    android:id="@+id/main">
+    android:background="@color/colorPrimaryLight"
+    android:orientation="vertical">
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="0dp"
       android:layout_gravity="center"
+      android:layout_weight="3"
       android:gravity="center"
       android:paddingLeft="32dp"
-      android:layout_weight="3"
-      android:textColor="@color/colorPrimaryText"
       android:paddingRight="32dp"
-      android:textSize="28sp"
-      android:text="Hello There!"/>
+      android:text="Hello There!"
+      android:textColor="@color/colorPrimaryText"
+      android:textSize="32sp" />
 
   <LinearLayout
       android:layout_width="fill_parent"
       android:layout_height="0dp"
-      android:orientation="vertical"
+      android:layout_weight="5"
       android:gravity="center"
-      android:layout_weight="5">
+      android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:src="@drawable/welcome"
-        />
+        android:src="@drawable/welcome1" />
   </LinearLayout>
+
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="0dp"
-      android:layout_weight="3"
       android:layout_gravity="center"
+      android:layout_weight="3"
       android:gravity="center"
-      android:textColor="@color/colorSecondaryText"
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
-      android:textSize="16sp"
-      android:text="MevzuBahis is the first social betting app of Turkey!"/>
+      android:text="MevzuBahis is the first social betting app of Turkey!"
+      android:textColor="@color/colorSecondaryText"
+      android:textSize="16sp" />
+
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="64dp" />

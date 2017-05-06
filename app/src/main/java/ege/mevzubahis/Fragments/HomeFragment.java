@@ -1,8 +1,11 @@
 package ege.mevzubahis.Fragments;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,10 +17,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
@@ -27,7 +32,10 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import ege.mevzubahis.Activities.FriendActivity;
 import ege.mevzubahis.R;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +55,9 @@ public class HomeFragment extends Fragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
   private String mParam2;
-
+  SharedPreferences sharedPreferences;
+  String senderID;
+  String senderName;
 
   private OnFragmentInteractionListener mListener;
 
@@ -77,8 +87,9 @@ public class HomeFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-
+    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    senderID=sharedPreferences.getString("userIDKey",null);
+    senderName=sharedPreferences.getString("nameKey",null);
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -113,17 +124,54 @@ public class HomeFragment extends Fragment {
     fragmentBetsListview.setAdapter(arrayAdapter);
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
-    final DatabaseReference reference = database.getReference("Bets").child("Sports");
+    final DatabaseReference reference = database.getReference();
+    DatabaseReference dealsRef = database.getReference("Deals");
 
-    reference.addListenerForSingleValueEvent(new ValueEventListener() {
+    Query myQuery= reference.child("Deals");
+
+    myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-          String betsItem = child.getKey();
-          Log.e("SportActivity", betsItem);
-          betsList.add(betsItem);
-          arrayAdapter.notifyDataSetChanged();
+            //buranın üstünde çalışıyorum
+          //Log.e("RECEIVER",child.child("receiver").child("Büşra Özdaş").getValue().toString());
+          if(child.child("sender").getValue().toString().equals(senderID) /*|| child.child("receiver").child(senderName).getValue().toString().equals("true")*/) {
+
+            String betsItem = String.valueOf(child.child("matchName").getValue());
+            betsList.add(betsItem);
+            arrayAdapter.notifyDataSetChanged();
+          }
+
         }
+
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+    dealsRef.addChildEventListener(new ChildEventListener() {
+      @Override
+      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        for(DataSnapshot child2 : dataSnapshot.getChildren()){
+         // Log.e("RECEIVER",child2.child("receiver").child(senderName).getValue(String.class));
+        }
+      }
+
+      @Override
+      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+      }
+
+      @Override
+      public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+      }
+
+      @Override
+      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
       }
 
       @Override

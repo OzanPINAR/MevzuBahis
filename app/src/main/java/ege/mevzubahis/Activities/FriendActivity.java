@@ -1,12 +1,16 @@
 package ege.mevzubahis.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +24,8 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,6 +34,7 @@ import org.w3c.dom.Text;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
@@ -36,13 +43,18 @@ import static android.support.constraint.R.id.parent;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FriendActivity extends AppCompatActivity {
-    private TextView choiceText;
-    private TextView coinText;
+
     private ListView friendList;
     private Button sendButton1;
 
+
     String choice;
     String coin;
+    String matchName;
+    String senderID;
+
+    SharedPreferences sharedPreferences;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,14 +62,32 @@ public class FriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend);
         final ListView friendList;
         final ArrayList<String> friendList1 = new ArrayList<>();
+        final ArrayList<String> checkedFriends=new ArrayList<>();
         final ArrayAdapter arrayAdapter;
 
-        coinText = (TextView) findViewById(R.id.coinText);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         friendList = (ListView) findViewById(R.id.friendList);
+        friendList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         sendButton1=(Button) findViewById(R.id.sendButton1);
         sendButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //checked olan itemleri bul
+                SparseBooleanArray checkedItems = friendList.getCheckedItemPositions();
+                if (checkedItems != null) {
+                    for (int i=0; i<checkedItems.size(); i++) {
+                        if (checkedItems.valueAt(i)) {
+                            String item = friendList.getAdapter().getItem(checkedItems.keyAt(i)).toString();
+                             Log.e("selected items ",item);
+                            checkedFriends.add(item);
+                            Log.e("arrays",checkedFriends.get(i));
+                        }
+                    }
+                }
+
+                //databasede yeni deal yarat
+                createNewDeal(senderID,matchName,coin,choice,checkedFriends );
                 goMainScreen();
             }
         });
@@ -82,7 +112,8 @@ public class FriendActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckedTextView check = (CheckedTextView)view;
-                check.setChecked(!check.isChecked());
+                check.setChecked(check.isChecked());
+
             }
         });
 
@@ -90,10 +121,14 @@ public class FriendActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
 
         choice = b.getString("choice");
+        Log.e("Choice",choice);
         coin = b.getString("coin");
+        Log.e("Coin:",coin);
+        matchName = b.getString("matchname");
+        Log.e("MatchName",matchName);
+        senderID=sharedPreferences.getString("userIDKey",null);
+        Log.e("senderID",senderID);
 
-        //coinText.setText(coin);
-        //choiceText.setText(choice);
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         GraphRequestBatch batch = new GraphRequestBatch(
                 GraphRequest.newMyFriendsRequest(accessToken, new GraphRequest.GraphJSONArrayCallback() {
@@ -144,12 +179,28 @@ public class FriendActivity extends AppCompatActivity {
         parameters.putString("fields", "id,name,link,picture");
 
     }
-
+    private void createNewDeal(String senderID,String matchName,String coin,String choice,ArrayList<String> arrayList){
+        String key=mDatabase.child("Deals").push().getKey();
+        if(choice.equals("home")){
+            mDatabase.child("Deals").child(key).child("Home").child("user").setValue(senderID);
+        }else if(choice.equals("draw")){
+            mDatabase.child("Deals").child(key).child("Draw").child("user").setValue(senderID);
+        }else{
+            mDatabase.child("Deals").child(key).child("Away").child("user").setValue(senderID);
+        }
+        mDatabase.child("Deals").child(key).child("sender").setValue(senderID);
+        mDatabase.child("Deals").child(key).child("matchName").setValue(matchName);
+        mDatabase.child("Deals").child(key).child("coin").setValue(coin);
+        for(int i=0;i<arrayList.size();i++){
+            mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("true");
+        }
+    }
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NEW_TASK);
+
         startActivity(intent);
     }
 }

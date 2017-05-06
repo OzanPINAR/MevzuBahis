@@ -2,6 +2,7 @@ package ege.mevzubahis.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -53,11 +55,25 @@ public class LoginActivity extends AppCompatActivity {
   public static String picture;
   private DatabaseReference mDatabase;
   SharedPreferences sharedPreferences;
+  private VideoView myVideoView;
+  TextView textview5;
+  TextView textView6;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     FacebookSdk.sdkInitialize(getApplicationContext());
     setContentView(R.layout.activity_login);
+    myVideoView = (VideoView) findViewById(R.id.videoView);
+    Uri uri =Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.back);
+    myVideoView.setVideoURI(uri);
+    myVideoView.start();
+
+   myVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener(){
+     @Override
+     public void onPrepared(MediaPlayer mediaPlayer) {
+       mediaPlayer.setLooping(true);
+     }
+   });
     LoginButton = (LoginButton) findViewById(R.id.fb_login_button);
     callbackManager = CallbackManager.Factory.create();
     LoginButton.setReadPermissions(Arrays.asList("email", "public_profile","user_friends"));

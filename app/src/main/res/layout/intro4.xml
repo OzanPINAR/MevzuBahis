@@ -16,7 +16,7 @@
       android:textColor="@color/colorPrimaryText"
       android:paddingRight="32dp"
       android:textSize="28sp"
-      android:text="Ultimate Fun!"/>
+      android:text="Get Started, Now!"/>
 
   <LinearLayout
       android:layout_width="fill_parent"
@@ -31,8 +31,7 @@
         android:layout_gravity="center"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        android:src="@drawable/like"
-        />
+        android:src="@drawable/likee" />
   </LinearLayout>
   <TextView
       android:layout_width="wrap_content"
@@ -44,7 +43,7 @@
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
       android:textSize="16sp"
-      android:text="With MevzuBahis you bet against your friends, not with the machines!"/>
+      android:text="Challenge against your friends instead of machines!"/>
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="64dp" />
