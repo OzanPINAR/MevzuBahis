@@ -33,6 +33,7 @@ MevzuBahis
 
 ### Artwork
 * Irem Akbas
+* [Oliver](https://dribbble.com/olivers)
 
 ### Contributors on GitHub
 * [Contributors](https://github.com/SocialChallenging/MevzuBahis/graphs/contributors)
