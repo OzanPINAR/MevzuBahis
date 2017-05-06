@@ -134,14 +134,21 @@ public class HomeFragment extends Fragment {
       public void onDataChange(DataSnapshot dataSnapshot) {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             //buranın üstünde çalışıyorum
-          //Log.e("RECEIVER",child.child("receiver").child("Büşra Özdaş").getValue().toString());
+
           if(child.child("sender").getValue().toString().equals(senderID) /*|| child.child("receiver").child(senderName).getValue().toString().equals("true")*/) {
 
             String betsItem = String.valueOf(child.child("matchName").getValue());
             betsList.add(betsItem);
             arrayAdapter.notifyDataSetChanged();
           }
-
+          if(child.child("receiver").child(senderName).getValue() != null){
+            if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
+              String receiverItem = String.valueOf(child.child("matchName").getValue());
+              betsList.add(receiverItem);
+              arrayAdapter.notifyDataSetChanged();
+            }
+            Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
+          }
         }
 
       }
