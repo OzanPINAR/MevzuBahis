@@ -32,7 +32,8 @@ MevzuBahis
 * Ozan Pinar
 
 ### Artwork
-* Any credit to artists(music,images,...)
+* Irem Akbas
+* [Oliver](https://dribbble.com/olivers)
 
 ### Contributors on GitHub
 * [Contributors](https://github.com/SocialChallenging/MevzuBahis/graphs/contributors)
@@ -45,12 +46,12 @@ MevzuBahis
 * Internet and Network Access.
 
 ## License 
-* see [LICENSE](https://github.com/result/appname/blob/master/LICENSE.md) file
+* see [LICENSE](https://github.com/SocialChallenging/MevzuBahis/blob/master/LICENSE.md) file
 
 ## Version 
-* Version 1.0
+* Version 1.0.1
 
 ## How-to use this app
-* see [INSTRUCTIONS](https://github.com/result/appname/blob/master/INSTRUCTIONS.md) file
+* see the documentation.
 
 
