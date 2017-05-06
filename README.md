@@ -32,7 +32,7 @@ MevzuBahis
 * Ozan Pinar
 
 ### Artwork
-* Any credit to artists(music,images,...)
+* Irem Akbas
 
 ### Contributors on GitHub
 * [Contributors](https://github.com/SocialChallenging/MevzuBahis/graphs/contributors)
