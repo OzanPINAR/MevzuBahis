@@ -34,6 +34,7 @@ import org.w3c.dom.Text;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
@@ -61,6 +62,7 @@ public class FriendActivity extends AppCompatActivity {
         setContentView(R.layout.activity_friend);
         final ListView friendList;
         final ArrayList<String> friendList1 = new ArrayList<>();
+        final ArrayList<String> checkedFriends=new ArrayList<>();
         final ArrayAdapter arrayAdapter;
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -78,12 +80,14 @@ public class FriendActivity extends AppCompatActivity {
                         if (checkedItems.valueAt(i)) {
                             String item = friendList.getAdapter().getItem(checkedItems.keyAt(i)).toString();
                              Log.e("selected items ",item);
+                            checkedFriends.add(item);
+                            Log.e("arrays",checkedFriends.get(i));
                         }
                     }
                 }
 
                 //databasede yeni deal yarat
-                createNewDeal(senderID,matchName,coin,choice,"Büşra Özdaş" );
+                createNewDeal(senderID,matchName,coin,choice,checkedFriends );
                 goMainScreen();
             }
         });
@@ -175,19 +179,21 @@ public class FriendActivity extends AppCompatActivity {
         parameters.putString("fields", "id,name,link,picture");
 
     }
-    private void createNewDeal(String senderID,String matchName,String coin,String choice,String receiver){
+    private void createNewDeal(String senderID,String matchName,String coin,String choice,ArrayList<String> arrayList){
         String key=mDatabase.child("Deals").push().getKey();
-        if(choice=="home"){
+        if(choice.equals("home")){
             mDatabase.child("Deals").child(key).child("Home").child("user").setValue(senderID);
-        }else if(choice=="draw"){
+        }else if(choice.equals("draw")){
             mDatabase.child("Deals").child(key).child("Draw").child("user").setValue(senderID);
         }else{
             mDatabase.child("Deals").child(key).child("Away").child("user").setValue(senderID);
         }
         mDatabase.child("Deals").child(key).child("sender").setValue(senderID);
-        mDatabase.child("Deals").child(key).child("receiver").setValue(receiver);
         mDatabase.child("Deals").child(key).child("matchName").setValue(matchName);
         mDatabase.child("Deals").child(key).child("coin").setValue(coin);
+        for(int i=0;i<arrayList.size();i++){
+            mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("true");
+        }
     }
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);
