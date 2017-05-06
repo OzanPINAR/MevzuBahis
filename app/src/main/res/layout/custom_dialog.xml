@@ -37,6 +37,8 @@
             android:layout_height="wrap_content"
             android:inputType="number"
             android:hint="Coin amount"
+            android:drawableStart="@drawable/coins24"
+            android:drawableLeft="@drawable/coins24"
             />
     </android.support.design.widget.TextInputLayout>
 
