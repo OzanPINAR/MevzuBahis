@@ -135,49 +135,21 @@ public class HomeFragment extends Fragment {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             //buranın üstünde çalışıyorum
 
-          if(child.child("sender").getValue().toString().equals(senderID) /*|| child.child("receiver").child(senderName).getValue().toString().equals("true")*/) {
+          if(child.child("sender").getValue().toString().equals(senderID)) {
 
             String betsItem = String.valueOf(child.child("matchName").getValue());
             betsList.add(betsItem);
             arrayAdapter.notifyDataSetChanged();
           }
-          if(child.child("receiver").child(senderName).getValue() != null){
+        /*  if(child.child("receiver").child(senderName).getValue() != null){
             if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
               String receiverItem = String.valueOf(child.child("matchName").getValue());
               betsList.add(receiverItem);
               arrayAdapter.notifyDataSetChanged();
             }
             Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
-          }
+          }*/
         }
-
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-      }
-    });
-    dealsRef.addChildEventListener(new ChildEventListener() {
-      @Override
-      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        for(DataSnapshot child2 : dataSnapshot.getChildren()){
-         // Log.e("RECEIVER",child2.child("receiver").child(senderName).getValue(String.class));
-        }
-      }
-
-      @Override
-      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-      }
-
-      @Override
-      public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-      }
-
-      @Override
-      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
       }
 
