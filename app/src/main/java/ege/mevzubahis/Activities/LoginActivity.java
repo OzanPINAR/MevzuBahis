@@ -188,4 +188,11 @@ public class LoginActivity extends AppCompatActivity {
     super.onActivityResult(requestCode, resultCode, data);
     callbackManager.onActivityResult(requestCode, resultCode, data);
   }
+  @Override
+  public void onResume() {
+    super.onResume();  // Always call the superclass method first
+    myVideoView.start();
+    }
+
+
 }
