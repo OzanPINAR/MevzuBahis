@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
         return view;
       }
     };
-
+// deneme
     fragmentBetsListview.setAdapter(arrayAdapter);
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
