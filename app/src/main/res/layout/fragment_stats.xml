@@ -1,6 +1,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
 
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/lib/com.github.florent37.arclayout.ArcLayout"
     tools:context="ege.mevzubahis.Fragments.StatsFragment"
@@ -10,7 +11,7 @@
   <com.github.florent37.arclayout.ArcLayout
 
       android:layout_width="match_parent"
-      android:layout_height="200dp"
+      android:layout_height="300dp"
       app:arc_cropDirection="cropInside"
       app:arc_height="90dp"
       app:arc_padding="30dp"
@@ -35,8 +36,9 @@
         />
 
 
-  </com.github.florent37.arclayout.ArcLayout>
 
+
+  </com.github.florent37.arclayout.ArcLayout>
 
 
   <RelativeLayout
