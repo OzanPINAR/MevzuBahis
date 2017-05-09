@@ -40,7 +40,7 @@ MevzuBahis
 
 
 ### Third party libraries
-* see [LIBRARIES](https://github.com/result/appname/blob/master/LIBRARIES.md) files
+* see [LIBRARIES](https://github.com/SocialChallenging/MevzuBahis/blob/master/LIBRARIES.md) files
 
 ## Permissions
 * Internet and Network Access.
