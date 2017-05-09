@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -120,7 +123,7 @@ public class HomeFragment extends Fragment {
         return view;
       }
     };
-
+// deneme
     fragmentBetsListview.setAdapter(arrayAdapter);
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -135,20 +138,20 @@ public class HomeFragment extends Fragment {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             //buranın üstünde çalışıyorum
 
-          if(child.child("sender").getValue().toString().equals(senderID) /*|| child.child("receiver").child(senderName).getValue().toString().equals("true")*/) {
+          if(child.child("sender").getValue().toString().equals(senderID)) {
 
             String betsItem = String.valueOf(child.child("matchName").getValue());
             betsList.add(betsItem);
             arrayAdapter.notifyDataSetChanged();
           }
-          if(child.child("receiver").child(senderName).getValue() != null){
+        /*  if(child.child("receiver").child(senderName).getValue() != null){
             if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
               String receiverItem = String.valueOf(child.child("matchName").getValue());
               betsList.add(receiverItem);
               arrayAdapter.notifyDataSetChanged();
             }
             Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
-          }
+          }*/
         }
 
       }
@@ -158,32 +161,31 @@ public class HomeFragment extends Fragment {
 
       }
     });
-    dealsRef.addChildEventListener(new ChildEventListener() {
+    fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
-      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        for(DataSnapshot child2 : dataSnapshot.getChildren()){
-         // Log.e("RECEIVER",child2.child("receiver").child(senderName).getValue(String.class));
-        }
-      }
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final String betNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
+        reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+            //String duration = (String) map.get("duration").toString();
 
-      @Override
-      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            Bundle args =new Bundle();
+            args.putString("betNameInPosition",betNameInPosition);
 
-      }
+            FragmentManager myManager = getFragmentManager();
+            BetViewFragment betsDialog=new BetViewFragment();
+            betsDialog.setArguments(args);
+            betsDialog.show(myManager,"BetViewFragment");
 
-      @Override
-      public void onChildRemoved(DataSnapshot dataSnapshot) {
+          }
 
-      }
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
 
-      @Override
-      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
+          }
+        });
       }
     });
 

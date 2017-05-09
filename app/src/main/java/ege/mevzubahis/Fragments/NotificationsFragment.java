@@ -1,14 +1,34 @@
 package ege.mevzubahis.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import butterknife.ButterKnife;
 import ege.mevzubahis.R;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +47,9 @@ public class NotificationsFragment extends Fragment {
   // TODO: Rename and change types of parameters
   private String mParam1;
   private String mParam2;
+  SharedPreferences sharedPreferences;
+  String senderID;
+  String senderName;
 
   private OnFragmentInteractionListener mListener;
 
@@ -54,6 +77,9 @@ public class NotificationsFragment extends Fragment {
 
   @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    senderID=sharedPreferences.getString("userIDKey",null);
+    senderName=sharedPreferences.getString("nameKey",null);
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -62,7 +88,96 @@ public class NotificationsFragment extends Fragment {
 
   @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_notifications, container, false);
+    View rootView = inflater.inflate(R.layout.fragment_notifications, container, false);
+
+
+    final ListView fragmentNotifListview;
+    final ArrayList<String> NotifList = new ArrayList<>();
+    final ArrayAdapter arrayAdapter;
+
+    fragmentNotifListview = (ListView) rootView.findViewById(R.id.NotificationList);
+
+    arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, NotifList) {
+      @Override
+      public View getView(int position, View convertView, ViewGroup parent) {
+        View view = super.getView(position, convertView, parent);
+
+        TextView textView = (TextView) view.findViewById(android.R.id.text1);
+        textView.setTextColor(Color.BLACK);
+
+        return view;
+      }
+    };
+
+    fragmentNotifListview.setAdapter(arrayAdapter);
+
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference reference = database.getReference();
+    DatabaseReference dealsRef = database.getReference("Deals");
+
+    Query myQuery= reference.child("Deals");
+
+    myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+      @Override
+      public void onDataChange(DataSnapshot dataSnapshot) {
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+          //buranın üstünde çalışıyorum
+
+
+          if(child.child("receiver").child(senderName).getValue() != null){
+            if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
+              String receiverItem = String.valueOf(child.child("matchName").getValue());
+              NotifList.add(receiverItem);
+              arrayAdapter.notifyDataSetChanged();
+            }
+            Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
+          }
+        }
+
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+
+    dealsRef.addChildEventListener(new ChildEventListener() {
+      @Override
+      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        for(DataSnapshot child2 : dataSnapshot.getChildren()){
+          // Log.e("RECEIVER",child2.child("receiver").child(senderName).getValue(String.class));
+        }
+      }
+
+      @Override
+      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+      }
+
+      @Override
+      public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+      }
+
+      @Override
+      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+      }
+
+      @Override
+      public void onCancelled(DatabaseError databaseError) {
+
+      }
+    });
+
+    ButterKnife.bind(this, rootView);
+    return rootView;
+
+
+
+
+
   }
 
   // TODO: Rename method, update argument and hook method into UI event

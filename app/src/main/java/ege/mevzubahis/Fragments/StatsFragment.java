@@ -109,7 +109,7 @@ public class StatsFragment extends Fragment {
    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                      Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View view = inflater.inflate(R.layout.fragment_stats, container, false);
+     View view = inflater.inflate(R.layout.fragment_stats, container, false);
      final TextView winText = (TextView) view.findViewById(R.id.winText);
      final TextView lostText = (TextView) view.findViewById(R.id.lostText);
      final TextView ratioText = (TextView) view.findViewById(R.id.ratioText);

@@ -17,30 +17,24 @@ import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphRequestBatch;
 import com.facebook.GraphResponse;
-import com.facebook.HttpMethod;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
-
-import static android.support.constraint.R.id.parent;
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FriendActivity extends AppCompatActivity {
 
@@ -63,7 +57,7 @@ public class FriendActivity extends AppCompatActivity {
         final ListView friendList;
         final ArrayList<String> friendList1 = new ArrayList<>();
         final ArrayList<String> checkedFriends=new ArrayList<>();
-        final ArrayAdapter arrayAdapter;
+        final ArrayAdapter<String> arrayAdapter;
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -88,6 +82,8 @@ public class FriendActivity extends AppCompatActivity {
 
                 //databasede yeni deal yarat
                 createNewDeal(senderID,matchName,coin,choice,checkedFriends );
+                //notification gönder
+
                 goMainScreen();
             }
         });
@@ -179,6 +175,7 @@ public class FriendActivity extends AppCompatActivity {
         parameters.putString("fields", "id,name,link,picture");
 
     }
+
     private void createNewDeal(String senderID,String matchName,String coin,String choice,ArrayList<String> arrayList){
         String key=mDatabase.child("Deals").push().getKey();
         if(choice.equals("home")){
