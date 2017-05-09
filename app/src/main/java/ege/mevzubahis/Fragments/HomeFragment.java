@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -156,6 +159,33 @@ public class HomeFragment extends Fragment {
       @Override
       public void onCancelled(DatabaseError databaseError) {
 
+      }
+    });
+    fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final String betNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
+        reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+            //String duration = (String) map.get("duration").toString();
+
+            Bundle args =new Bundle();
+            args.putString("betNameInPosition",betNameInPosition);
+
+            FragmentManager myManager = getFragmentManager();
+            BetViewFragment betsDialog=new BetViewFragment();
+            betsDialog.setArguments(args);
+            betsDialog.show(myManager,"BetViewFragment");
+
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+        });
       }
     });
 
