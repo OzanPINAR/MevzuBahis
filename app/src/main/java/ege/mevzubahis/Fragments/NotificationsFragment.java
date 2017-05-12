@@ -6,11 +6,14 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import ege.mevzubahis.R;
@@ -168,6 +172,35 @@ public class NotificationsFragment extends Fragment {
       @Override
       public void onCancelled(DatabaseError databaseError) {
 
+      }
+    });
+
+
+    fragmentNotifListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final String betNameInPosition = fragmentNotifListview.getItemAtPosition(position).toString();
+        reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
+            //String duration = (String) map.get("duration").toString();
+
+            Bundle args =new Bundle();
+            args.putString("betNameInPosition",betNameInPosition);
+
+            FragmentManager myManager=getFragmentManager();
+            NotificationDialogFragment NotificationDialog=new NotificationDialogFragment();
+            NotificationDialog.setArguments(args);
+            NotificationDialog.show(myManager,"NotificationDialogFragment");
+
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+        });
       }
     });
 
