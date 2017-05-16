@@ -10,8 +10,8 @@
         android:layout_marginTop="39dp"
         android:text="Match"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        />
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
