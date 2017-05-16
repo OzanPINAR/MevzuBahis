@@ -1,0 +1,72 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ege.mevzubahis.Fragments.NotificationDialogFragment">
+
+    <TextView
+        android:id="@+id/matchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:text="Match"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:id="@+id/dueText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/matchText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:text="Due to:"
+        />
+
+
+        <TextView
+            android:id="@+id/CoinAmount1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/coins24"
+            android:drawableStart="@drawable/coins24"
+            android:text="Coin Amount"
+
+            android:layout_marginTop="49dp"
+            android:layout_below="@+id/dueText"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+
+    <Button
+        android:id="@+id/AcceptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:layout_marginTop="80dp"
+        android:text="Accept"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
+        android:layout_alignBaseline="@+id/RejectButton"
+        android:layout_alignBottom="@+id/RejectButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/RejectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:background="@android:color/holo_red_light"
+        android:text="Reject"
+        android:textColor="@android:color/white"
+        android:layout_alignTop="@+id/CoinAmount1"
+        android:layout_toRightOf="@+id/AcceptButton"
+        android:layout_toEndOf="@+id/AcceptButton" />
+
+</RelativeLayout>
