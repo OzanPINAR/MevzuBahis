@@ -56,6 +56,7 @@ public class NotificationsFragment extends Fragment {
   SharedPreferences sharedPreferences;
   String senderID;
   String senderName;
+  String userName;
   String dealKey;
   String matchName;
   String coin;
@@ -91,6 +92,7 @@ public class NotificationsFragment extends Fragment {
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     senderID=sharedPreferences.getString("userIDKey",null);
     senderName=sharedPreferences.getString("nameKey",null);
+    userName=sharedPreferences.getString("nameKey",null);
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -135,7 +137,7 @@ public class NotificationsFragment extends Fragment {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
 
           if(child.child("receiver").child(senderName).getValue() != null){
-            if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
+            if(child.child("receiver").child(senderName).getValue().toString().equals("onhold")){
               String receiverItem = String.valueOf(child.child("matchName").getValue());
               dealKey = child.getKey();
 
@@ -197,6 +199,7 @@ public class NotificationsFragment extends Fragment {
                 sd.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                   @Override
                   public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    dealsRef.child(dealKeyInPosition).child("receiver").child(userName).setValue("accepted");
                     sweetAlertDialog.setTitleText("Challenge Accepted !");
                     sweetAlertDialog.setContentText("You have accepted a challenge.");
                     sweetAlertDialog.setConfirmText("OK");
@@ -208,6 +211,7 @@ public class NotificationsFragment extends Fragment {
                 sd.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                   @Override
                   public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    dealsRef.child(dealKeyInPosition).child("receiver").child(userName).setValue("rejected");
                     sweetAlertDialog.setTitleText("Challenge Rejected !");
                     sweetAlertDialog.setContentText("You have rejected a challenge.");
                     sweetAlertDialog.setConfirmText("OK");

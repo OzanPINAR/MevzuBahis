@@ -66,6 +66,7 @@ public class HomeFragment extends Fragment {
   String matchName;
   String coin;
   String duration;
+  String userName;
 
 
 
@@ -100,6 +101,7 @@ public class HomeFragment extends Fragment {
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     senderID=sharedPreferences.getString("userIDKey",null);
     senderName=sharedPreferences.getString("nameKey",null);
+    userName=sharedPreferences.getString("nameKey",null);
 
 
     if (getArguments() != null) {
@@ -146,9 +148,9 @@ public class HomeFragment extends Fragment {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-            //buranın üstünde çalışıyorum
+          //buranın üstünde çalışıyorum
 
-          if(child.child("sender").getValue().toString().equals(senderName)) {
+          if (child.child("sender").getValue().toString().equals(userName)) {
             dealKey = child.getKey();
 
             String betsItem = String.valueOf(child.child("matchName").getValue());
@@ -156,9 +158,17 @@ public class HomeFragment extends Fragment {
             dealKeyLis.add(dealKey);
             arrayAdapter.notifyDataSetChanged();
           }
+          if (child.child("receiver").child(userName).getValue() != null) {
+            if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
+              dealKey = child.getKey();
 
+              String betsItem = String.valueOf(child.child("matchName").getValue());
+              betsList.add(betsItem);
+              dealKeyLis.add(dealKey);
+              arrayAdapter.notifyDataSetChanged();
+            }
+          }
         }
-
       }
 
       @Override
