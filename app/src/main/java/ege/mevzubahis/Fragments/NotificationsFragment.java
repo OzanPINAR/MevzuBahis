@@ -146,34 +146,7 @@ public class NotificationsFragment extends Fragment {
       }
     });
 
-    dealsRef.addChildEventListener(new ChildEventListener() {
-      @Override
-      public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-        for(DataSnapshot child2 : dataSnapshot.getChildren()){
-          // Log.e("RECEIVER",child2.child("receiver").child(senderName).getValue(String.class));
-        }
-      }
 
-      @Override
-      public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-      }
-
-      @Override
-      public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-      }
-
-      @Override
-      public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-      }
-    });
 
 
     fragmentNotifListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {

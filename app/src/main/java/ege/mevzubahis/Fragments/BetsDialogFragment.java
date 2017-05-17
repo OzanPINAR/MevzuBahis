@@ -51,6 +51,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
   @BindView(R.id.button2) Button sendButton;
 
   String matchName;
+  String durationValue;
   private DatabaseReference mDatabase;
   private RadioGroup radioGroup;
   private String choice;
@@ -101,7 +102,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
               Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
               String value = (String) map.get("matchname").toString();
               tv_match.setText(value);
-              String durationValue = (String) map.get("duration").toString();
+              durationValue = (String) map.get("duration").toString();
               textView2.setText("Due to: " + durationValue);
 
               //coinValue = (Long) dataSnapshot.child("coin").getValue();
@@ -183,6 +184,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
       intent.putExtra("coin", coinAmount);
       intent.putExtra("choice", choice);
       intent.putExtra("matchname",matchName);
+      intent.putExtra("duration",durationValue);
       startActivity(intent);
     }
 

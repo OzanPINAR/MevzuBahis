@@ -108,6 +108,7 @@ public class HomeFragment extends Fragment {
     View rootView = inflater.inflate(R.layout.fragment_home, container, false);
     final ListView fragmentBetsListview;
     final ArrayList<String> betsList = new ArrayList<>();
+    final ArrayList<String> dealKeyLis= new ArrayList<>();
     final ArrayAdapter arrayAdapter;
 
     fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
@@ -138,10 +139,11 @@ public class HomeFragment extends Fragment {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             //buranın üstünde çalışıyorum
 
-          if(child.child("sender").getValue().toString().equals(senderID)) {
-
+          if(child.child("sender").getValue().toString().equals(senderName)) {
+            String dealKey = child.getKey();
             String betsItem = String.valueOf(child.child("matchName").getValue());
             betsList.add(betsItem);
+            dealKeyLis.add(dealKey);
             arrayAdapter.notifyDataSetChanged();
           }
         /*  if(child.child("receiver").child(senderName).getValue() != null){
@@ -165,6 +167,7 @@ public class HomeFragment extends Fragment {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final String betNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
+        final String dealKeyInPosition = dealKeyLis.get(position);
         reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
@@ -173,6 +176,10 @@ public class HomeFragment extends Fragment {
 
             Bundle args =new Bundle();
             args.putString("betNameInPosition",betNameInPosition);
+            args.putString("dealKeyInPosition",dealKeyInPosition);
+
+            Log.e("betNameInPos",betNameInPosition);
+            Log.e("dealKeyInPos",dealKeyInPosition);
 
             FragmentManager myManager = getFragmentManager();
             BetViewFragment betsDialog=new BetViewFragment();

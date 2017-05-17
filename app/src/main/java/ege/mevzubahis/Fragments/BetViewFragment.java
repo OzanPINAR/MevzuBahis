@@ -40,9 +40,11 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
     @BindView(R.id.tv_match)
     TextView tv_match;
     @BindView(R.id.textView2) TextView textView2;
+    @BindView(R.id.bet_sender) TextView betSender;
 
 
     String matchName;
+    String dealKey;
     private DatabaseReference mDatabase;
     private String choice;
     private TextInputLayout coinWrapper;
@@ -57,9 +59,12 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.bet_view_dialog, null);
         matchName = getArguments().getString("betNameInPosition");
+        dealKey = getArguments().getString("dealKeyInPosition");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userID=sharedPreferences.getString("userIDKey",null);
+
+
 
 
         mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -80,17 +85,18 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
             }
         });
 
-        mDatabase.child("Bets")
-                .child("Sports")
-                .child(matchName)
+        mDatabase.child("Deals")
+                .child(dealKey)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            String value = (String) map.get("matchname").toString();
-                            tv_match.setText(value);
+                            String match = (String) map.get("matchName").toString();
+                            tv_match.setText(match);
                             String durationValue = (String) map.get("duration").toString();
                             textView2.setText("Due to: " + durationValue);
+                            String sender = (String) map.get("sender").toString();
+                            betSender.setText(""+sender);
 
                             //coinValue = (Long) dataSnapshot.child("coin").getValue();
                         } catch (Throwable t) {
