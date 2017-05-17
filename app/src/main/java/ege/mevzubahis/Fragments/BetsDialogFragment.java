@@ -105,6 +105,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
               durationValue = (String) map.get("duration").toString();
               textView2.setText("Due to: " + durationValue);
 
+
               //coinValue = (Long) dataSnapshot.child("coin").getValue();
             } catch (Throwable t) {
               Log.e("trycatchFAIL", "b");

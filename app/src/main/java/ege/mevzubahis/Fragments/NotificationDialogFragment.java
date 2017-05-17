@@ -49,9 +49,10 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     @BindView(R.id.RejectButton) Button RejectButton;
 
     String matchName;
+    String dealKey;
     private DatabaseReference mDatabase;
     private String choice;
-    private TextInputLayout coinWrapper;
+
     public Long coinValue;
 
     SharedPreferences sharedPreferences;
@@ -100,8 +101,9 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_notification_dialog, null);
         matchName = getArguments().getString("betNameInPosition");
+        dealKey = getArguments().getString("dealKeyInPosition");
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        coinWrapper = (TextInputLayout) view.findViewById(R.id.textInputLayout);
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userID=sharedPreferences.getString("userIDKey",null);
 
@@ -124,19 +126,19 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
             }
         });
 
-        mDatabase.child("Bets")
-                .child("Sports")
-                .child(matchName)
+        mDatabase.child("Deals")
+                .child(dealKey)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                            String value = (String) map.get("matchname").toString();
+                            String value = (String) map.get("matchName").toString();
                             matchText.setText(value);
                             String durationValue = (String) map.get("duration").toString();
                             dueText.setText("Due to: " + durationValue);
+                            String coin = (String) map.get("coin").toString();
+                            CoinAmount1.setText(""+coin);
 
-                            //coinValue = (Long) dataSnapshot.child("coin").getValue();
                         } catch (Throwable t) {
                             Log.e("trycatchFAIL", "b");
                         }

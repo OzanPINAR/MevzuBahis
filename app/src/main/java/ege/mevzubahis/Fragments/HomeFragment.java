@@ -35,6 +35,7 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.Activities.FriendActivity;
 import ege.mevzubahis.R;
 
@@ -61,6 +62,12 @@ public class HomeFragment extends Fragment {
   SharedPreferences sharedPreferences;
   String senderID;
   String senderName;
+  String dealKey;
+  String matchName;
+  String coin;
+  String duration;
+
+
 
   private OnFragmentInteractionListener mListener;
 
@@ -93,6 +100,8 @@ public class HomeFragment extends Fragment {
     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     senderID=sharedPreferences.getString("userIDKey",null);
     senderName=sharedPreferences.getString("nameKey",null);
+
+
     if (getArguments() != null) {
       mParam1 = getArguments().getString(ARG_PARAM1);
       mParam2 = getArguments().getString(ARG_PARAM2);
@@ -140,20 +149,17 @@ public class HomeFragment extends Fragment {
             //buranın üstünde çalışıyorum
 
           if(child.child("sender").getValue().toString().equals(senderName)) {
-            String dealKey = child.getKey();
+            dealKey = child.getKey();
+            senderName=child.child("sender").getValue().toString();
+            matchName=child.child("matchName").getValue().toString();
+            coin=child.child("coin").getValue().toString();
+            duration=child.child("duration").getValue().toString();
             String betsItem = String.valueOf(child.child("matchName").getValue());
             betsList.add(betsItem);
             dealKeyLis.add(dealKey);
             arrayAdapter.notifyDataSetChanged();
           }
-        /*  if(child.child("receiver").child(senderName).getValue() != null){
-            if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
-              String receiverItem = String.valueOf(child.child("matchName").getValue());
-              betsList.add(receiverItem);
-              arrayAdapter.notifyDataSetChanged();
-            }
-            Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
-          }*/
+
         }
 
       }
@@ -181,10 +187,16 @@ public class HomeFragment extends Fragment {
             Log.e("betNameInPos",betNameInPosition);
             Log.e("dealKeyInPos",dealKeyInPosition);
 
-            FragmentManager myManager = getFragmentManager();
+            /*FragmentManager myManager = getFragmentManager();
             BetViewFragment betsDialog=new BetViewFragment();
             betsDialog.setArguments(args);
-            betsDialog.show(myManager,"BetViewFragment");
+            betsDialog.show(myManager,"BetViewFragment");*/
+            SweetAlertDialog sd=  new SweetAlertDialog(getContext());
+            sd.setTitleText(""+matchName);
+            sd.setContentText("Due to:"+duration+"\n\nSent by:"+senderName+"\n\nCoin:"+coin);
+            sd.setCancelable(true);
+            sd.setCanceledOnTouchOutside(true);
+            sd.show();
 
           }
 

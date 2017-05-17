@@ -97,6 +97,7 @@ public class NotificationsFragment extends Fragment {
 
     final ListView fragmentNotifListview;
     final ArrayList<String> NotifList = new ArrayList<>();
+    final ArrayList<String> dealKeyLis= new ArrayList<>();
     final ArrayAdapter arrayAdapter;
 
     fragmentNotifListview = (ListView) rootView.findViewById(R.id.NotificationList);
@@ -117,7 +118,7 @@ public class NotificationsFragment extends Fragment {
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference reference = database.getReference();
-    DatabaseReference dealsRef = database.getReference("Deals");
+
 
     Query myQuery= reference.child("Deals");
 
@@ -131,7 +132,9 @@ public class NotificationsFragment extends Fragment {
           if(child.child("receiver").child(senderName).getValue() != null){
             if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
               String receiverItem = String.valueOf(child.child("matchName").getValue());
+              String dealKey = child.getKey();
               NotifList.add(receiverItem);
+              dealKeyLis.add(dealKey);
               arrayAdapter.notifyDataSetChanged();
             }
             Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
@@ -153,6 +156,7 @@ public class NotificationsFragment extends Fragment {
       @Override
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final String betNameInPosition = fragmentNotifListview.getItemAtPosition(position).toString();
+        final String dealKeyInPosition = dealKeyLis.get(position);
         reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
@@ -161,6 +165,7 @@ public class NotificationsFragment extends Fragment {
 
             Bundle args =new Bundle();
             args.putString("betNameInPosition",betNameInPosition);
+            args.putString("dealKeyInPosition",dealKeyInPosition);
 
             FragmentManager myManager=getFragmentManager();
             NotificationDialogFragment NotificationDialog=new NotificationDialogFragment();
