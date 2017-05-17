@@ -41,6 +41,7 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
     TextView tv_match;
     @BindView(R.id.textView2) TextView textView2;
     @BindView(R.id.bet_sender) TextView betSender;
+    @BindView(R.id.coin_amount) TextView coinAmount;
 
 
     String matchName;
@@ -67,7 +68,7 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
 
 
 
-        mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+       /* mDatabase.child("Users").child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -83,7 +84,7 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
                 //Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
 
             }
-        });
+        }); */
 
         mDatabase.child("Deals")
                 .child(dealKey)
@@ -97,6 +98,8 @@ public class BetViewFragment extends DialogFragment implements View.OnClickListe
                             textView2.setText("Due to: " + durationValue);
                             String sender = (String) map.get("sender").toString();
                             betSender.setText(""+sender);
+                            String coin = (String) map.get("coin").toString();
+                            coinAmount.setText(""+coin);
 
                             //coinValue = (Long) dataSnapshot.child("coin").getValue();
                         } catch (Throwable t) {

@@ -192,7 +192,7 @@ public class FriendActivity extends AppCompatActivity {
         mDatabase.child("Deals").child(key).child("coin").setValue(coin);
         mDatabase.child("Deals").child(key).child("duration").setValue(duration);
         for(int i=0;i<arrayList.size();i++){
-            mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("true");
+            mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");
         }
     }
     private void goMainScreen() {
