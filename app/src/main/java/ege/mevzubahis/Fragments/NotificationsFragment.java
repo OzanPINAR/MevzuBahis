@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.R;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -54,6 +56,11 @@ public class NotificationsFragment extends Fragment {
   SharedPreferences sharedPreferences;
   String senderID;
   String senderName;
+  String dealKey;
+  String matchName;
+  String coin;
+  String duration;
+
 
   private OnFragmentInteractionListener mListener;
 
@@ -118,7 +125,7 @@ public class NotificationsFragment extends Fragment {
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference reference = database.getReference();
-
+    final DatabaseReference dealsRef = database.getReference("Deals");
 
     Query myQuery= reference.child("Deals");
 
@@ -126,18 +133,17 @@ public class NotificationsFragment extends Fragment {
       @Override
       public void onDataChange(DataSnapshot dataSnapshot) {
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-          //buranın üstünde çalışıyorum
-
 
           if(child.child("receiver").child(senderName).getValue() != null){
             if(child.child("receiver").child(senderName).getValue().toString().equals("true")){
               String receiverItem = String.valueOf(child.child("matchName").getValue());
-              String dealKey = child.getKey();
+              dealKey = child.getKey();
+
               NotifList.add(receiverItem);
               dealKeyLis.add(dealKey);
               arrayAdapter.notifyDataSetChanged();
             }
-            Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
+           // Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
           }
         }
 
@@ -167,11 +173,57 @@ public class NotificationsFragment extends Fragment {
             args.putString("betNameInPosition",betNameInPosition);
             args.putString("dealKeyInPosition",dealKeyInPosition);
 
-            FragmentManager myManager=getFragmentManager();
+           /* FragmentManager myManager=getFragmentManager();
             NotificationDialogFragment NotificationDialog=new NotificationDialogFragment();
             NotificationDialog.setArguments(args);
-            NotificationDialog.show(myManager,"NotificationDialogFragment");
+            NotificationDialog.show(myManager,"NotificationDialogFragment");*/
+            dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+              @Override
+              public void onDataChange(DataSnapshot dataSnapshot) {
+                senderName=dataSnapshot.child(dealKeyInPosition).child("sender").getValue().toString();
+                matchName=dataSnapshot.child(dealKeyInPosition).child("matchName").getValue().toString();
+                coin=dataSnapshot.child(dealKeyInPosition).child("coin").getValue().toString();
+                duration=dataSnapshot.child(dealKeyInPosition).child("duration").getValue().toString();
+                Log.e("matchname: ",matchName);
+                Log.e("sender",senderName);
 
+                SweetAlertDialog sd=  new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE);
+                sd.setTitleText(""+matchName);
+                sd.setContentText("Due to:"+duration+"\n\nSent by:"+senderName+"\n\nCoin:"+coin);
+                sd.setCancelable(true);
+                sd.setCanceledOnTouchOutside(true);
+                sd.setConfirmText("Accept!");
+                sd.setCancelText("Reject!");
+                sd.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                  @Override
+                  public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.setTitleText("Challenge Accepted !");
+                    sweetAlertDialog.setContentText("You have accepted a challenge.");
+                    sweetAlertDialog.setConfirmText("OK");
+                    sweetAlertDialog.setConfirmClickListener(null);
+                    sweetAlertDialog.showCancelButton(false);
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                  }
+                });
+                sd.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                  @Override
+                  public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.setTitleText("Challenge Rejected !");
+                    sweetAlertDialog.setContentText("You have rejected a challenge.");
+                    sweetAlertDialog.setConfirmText("OK");
+                    sweetAlertDialog.setConfirmClickListener(null);
+                    sweetAlertDialog.showCancelButton(false);
+                    sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
+                  }
+                });
+                sd.show();
+              }
+
+              @Override
+              public void onCancelled(DatabaseError databaseError) {
+
+              }
+            });
           }
 
           @Override

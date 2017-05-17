@@ -138,7 +138,7 @@ public class HomeFragment extends Fragment {
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference reference = database.getReference();
-    DatabaseReference dealsRef = database.getReference("Deals");
+    final DatabaseReference dealsRef = database.getReference("Deals");
 
     Query myQuery= reference.child("Deals");
 
@@ -150,10 +150,7 @@ public class HomeFragment extends Fragment {
 
           if(child.child("sender").getValue().toString().equals(senderName)) {
             dealKey = child.getKey();
-            senderName=child.child("sender").getValue().toString();
-            matchName=child.child("matchName").getValue().toString();
-            coin=child.child("coin").getValue().toString();
-            duration=child.child("duration").getValue().toString();
+
             String betsItem = String.valueOf(child.child("matchName").getValue());
             betsList.add(betsItem);
             dealKeyLis.add(dealKey);
@@ -191,12 +188,30 @@ public class HomeFragment extends Fragment {
             BetViewFragment betsDialog=new BetViewFragment();
             betsDialog.setArguments(args);
             betsDialog.show(myManager,"BetViewFragment");*/
-            SweetAlertDialog sd=  new SweetAlertDialog(getContext());
-            sd.setTitleText(""+matchName);
-            sd.setContentText("Due to:"+duration+"\n\nSent by:"+senderName+"\n\nCoin:"+coin);
-            sd.setCancelable(true);
-            sd.setCanceledOnTouchOutside(true);
-            sd.show();
+            dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+              @Override
+              public void onDataChange(DataSnapshot dataSnapshot) {
+                senderName=dataSnapshot.child(dealKeyInPosition).child("sender").getValue().toString();
+                matchName=dataSnapshot.child(dealKeyInPosition).child("matchName").getValue().toString();
+                coin=dataSnapshot.child(dealKeyInPosition).child("coin").getValue().toString();
+                duration=dataSnapshot.child(dealKeyInPosition).child("duration").getValue().toString();
+                Log.e("matchname: ",matchName);
+                Log.e("sender",senderName);
+
+                SweetAlertDialog sd=  new SweetAlertDialog(getContext());
+                sd.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                sd.setTitleText(""+matchName);
+                sd.setContentText("Due to:"+duration+"\n\nSent by:"+senderName+"\n\nCoin:"+coin);
+                sd.setCancelable(true);
+                sd.setCanceledOnTouchOutside(true);
+                sd.show();
+              }
+
+              @Override
+              public void onCancelled(DatabaseError databaseError) {
+
+              }
+            });
 
           }
 
