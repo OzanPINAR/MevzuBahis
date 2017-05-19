@@ -117,81 +117,13 @@ public class HomeFragment extends Fragment {
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
 
-        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, betsList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                textView.setTextColor(Color.BLACK);
-
-                return view;
-            }
-        };
-
-        fragmentBetsListview.setAdapter(arrayAdapter);
-
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference reference = database.getReference();
-        final DatabaseReference dealsRef = database.getReference("Deals");
-
-        Query myQuery = reference.child("Deals");
-
-
-        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    //buranın üstünde çalışıyorum
-
-                    if (child.child("sender").getValue().toString().equals(userName)) {
-                        dealKey = child.getKey();
-
-                        String betsItem = String.valueOf(child.child("matchName").getValue());
-                        betsList.add(betsItem);
-                        dealKeyLis.add(dealKey);
-                        arrayAdapter.notifyDataSetChanged();
-                    }
-
-                    try {
-
-                        if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
-                            dealKey = child.getKey();
-
-                            String betsItem = String.valueOf(child.child("matchName").getValue());
-                            betsList.add(betsItem);
-                            dealKeyLis.add(dealKey);
-                            arrayAdapter.notifyDataSetChanged();
-                        }
-
-                    }
-                    catch (NullPointerException e){
-                        Context context = getApplicationContext();
-                        CharSequence text = "null";
-                        int duration = Toast.LENGTH_SHORT;
-
-                        Toast toast = Toast.makeText(context, text, duration);
-                        toast.show();
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
                 final ArrayAdapter arrayAdapter;
 
-            arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, betsList) {
-                @Override
+                arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, betsList) {
+                    @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
 
@@ -201,12 +133,68 @@ public class HomeFragment extends Fragment {
                         return view;
                     }
                 };
+                arrayAdapter.clear();
                 arrayAdapter.notifyDataSetChanged();
+                fragmentBetsListview.setAdapter(arrayAdapter);
 
+                final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final DatabaseReference reference = database.getReference();
+                final DatabaseReference dealsRef = database.getReference("Deals");
+
+                Query myQuery = reference.child("Deals");
+
+
+                myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            //buranın üstünde çalışıyorum
+
+                            if (child.child("sender").getValue().toString().equals(userName)) {
+                                dealKey = child.getKey();
+
+                                String betsItem = String.valueOf(child.child("matchName").getValue());
+                                betsList.add(betsItem);
+                                dealKeyLis.add(dealKey);
+                                arrayAdapter.notifyDataSetChanged();
+                            }
+
+                            try {
+
+                                if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
+                                    dealKey = child.getKey();
+
+                                    String betsItem = String.valueOf(child.child("matchName").getValue());
+                                    betsList.add(betsItem);
+                                    dealKeyLis.add(dealKey);
+                                    arrayAdapter.notifyDataSetChanged();
+                                }
+
+                            }
+                            catch (NullPointerException e){
+                                Context context = getApplicationContext();
+                                CharSequence text = "null";
+                                int duration = Toast.LENGTH_SHORT;
+
+                                Toast toast = Toast.makeText(context, text, duration);
+                                toast.show();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 swipeLayout.setRefreshing(false);
             }
         });
-
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference reference = database.getReference();
+        final DatabaseReference dealsRef = database.getReference("Deals");
         fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
