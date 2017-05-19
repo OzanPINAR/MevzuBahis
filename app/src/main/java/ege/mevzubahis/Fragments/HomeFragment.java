@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,6 +114,7 @@ public class HomeFragment extends Fragment {
         final ArrayList<String> dealKeyLis = new ArrayList<>();
         final ArrayAdapter arrayAdapter;
 
+        final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
 
         arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, betsList) {
@@ -126,7 +128,7 @@ public class HomeFragment extends Fragment {
                 return view;
             }
         };
-// deneme
+
         fragmentBetsListview.setAdapter(arrayAdapter);
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -134,6 +136,7 @@ public class HomeFragment extends Fragment {
         final DatabaseReference dealsRef = database.getReference("Deals");
 
         Query myQuery = reference.child("Deals");
+
 
         myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -180,6 +183,30 @@ public class HomeFragment extends Fragment {
 
             }
         });
+
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                final ArrayAdapter arrayAdapter;
+
+            arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, betsList) {
+                @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View view = super.getView(position, convertView, parent);
+
+                        TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                        textView.setTextColor(Color.BLACK);
+
+                        return view;
+                    }
+                };
+                arrayAdapter.notifyDataSetChanged();
+
+                swipeLayout.setRefreshing(false);
+            }
+        });
+
         fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

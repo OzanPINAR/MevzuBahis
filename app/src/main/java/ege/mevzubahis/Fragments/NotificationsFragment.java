@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,6 +111,7 @@ public class NotificationsFragment extends Fragment {
     final ArrayAdapter arrayAdapter;
 
     fragmentNotifListview = (ListView) rootView.findViewById(R.id.NotificationList);
+    final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
 
     arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, NotifList) {
       @Override
@@ -145,7 +147,7 @@ public class NotificationsFragment extends Fragment {
               dealKeyLis.add(dealKey);
               arrayAdapter.notifyDataSetChanged();
             }
-           // Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
+
           }
         }
 
@@ -157,6 +159,57 @@ public class NotificationsFragment extends Fragment {
       }
     });
 
+    swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+      @Override
+      public void onRefresh() {
+        arrayAdapter.clear();
+        arrayAdapter.notifyDataSetChanged();
+        /*final ArrayAdapter arrayAdapter;
+
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, NotifList) {
+          @Override
+          public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setTextColor(Color.BLACK);
+
+            return view;
+          }
+        };*/
+
+      Query myQuery= reference.child("Deals");
+        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+              if(child.child("receiver").child(senderName).getValue() != null){
+                if(child.child("receiver").child(senderName).getValue().toString().equals("onhold")){
+                  String receiverItem = String.valueOf(child.child("matchName").getValue());
+                  dealKey = child.getKey();
+
+                  NotifList.add(receiverItem);
+                  dealKeyLis.add(dealKey);
+                  arrayAdapter.notifyDataSetChanged();
+                }
+
+              }
+            }
+
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+        });
+
+        arrayAdapter.notifyDataSetChanged();
+
+        swipeLayout.setRefreshing(false);
+      }
+    });
 
 
 
