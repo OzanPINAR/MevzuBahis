@@ -181,15 +181,16 @@ public class FriendActivity extends AppCompatActivity {
     private void createNewDeal(String senderName,String matchName,String coin,String choice,ArrayList<String> arrayList,String duration){
         String key=mDatabase.child("Deals").push().getKey();
         if(choice.equals("home")){
-            mDatabase.child("Deals").child(key).child("Home").child("user").setValue(senderName);
+            mDatabase.child("Deals").child(key).child("Home").child(senderName).setValue("true");
         }else if(choice.equals("draw")){
-            mDatabase.child("Deals").child(key).child("Draw").child("user").setValue(senderName);
+            mDatabase.child("Deals").child(key).child("Draw").child(senderName).setValue("true");
         }else{
-            mDatabase.child("Deals").child(key).child("Away").child("user").setValue(senderName);
+            mDatabase.child("Deals").child(key).child("Away").child(senderName).setValue("true");
         }
         mDatabase.child("Deals").child(key).child("sender").setValue(senderName);
         mDatabase.child("Deals").child(key).child("matchName").setValue(matchName);
         mDatabase.child("Deals").child(key).child("coin").setValue(coin);
+        mDatabase.child("Deals").child(key).child("totalCoin").setValue(coin);
         mDatabase.child("Deals").child(key).child("duration").setValue(duration);
         for(int i=0;i<arrayList.size();i++){
             mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");

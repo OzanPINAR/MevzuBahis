@@ -147,11 +147,11 @@ public class NotificationsFragment extends Fragment {
             for (DataSnapshot child : dataSnapshot.getChildren()) {
 
               if(child.child("receiver").child(senderName).getValue() != null){
-                Log.e("swipe","emrullah");
+
                 if(child.child("receiver").child(senderName).getValue().toString().equals("onhold")){
                   String receiverItem = String.valueOf(child.child("matchName").getValue());
                   dealKey = child.getKey();
-                  Log.e("swipe","hasan");
+
                   NotifList.add(receiverItem);
                   dealKeyLis.add(dealKey);
                   arrayAdapter.notifyDataSetChanged();

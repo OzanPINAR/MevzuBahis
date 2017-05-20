@@ -31,6 +31,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.R;
+import ege.mevzubahis.Utils.BetResult;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -95,7 +96,8 @@ public class HomeFragment extends Fragment {
         senderName = sharedPreferences.getString("nameKey", null);
         userName = sharedPreferences.getString("nameKey", null);
 
-
+       /* BetResult betResult= new BetResult();
+        betResult.test();*/
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -149,7 +151,7 @@ public class HomeFragment extends Fragment {
 
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            //buranın üstünde çalışıyorum
+
 
                             if (child.child("sender").getValue().toString().equals(userName)) {
                                 dealKey = child.getKey();
@@ -257,6 +259,105 @@ public class HomeFragment extends Fragment {
 
 
     }
+
+   /* public void test(){
+        DatabaseReference reference;
+        SharedPreferences sharedPreferences;
+        String userName1;
+        String dealKey;
+
+        Log.e("OZiiZİİZİZİ","deneme");
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        reference = FirebaseDatabase.getInstance().getReference();
+        userName=sharedPreferences.getString("nameKey", null);
+
+
+        Query betQuery = reference.child("Bets").child("Sports");
+        final Query dealQuery = reference.child("Deals");
+
+        final ArrayList<String> dealKeyList = new ArrayList<>();
+        final ArrayAdapter arrayAdapter;
+
+
+        betQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot child : dataSnapshot.getChildren()){
+                    if(!child.child("result").getValue().equals("undecided")){
+                        if(child.child("result").getValue().equals("Home")){
+                            dealQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+                                        Log.e("test","1");
+                                        if (child.child("sender").getValue().toString().equals(userName)) {
+                                            if(child.child("Home").child(userName).getValue().equals("true")){
+                                                Log.e("HOME WINS","GZ");
+                                                SweetAlertDialog sd=  new SweetAlertDialog(getContext());
+                                                sd.setTitleText("CONGRATULATIONS!");
+                                                sd.setContentText("You have won a challenge!");
+                                                sd.show();
+                                            }
+                                            Log.e("test","2");
+
+                                        }
+
+                                        try {
+
+                                            if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
+
+                                                Log.e("test","3");
+
+
+                                            }
+
+                                        }
+                                        catch (NullPointerException e){
+                                            Context context = getApplicationContext();
+                                            CharSequence text = "null";
+                                            int duration = Toast.LENGTH_SHORT;
+
+                                            Toast toast = Toast.makeText(context, text, duration);
+                                            toast.show();
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, dealKeyList) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+
+                TextView textView = (TextView) view.findViewById(android.R.id.text1);
+                textView.setTextColor(Color.BLACK);
+
+                return view;
+            }
+        };
+
+
+
+
+
+    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

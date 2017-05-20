@@ -63,6 +63,8 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     String dealKey;
     private DatabaseReference mDatabase;
     private String choice;
+    String coin;
+    String totalCoin;
 
     public Long coinValue;
 
@@ -148,7 +150,8 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
                             matchText.setText(value);
                             String durationValue = (String) map.get("duration").toString();
                             dueText.setText("Due to: " + durationValue);
-                            String coin = (String) map.get("coin").toString();
+                            coin = (String) map.get("coin").toString();
+                            totalCoin = map.get("totalCoin").toString();
                             CoinAmount1.setText(""+coin);
 
                         } catch (Throwable t) {
@@ -192,9 +195,11 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
         mDatabase = FirebaseDatabase.getInstance().getReference();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         userName=sharedPreferences.getString("nameKey",null);
+        int totCoin = Integer.valueOf(coin)+ Integer.valueOf(totalCoin);
 
         mDatabase.child("Deals").child(dealKey).child("receiver").child(userName).setValue("accepted");
-        mDatabase.child("Deals").child(dealKey).child(choice).child("user").setValue(userName);
+        mDatabase.child("Deals").child(dealKey).child("totalCoin").setValue(totCoin);
+        mDatabase.child("Deals").child(dealKey).child(choice).child(userName).setValue("true");
 
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
