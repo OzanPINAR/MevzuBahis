@@ -40,6 +40,43 @@
             android:layout_alignParentStart="true" />
 
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CoinAmount1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/radioGroup"
+        android:weightSum="1"
+        >
+
+
+
+        <RadioButton
+            android:id="@+id/radioButtonHome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="Home Wins"
+            />
+        <RadioButton
+            android:id="@+id/radioButtonDraw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Draw"
+            android:layout_weight="0.34"
+            />
+        <RadioButton
+            android:id="@+id/radioButtonAway"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Away Wins"
+            />
+
+
+
+    </RadioGroup>
+
 
     <Button
         android:id="@+id/AcceptButton"
@@ -47,7 +84,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorAccent"
         android:padding="10dp"
-        android:layout_marginTop="80dp"
+        android:layout_below="@+id/radioGroup"
+        android:layout_marginTop="150dp"
         android:text="Accept"
         android:textColor="@android:color/white"
         android:layout_marginLeft="52dp"
@@ -61,7 +99,8 @@
         android:id="@+id/RejectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_below="@+id/radioGroup"
+        android:layout_marginTop="150dp"
         android:background="@android:color/holo_red_light"
         android:text="Reject"
         android:textColor="@android:color/white"

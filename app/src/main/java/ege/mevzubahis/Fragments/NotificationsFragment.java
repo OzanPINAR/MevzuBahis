@@ -191,10 +191,10 @@ public class NotificationsFragment extends Fragment {
             args.putString("betNameInPosition",betNameInPosition);
             args.putString("dealKeyInPosition",dealKeyInPosition);
 
-           /* FragmentManager myManager=getFragmentManager();
+            FragmentManager myManager=getFragmentManager();
             NotificationDialogFragment NotificationDialog=new NotificationDialogFragment();
             NotificationDialog.setArguments(args);
-            NotificationDialog.show(myManager,"NotificationDialogFragment");*/
+            NotificationDialog.show(myManager,"NotificationDialogFragment");
             dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
               public void onDataChange(DataSnapshot dataSnapshot) {
@@ -205,7 +205,7 @@ public class NotificationsFragment extends Fragment {
                 Log.e("matchname: ",matchName);
                 Log.e("sender",senderName);
 
-                SweetAlertDialog sd=  new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE);
+               /* SweetAlertDialog sd=  new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE);
                 sd.setTitleText(""+matchName);
                 sd.setContentText("Due to:"+duration+"\n\nSent by:"+senderName+"\n\nCoin:"+coin);
                 sd.setCancelable(true);
@@ -240,7 +240,7 @@ public class NotificationsFragment extends Fragment {
                     sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                   }
                 });
-                sd.show();
+                sd.show();*/
               }
 
               @Override
