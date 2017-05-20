@@ -130,8 +130,8 @@ public class NotificationsFragment extends Fragment {
           }
         };
         //arrayAdapter.clear();
-        ////NotifList.clear();
-       // dealKeyLis.clear();
+        NotifList.clear();
+        dealKeyLis.clear();
        // arrayAdapter.notifyDataSetChanged();
         fragmentNotifListview.setAdapter(arrayAdapter);
 
