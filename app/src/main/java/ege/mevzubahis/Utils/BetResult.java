@@ -19,6 +19,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.Activities.AboutActivity;
@@ -76,8 +77,10 @@ public class BetResult {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for (DataSnapshot child2 : dataSnapshot.getChildren()) {
                                         if (child2.child("sender").getValue().toString().equals(userName)) {
-                                            if(child2.child("Home").child(userName).getValue()!=null&&child2.child("Home").child(userName).getValue().equals("true")){
+                                            if(child2.child("Home").child(userName).getValue()!=null && child2.child("Home").child(userName).getValue().equals("true")){
                                                 if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+
+                                                    reference.child("Deals").child(child2.getKey()).child("Home").child(userName).setValue("paid");
                                                     Log.e("matchName", child2.child("matchName").getValue().toString());
                                                     Log.e("HOME WINS", "sender");
                                                     Log.e("usercoin", userCoin);
@@ -94,6 +97,8 @@ public class BetResult {
                                             if (child2.child("receiver").child(userName).getValue().toString().equals("accepted")) {
                                                 if(child2.child("Home").child(userName).getValue().equals("true")){
                                                     if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+
+                                                        reference.child("Deals").child(child2.getKey()).child("Home").child(userName).setValue("paid");
                                                         Log.e("Home wins", "receiver");
                                                         Log.e("usercoin", userCoin);
                                                         Long childCount = child2.child("Home").getChildrenCount();
@@ -129,6 +134,8 @@ public class BetResult {
                                         if (child2.child("sender").getValue().toString().equals(userName)) {
                                             if(child2.child("Draw").child(userName).getValue()!=null &&child2.child("Draw").child(userName).getValue().equals("true")){
                                                 if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+
+                                                    reference.child("Deals").child(child2.getKey()).child("Draw").child(userName).setValue("paid");
                                                     Log.e("DRAW WINS", "sender");
                                                     Log.e("usercoin", userCoin);
                                                     Long childCount = child2.child("Draw").getChildrenCount();
@@ -145,6 +152,8 @@ public class BetResult {
                                             if (child2.child("receiver").child(userName).getValue().toString().equals("accepted")) {
                                                 if(child2.child("Draw").child(userName).getValue().equals("true")){
                                                     if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+
+                                                        reference.child("Deals").child(child2.getKey()).child("Draw").child(userName).setValue("paid");
                                                         Log.e("Draw wins", "receiver");
                                                         Log.e("usercoin", userCoin);
                                                         Long childCount = child2.child("Draw").getChildrenCount();
@@ -182,6 +191,8 @@ public class BetResult {
                                         if (child2.child("sender").getValue().toString().equals(userName)) {
                                             if(child2.child("Away").child(userName).getValue()!=null&&child2.child("Away").child(userName).getValue().equals("true")){
                                                 if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+
+                                                    reference.child("Deals").child(child2.getKey()).child("Away").child(userName).setValue("paid");
                                                     Log.e("AWAY WINS", "sender");
                                                     Log.e("usercoin", userCoin);
                                                     Long childCount = child2.child("Away").getChildrenCount();
@@ -198,6 +209,8 @@ public class BetResult {
                                             if (child2.child("receiver").child(userName).getValue().toString().equals("accepted")) {
                                                 if(child2.child("Away").child(userName).getValue().equals("true")){
                                                     if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+
+                                                        reference.child("Deals").child(child2.getKey()).child("Away").child(userName).setValue("paid");
                                                         Log.e("Away wins", "receiver");
                                                         Log.e("usercoin", userCoin);
                                                         Long childCount = child2.child("Away").getChildrenCount();
@@ -236,6 +249,7 @@ public class BetResult {
 
             }
         });
+
     }
     public void loseCond(String coin){
         DatabaseReference referans;
@@ -249,6 +263,7 @@ public class BetResult {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 userCoin= dataSnapshot.child("Users").child(userID).child("coin").getValue().toString();
                 Log.e("userCoinLOSE",userCoin);
+
             }
 
             @Override
@@ -263,5 +278,10 @@ public class BetResult {
             Log.e("losevalue", value.toString());
             reference.child("Users").child(userID).child("coin").setValue(value);
         }*/
+    }
+    public void paid(boolean checkFlag, String child){
+        if(checkFlag){
+            //reference
+        }
     }
 }
