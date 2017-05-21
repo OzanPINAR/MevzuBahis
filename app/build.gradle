@@ -53,6 +53,8 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:10.2.0'
     compile 'com.google.firebase:firebase-database:10.2.0'
     compile 'com.google.firebase:firebase-storage:10.2.0'
+    compile 'com.google.firebase:firebase-crash:10.2.1'
+    compile 'com.google.firebase:firebase-core:10.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.github.florent37:arclayout:1.0.2'
 
