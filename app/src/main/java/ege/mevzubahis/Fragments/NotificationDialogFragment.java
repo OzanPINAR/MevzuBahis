@@ -1,6 +1,7 @@
 package ege.mevzubahis.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,14 +9,18 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +32,9 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import ege.mevzubahis.Activities.FriendActivity;
+import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
@@ -45,6 +53,9 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     @BindView(R.id.matchText) TextView matchText;
     @BindView(R.id.dueText) TextView dueText;
     @BindView(R.id.CoinAmount1) TextView CoinAmount1;
+    @BindView(R.id.radioButtonHome) RadioButton radioButtonHome;
+    @BindView(R.id.radioButtonDraw) RadioButton radioButtonDraw;
+    @BindView(R.id.radioButtonAway) RadioButton radioButtonAway;
     @BindView(R.id.AcceptButton) Button AcceptButton;
     @BindView(R.id.RejectButton) Button RejectButton;
 
@@ -52,11 +63,14 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     String dealKey;
     private DatabaseReference mDatabase;
     private String choice;
+    String coin;
+    String totalCoin;
 
     public Long coinValue;
 
     SharedPreferences sharedPreferences;
     private String userID;
+    private String userName;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -136,7 +150,8 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
                             matchText.setText(value);
                             String durationValue = (String) map.get("duration").toString();
                             dueText.setText("Due to: " + durationValue);
-                            String coin = (String) map.get("coin").toString();
+                            coin = (String) map.get("coin").toString();
+                            totalCoin = map.get("totalCoin").toString();
                             CoinAmount1.setText(""+coin);
 
                         } catch (Throwable t) {
@@ -153,11 +168,56 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @OnClick({ R.id.radioButtonHome, R.id.radioButtonDraw, R.id.radioButtonAway})
+    public void onClick(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch (view.getId()) {
+            case R.id.radioButtonHome:
+                choice = "Home";
+                Toast.makeText(getApplicationContext(), "choice: Home", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.radioButtonDraw:
+                choice = "Draw";
+                Toast.makeText(getApplicationContext(), "choice: Draw", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.radioButtonAway:
+                choice = "Away";
+                Toast.makeText(getApplicationContext(), "choice: Away", Toast.LENGTH_SHORT).show();
+                break;
+
         }
+    }
+
+    //ACCEPT button
+    @OnClick(R.id.AcceptButton)
+    public void onClickAcceptButton(View view){
+        dealKey = getArguments().getString("dealKeyInPosition");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userName=sharedPreferences.getString("nameKey",null);
+        int totCoin = Integer.valueOf(coin)+ Integer.valueOf(totalCoin);
+
+        mDatabase.child("Deals").child(dealKey).child("receiver").child(userName).setValue("accepted");
+        mDatabase.child("Deals").child(dealKey).child("totalCoin").setValue(totCoin);
+        mDatabase.child("Deals").child(dealKey).child(choice).child(userName).setValue("true");
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+
+        }
+
+    //REJECT button
+    @OnClick(R.id.RejectButton)
+    public void onClickRejectButton(View view){
+        dealKey = getArguments().getString("dealKeyInPosition");
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        userName=sharedPreferences.getString("nameKey",null);
+
+        mDatabase.child("Deals").child(dealKey).child("receiver").child(userName).setValue("rejected");
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+
     }
 
 
@@ -180,10 +240,5 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }

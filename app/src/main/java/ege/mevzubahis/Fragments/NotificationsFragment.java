@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -110,54 +111,69 @@ public class NotificationsFragment extends Fragment {
     final ArrayAdapter arrayAdapter;
 
     fragmentNotifListview = (ListView) rootView.findViewById(R.id.NotificationList);
+    final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
 
-    arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, NotifList) {
+
+    swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
       @Override
-      public View getView(int position, View convertView, ViewGroup parent) {
-        View view = super.getView(position, convertView, parent);
+      public void onRefresh() {
+        final ArrayAdapter arrayAdapter;
+        arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, NotifList) {
+          @Override
+          public View getView(int position, View convertView, ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
 
-        TextView textView = (TextView) view.findViewById(android.R.id.text1);
-        textView.setTextColor(Color.BLACK);
+            TextView textView = (TextView) view.findViewById(android.R.id.text1);
+            textView.setTextColor(Color.BLACK);
 
-        return view;
+            return view;
+          }
+        };
+        //arrayAdapter.clear();
+        NotifList.clear();
+        dealKeyLis.clear();
+       // arrayAdapter.notifyDataSetChanged();
+        fragmentNotifListview.setAdapter(arrayAdapter);
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference reference = database.getReference();
+        final DatabaseReference dealsRef = database.getReference("Deals");
+
+        Query myQuery= reference.child("Deals");
+
+        myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(DataSnapshot dataSnapshot) {
+            for (DataSnapshot child : dataSnapshot.getChildren()) {
+
+              if(child.child("receiver").child(senderName).getValue() != null){
+
+                if(child.child("receiver").child(senderName).getValue().toString().equals("onhold")){
+                  String receiverItem = String.valueOf(child.child("matchName").getValue());
+                  dealKey = child.getKey();
+
+                  NotifList.add(receiverItem);
+                  dealKeyLis.add(dealKey);
+                  arrayAdapter.notifyDataSetChanged();
+                }
+
+              }
+            }
+
+          }
+
+          @Override
+          public void onCancelled(DatabaseError databaseError) {
+
+          }
+        });
+
+        swipeLayout.setRefreshing(false);
       }
-    };
-
-    fragmentNotifListview.setAdapter(arrayAdapter);
-
+    });
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference reference = database.getReference();
     final DatabaseReference dealsRef = database.getReference("Deals");
-
-    Query myQuery= reference.child("Deals");
-
-    myQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-      @Override
-      public void onDataChange(DataSnapshot dataSnapshot) {
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-          if(child.child("receiver").child(senderName).getValue() != null){
-            if(child.child("receiver").child(senderName).getValue().toString().equals("onhold")){
-              String receiverItem = String.valueOf(child.child("matchName").getValue());
-              dealKey = child.getKey();
-
-              NotifList.add(receiverItem);
-              dealKeyLis.add(dealKey);
-              arrayAdapter.notifyDataSetChanged();
-            }
-           // Log.e("RECEIVER",child.child("receiver").child(senderName).getValue().toString());
-          }
-        }
-
-      }
-
-      @Override
-      public void onCancelled(DatabaseError databaseError) {
-
-      }
-    });
-
-
 
 
     fragmentNotifListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -175,10 +191,10 @@ public class NotificationsFragment extends Fragment {
             args.putString("betNameInPosition",betNameInPosition);
             args.putString("dealKeyInPosition",dealKeyInPosition);
 
-           /* FragmentManager myManager=getFragmentManager();
+            FragmentManager myManager=getFragmentManager();
             NotificationDialogFragment NotificationDialog=new NotificationDialogFragment();
             NotificationDialog.setArguments(args);
-            NotificationDialog.show(myManager,"NotificationDialogFragment");*/
+            NotificationDialog.show(myManager,"NotificationDialogFragment");
             dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
               public void onDataChange(DataSnapshot dataSnapshot) {
@@ -189,7 +205,7 @@ public class NotificationsFragment extends Fragment {
                 Log.e("matchname: ",matchName);
                 Log.e("sender",senderName);
 
-                SweetAlertDialog sd=  new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE);
+               /* SweetAlertDialog sd=  new SweetAlertDialog(getContext(),SweetAlertDialog.WARNING_TYPE);
                 sd.setTitleText(""+matchName);
                 sd.setContentText("Due to:"+duration+"\n\nSent by:"+senderName+"\n\nCoin:"+coin);
                 sd.setCancelable(true);
@@ -202,6 +218,8 @@ public class NotificationsFragment extends Fragment {
                     dealsRef.child(dealKeyInPosition).child("receiver").child(userName).setValue("accepted");
                     sweetAlertDialog.setTitleText("Challenge Accepted !");
                     sweetAlertDialog.setContentText("You have accepted a challenge.");
+                    NotifList.remove(betNameInPosition);
+                    dealKeyLis.remove(dealKeyInPosition);
                     sweetAlertDialog.setConfirmText("OK");
                     sweetAlertDialog.setConfirmClickListener(null);
                     sweetAlertDialog.showCancelButton(false);
@@ -214,13 +232,15 @@ public class NotificationsFragment extends Fragment {
                     dealsRef.child(dealKeyInPosition).child("receiver").child(userName).setValue("rejected");
                     sweetAlertDialog.setTitleText("Challenge Rejected !");
                     sweetAlertDialog.setContentText("You have rejected a challenge.");
+                    NotifList.remove(betNameInPosition);
+                    dealKeyLis.remove(dealKeyInPosition);
                     sweetAlertDialog.setConfirmText("OK");
                     sweetAlertDialog.setConfirmClickListener(null);
                     sweetAlertDialog.showCancelButton(false);
                     sweetAlertDialog.changeAlertType(SweetAlertDialog.ERROR_TYPE);
                   }
                 });
-                sd.show();
+                sd.show();*/
               }
 
               @Override

@@ -28,6 +28,8 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.Activities.AboutActivity;
 import ege.mevzubahis.Activities.BetsActivity;
 import ege.mevzubahis.Activities.DefaultIntro;
@@ -38,6 +40,7 @@ import ege.mevzubahis.Fragments.NotificationsFragment;
 import ege.mevzubahis.Fragments.SettingsFragment;
 import ege.mevzubahis.Fragments.StatsFragment;
 import ege.mevzubahis.Managers.Config;
+import ege.mevzubahis.Utils.BetResult;
 import ege.mevzubahis.Utils.CircleTransform;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
   private boolean shouldLoadHomeFragOnBackPress = true;
   private Handler mHandler;
+
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -152,6 +156,11 @@ public class MainActivity extends AppCompatActivity {
     if (AccessToken.getCurrentAccessToken() == null) {
       goLoginScreen();
     }
+
+    BetResult betResult = new BetResult();
+    betResult.winCond();
+
+
   }
 
   private void goLoginScreen() {
