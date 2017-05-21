@@ -39,20 +39,18 @@ public class BetResult {
     String userID;
     String userCoin;
     String dealKey;
+    boolean checkFlag=false;
 
-    public void test(){
+    public void winCond(){
         Log.e("OZiiZİİZİZİ","deneme");
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         reference = FirebaseDatabase.getInstance().getReference();
         userName=sharedPreferences.getString("nameKey", null);
         userID=sharedPreferences.getString("userIDKey",null);
 
-
         Query betQuery = reference.child("Bets").child("Sports");
         final Query dealQuery = reference.child("Deals");
-
         final ArrayList<String> dealKeyList = new ArrayList<>();
-
 
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -66,56 +64,48 @@ public class BetResult {
             }
         });
 
-
-
        betQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-
+                for(final DataSnapshot child : dataSnapshot.getChildren()){
                     if(!child.child("result").getValue().equals("undecided")){
                         if(child.child("result").getValue().equals("Home")){
+                            Log.e("matchname",child.child("matchname").getValue().toString());
                             dealQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                                        Log.e("test","1");
-                                        if (child.child("sender").getValue().toString().equals(userName)) {
-                                            if(child.child("Home").child(userName).getValue().equals("true")){
-                                                Log.e("HOME WINS","sender");
-                                                Log.e("usercoin",userCoin);
-                                                Long childCount=child.child("Home").getChildrenCount();
-                                                Long totalCoin=(Long) child.child("totalCoin").getValue();
-                                                Long winCoin= (Long.valueOf(userCoin)+(totalCoin/childCount));
-                                                userCoin=winCoin.toString();
-                                                Log.e("wincoin",winCoin.toString());
-                                                reference.child("Users").child(userID).child("coin").setValue(winCoin);
-                                            }
-                                            Log.e("test","2");
-
-                                        }
-
-                                        try {
-
-                                            if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
-                                                if(child.child("Home").child(userName).getValue().equals("true")){
-                                                    Log.e("Home wins","receiver");
-                                                    Log.e("usercoin",userCoin);
-                                                    Long childCount=child.child("Home").getChildrenCount();
-                                                    Log.e("childcount",childCount.toString());
-                                                    Long totalCoin=(Long) child.child("totalCoin").getValue();
-                                                    Long winCoin= (Long.valueOf(userCoin)+(totalCoin/childCount));
-                                                    userCoin=winCoin.toString();
-                                                    Log.e("wincoin",winCoin.toString());
+                                    for (DataSnapshot child2 : dataSnapshot.getChildren()) {
+                                        if (child2.child("sender").getValue().toString().equals(userName)) {
+                                            if(child2.child("Home").child(userName).getValue()!=null&&child2.child("Home").child(userName).getValue().equals("true")){
+                                                if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+                                                    Log.e("matchName", child2.child("matchName").getValue().toString());
+                                                    Log.e("HOME WINS", "sender");
+                                                    Log.e("usercoin", userCoin);
+                                                    Long childCount = child2.child("Home").getChildrenCount();
+                                                    String totalCoin = (String) child2.child("totalCoin").getValue();
+                                                    Long winCoin = (Long.valueOf(userCoin) + (Long.valueOf(totalCoin) / childCount));
+                                                    userCoin = winCoin.toString();
+                                                    Log.e("wincoin", winCoin.toString());
                                                     reference.child("Users").child(userID).child("coin").setValue(winCoin);
-
                                                 }
-                                                Log.e("test","3");
-
-
                                             }
-
+                                        }
+                                        try {
+                                            if (child2.child("receiver").child(userName).getValue().toString().equals("accepted")) {
+                                                if(child2.child("Home").child(userName).getValue().equals("true")){
+                                                    if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+                                                        Log.e("Home wins", "receiver");
+                                                        Log.e("usercoin", userCoin);
+                                                        Long childCount = child2.child("Home").getChildrenCount();
+                                                        Log.e("childcount", childCount.toString());
+                                                        Long totalCoin = (Long) child2.child("totalCoin").getValue();
+                                                        Long winCoin = (Long.valueOf(userCoin) + (totalCoin / childCount));
+                                                        userCoin = winCoin.toString();
+                                                        Log.e("wincoin", winCoin.toString());
+                                                        reference.child("Users").child(userID).child("coin").setValue(winCoin);
+                                                    }
+                                                }
+                                            }
                                         }
                                         catch (NullPointerException e){
                                             Context context = getApplicationContext();
@@ -125,53 +115,46 @@ public class BetResult {
                                             Toast toast = Toast.makeText(context, text, duration);
                                             toast.show();
                                         }
-
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
                         }else if(child.child("result").getValue().equals("Draw")){
                             dealQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                                        Log.e("test","1");
-                                        if (child.child("sender").getValue().toString().equals(userName)) {
-                                            if(child.child("Draw").child(userName).getValue().equals("true")){
-                                                Log.e("DRAW WINS","sender");
-                                                Log.e("usercoin",userCoin);
-                                                Long childCount=child.child("Draw").getChildrenCount();
-                                                Long totalCoin=(Long) child.child("totalCoin").getValue();
-                                                Long winCoin= (Long.valueOf(userCoin)+(totalCoin/childCount));
-                                                userCoin=winCoin.toString();
-                                                Log.e("wincoin",winCoin.toString());
-                                                reference.child("Users").child(userID).child("coin").setValue(winCoin);
-                                            }
-                                            Log.e("test","2");
-
-                                        }
-
-                                        try {
-
-                                            if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
-                                                if(child.child("Draw").child(userName).getValue().equals("true")){
-                                                    Log.e("Draw wins","receiver");
-                                                    Log.e("usercoin",userCoin);
-                                                    Long childCount=child.child("Draw").getChildrenCount();
-                                                    Long totalCoin=(Long) child.child("totalCoin").getValue();
-                                                    Long winCoin= (Long.valueOf(userCoin)+(totalCoin/childCount));
-                                                    userCoin=winCoin.toString();
-                                                    Log.e("wincoin",winCoin.toString());
+                                    for (DataSnapshot child2 : dataSnapshot.getChildren()) {
+                                        if (child2.child("sender").getValue().toString().equals(userName)) {
+                                            if(child2.child("Draw").child(userName).getValue()!=null &&child2.child("Draw").child(userName).getValue().equals("true")){
+                                                if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+                                                    Log.e("DRAW WINS", "sender");
+                                                    Log.e("usercoin", userCoin);
+                                                    Long childCount = child2.child("Draw").getChildrenCount();
+                                                    String totalCoin = child2.child("totalCoin").getValue().toString();
+                                                    Long totalCoin2 = Long.valueOf(totalCoin);
+                                                    Long winCoin = (Long.valueOf(userCoin) + (totalCoin2 / childCount));
+                                                    userCoin = winCoin.toString();
+                                                    Log.e("wincoin", winCoin.toString());
                                                     reference.child("Users").child(userID).child("coin").setValue(winCoin);
                                                 }
-                                                Log.e("test","3");
-
-
+                                            }
+                                        }
+                                        try {
+                                            if (child2.child("receiver").child(userName).getValue().toString().equals("accepted")) {
+                                                if(child2.child("Draw").child(userName).getValue().equals("true")){
+                                                    if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+                                                        Log.e("Draw wins", "receiver");
+                                                        Log.e("usercoin", userCoin);
+                                                        Long childCount = child2.child("Draw").getChildrenCount();
+                                                        Long totalCoin = (Long) child2.child("totalCoin").getValue();
+                                                        Long winCoin = (Long.valueOf(userCoin) + (totalCoin / childCount));
+                                                        userCoin = winCoin.toString();
+                                                        Log.e("wincoin", winCoin.toString());
+                                                        reference.child("Users").child(userID).child("coin").setValue(winCoin);
+                                                    }
+                                                }
                                             }
 
                                         }
@@ -183,7 +166,6 @@ public class BetResult {
                                             Toast toast = Toast.makeText(context, text, duration);
                                             toast.show();
                                         }
-
                                     }
                                 }
 
@@ -196,43 +178,37 @@ public class BetResult {
                             dealQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                                        Log.e("test","1");
-                                        if (child.child("sender").getValue().toString().equals(userName)) {
-                                            if(child.child("Away").child(userName).getValue().equals("true")){
-                                                Log.e("AWAY WINS","sender");
-                                                Log.e("usercoin",userCoin);
-                                                Long childCount=child.child("Away").getChildrenCount();
-                                                Long totalCoin=(Long) child.child("totalCoin").getValue();
-                                                Long winCoin= (Long.valueOf(userCoin)+(totalCoin/childCount));
-                                                userCoin=winCoin.toString();
-                                                Log.e("wincoin",winCoin.toString());
-                                                reference.child("Users").child(userID).child("coin").setValue(winCoin);
-
-                                            }
-                                            Log.e("test","2");
-
-                                        }
-
-                                        try {
-
-                                            if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
-                                                if(child.child("Away").child(userName).getValue().equals("true")){
-                                                    Log.e("Away wins","receiver");
-                                                    Log.e("usercoin",userCoin);
-                                                    Long childCount=child.child("Away").getChildrenCount();
-                                                    Long totalCoin=(Long) child.child("totalCoin").getValue();
-                                                    Long winCoin= (Long.valueOf(userCoin)+(totalCoin/childCount));
-                                                    userCoin=winCoin.toString();
-                                                    Log.e("wincoin",winCoin.toString());
+                                    for (DataSnapshot child2 : dataSnapshot.getChildren()) {
+                                        if (child2.child("sender").getValue().toString().equals(userName)) {
+                                            if(child2.child("Away").child(userName).getValue()!=null&&child2.child("Away").child(userName).getValue().equals("true")){
+                                                if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+                                                    Log.e("AWAY WINS", "sender");
+                                                    Log.e("usercoin", userCoin);
+                                                    Long childCount = child2.child("Away").getChildrenCount();
+                                                    String totalCoin = child2.child("totalCoin").getValue().toString();
+                                                    Long totalCoin2 = Long.valueOf(totalCoin);
+                                                    Long winCoin = (Long.valueOf(userCoin) + (totalCoin2 / childCount));
+                                                    userCoin = winCoin.toString();
+                                                    Log.e("wincoin", winCoin.toString());
                                                     reference.child("Users").child(userID).child("coin").setValue(winCoin);
                                                 }
-                                                Log.e("test","3");
-
-
                                             }
-
+                                        }
+                                        try {
+                                            if (child2.child("receiver").child(userName).getValue().toString().equals("accepted")) {
+                                                if(child2.child("Away").child(userName).getValue().equals("true")){
+                                                    if(child.child("matchname").getValue().equals(child2.child("matchName").getValue().toString())) {
+                                                        Log.e("Away wins", "receiver");
+                                                        Log.e("usercoin", userCoin);
+                                                        Long childCount = child2.child("Away").getChildrenCount();
+                                                        Long totalCoin = (Long) child2.child("totalCoin").getValue();
+                                                        Long winCoin = (Long.valueOf(userCoin) + (totalCoin / childCount));
+                                                        userCoin = winCoin.toString();
+                                                        Log.e("wincoin", winCoin.toString());
+                                                        reference.child("Users").child(userID).child("coin").setValue(winCoin);
+                                                    }
+                                                }
+                                            }
                                         }
                                         catch (NullPointerException e){
                                             Context context = getApplicationContext();
@@ -242,7 +218,6 @@ public class BetResult {
                                             Toast toast = Toast.makeText(context, text, duration);
                                             toast.show();
                                         }
-
                                     }
                                 }
 
@@ -261,11 +236,32 @@ public class BetResult {
 
             }
         });
+    }
+    public void loseCond(String coin){
+        DatabaseReference referans;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        referans = FirebaseDatabase.getInstance().getReference();
+        userName=sharedPreferences.getString("nameKey", null);
+        userID=sharedPreferences.getString("userIDKey",null);
+        Log.e("kontrol","amac");
+        referans.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                userCoin= dataSnapshot.child("Users").child(userID).child("coin").getValue().toString();
+                Log.e("userCoinLOSE",userCoin);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-
-
-
-
+            }
+        });
+        /*Log.e("userCOINCHECK",userCoin);
+        Log.e("coinCHECK",coin);*/
+       /* if(Long.valueOf(userCoin)!=null && Long.valueOf(coin)!=null) {
+            Long value = (Long.valueOf(userCoin) - Long.valueOf(coin));
+            Log.e("losevalue", value.toString());
+            reference.child("Users").child(userID).child("coin").setValue(value);
+        }*/
     }
 }

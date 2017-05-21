@@ -35,6 +35,7 @@ import java.util.Map;
 
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
+import ege.mevzubahis.Utils.BetResult;
 
 public class FriendActivity extends AppCompatActivity {
 
@@ -120,7 +121,7 @@ public class FriendActivity extends AppCompatActivity {
         choice = b.getString("choice");
         Log.e("Choice",choice);
         coin = b.getString("coin");
-        Log.e("Coin:",coin);
+        Log.e("Coin:",coin.toString());
         matchName = b.getString("matchname");
         Log.e("MatchName",matchName);
         senderName=sharedPreferences.getString("nameKey",null);
@@ -195,6 +196,8 @@ public class FriendActivity extends AppCompatActivity {
         for(int i=0;i<arrayList.size();i++){
             mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");
         }
+        BetResult betResult= new BetResult();
+        betResult.loseCond(coin);
     }
     private void goMainScreen() {
         Intent intent = new Intent(this, MainActivity.class);

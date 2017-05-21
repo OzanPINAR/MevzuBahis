@@ -127,15 +127,15 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
     switch (view.getId()) {
       case R.id.radioButton4:
         choice = "home";
-        Toast.makeText(getApplicationContext(), "choice: Home", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "choice: Home", Toast.LENGTH_SHORT).show();
         break;
       case R.id.radioButton5:
         choice = "draw";
-        Toast.makeText(getApplicationContext(), "choice: Draw", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "choice: Draw", Toast.LENGTH_SHORT).show();
         break;
       case R.id.radioButton6:
         choice = "away";
-        Toast.makeText(getApplicationContext(), "choice: Away", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "choice: Away", Toast.LENGTH_SHORT).show();
         break;
 
     }

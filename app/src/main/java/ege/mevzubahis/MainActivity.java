@@ -158,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     BetResult betResult = new BetResult();
-    betResult.test();
+    betResult.winCond();
 
 
   }

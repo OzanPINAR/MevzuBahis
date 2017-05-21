@@ -87,7 +87,7 @@ public class BetsActivity extends AppCompatActivity {
   public static class SportFragment extends Fragment {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-    @BindView(R.id.spinner) Spinner spinner;
+    //@BindView(R.id.spinner) Spinner spinner;
 
     public SportFragment() {
     }
