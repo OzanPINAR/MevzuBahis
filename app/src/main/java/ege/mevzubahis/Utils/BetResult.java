@@ -39,6 +39,7 @@ public class BetResult {
     String userName;
     String userID;
     String userCoin;
+    String ucoin;
     String dealKey;
     boolean checkFlag=false;
 
@@ -251,18 +252,24 @@ public class BetResult {
         });
 
     }
-    public void loseCond(String coin){
-        DatabaseReference referans;
+    public void loseCond(final String Coin){
+
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        referans = FirebaseDatabase.getInstance().getReference();
+        reference = FirebaseDatabase.getInstance().getReference();
         userName=sharedPreferences.getString("nameKey", null);
         userID=sharedPreferences.getString("userIDKey",null);
         Log.e("kontrol","amac");
-        referans.addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                userCoin= dataSnapshot.child("Users").child(userID).child("coin").getValue().toString();
-                Log.e("userCoinLOSE",userCoin);
+                ucoin= dataSnapshot.child("Users").child(userID).child("coin").getValue().toString();
+                Log.e("userCoinLOSE",ucoin);
+                if(Long.valueOf(ucoin)!=null && Long.valueOf(Coin)!=null) {
+                    Long value = (Long.valueOf(ucoin) - Long.valueOf(Coin));
+                    Log.e("losevalue", value.toString());
+                    reference.child("Users").child(userID).child("coin").setValue(value);
+                }
 
             }
 
@@ -271,13 +278,8 @@ public class BetResult {
 
             }
         });
-        /*Log.e("userCOINCHECK",userCoin);
-        Log.e("coinCHECK",coin);*/
-       /* if(Long.valueOf(userCoin)!=null && Long.valueOf(coin)!=null) {
-            Long value = (Long.valueOf(userCoin) - Long.valueOf(coin));
-            Log.e("losevalue", value.toString());
-            reference.child("Users").child(userID).child("coin").setValue(value);
-        }*/
+
+
     }
     public void paid(boolean checkFlag, String child){
         if(checkFlag){

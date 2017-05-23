@@ -36,6 +36,7 @@ import butterknife.OnClick;
 import ege.mevzubahis.Activities.FriendActivity;
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
+import ege.mevzubahis.Utils.BetResult;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -200,7 +201,8 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
         mDatabase.child("Deals").child(dealKey).child("receiver").child(userName).setValue("accepted");
         mDatabase.child("Deals").child(dealKey).child("totalCoin").setValue(totCoin);
         mDatabase.child("Deals").child(dealKey).child(choice).child(userName).setValue("true");
-
+        BetResult betResult=new BetResult();
+        betResult.loseCond(coin);
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
 
