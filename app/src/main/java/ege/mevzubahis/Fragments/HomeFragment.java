@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +29,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.R;
+import ege.mevzubahis.Utils.BetCard;
 import ege.mevzubahis.Utils.BetResult;
+import ege.mevzubahis.Utils.CardViewListAdapter;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static ege.mevzubahis.R.layout.bet_cardview;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -105,7 +110,6 @@ public class HomeFragment extends Fragment {
 
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,10 +118,20 @@ public class HomeFragment extends Fragment {
         final ListView fragmentBetsListview;
         final ArrayList<String> betsList = new ArrayList<>();
         final ArrayList<String> dealKeyLis = new ArrayList<>();
-        final ArrayAdapter arrayAdapter;
+
+
 
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
+
+        ArrayList<BetCard> list = new ArrayList<>();
+
+        list.add(new BetCard("drawable://" + R.drawable.bjkts, "Arizona Dessert"));
+        list.add(new BetCard("drawable://" + R.drawable.fbgs, "Bamf"));
+        list.add(new BetCard("drawable://" + R.drawable.manurm, "Colorado Mountains"));
+
+        CardViewListAdapter adapter = new CardViewListAdapter(getApplicationContext() ,R.layout.bet_cardview, list);
+        fragmentBetsListview.setAdapter(adapter);
 
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
