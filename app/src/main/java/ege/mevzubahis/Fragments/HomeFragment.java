@@ -26,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -35,7 +37,8 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.R;
 import ege.mevzubahis.Utils.BetCard;
 import ege.mevzubahis.Utils.BetResult;
-import ege.mevzubahis.Utils.CardViewListAdapter;
+import ege.mevzubahis.Utils.CustomCardAdapter;
+import ege.mevzubahis.Utils.CustomCardAdapter;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 import static ege.mevzubahis.R.layout.bet_cardview;
@@ -66,6 +69,9 @@ public class HomeFragment extends Fragment {
     String coin;
     String duration;
     String userName;
+
+    static TextView durationInfoText;
+
 
 
     private OnFragmentInteractionListener mListener;
@@ -101,8 +107,8 @@ public class HomeFragment extends Fragment {
         senderName = sharedPreferences.getString("nameKey", null);
         userName = sharedPreferences.getString("nameKey", null);
 
-       /* BetResult betResult= new BetResult();
-        betResult.test();*/
+        BetResult betResult= new BetResult();
+        betResult.winCond();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -119,18 +125,20 @@ public class HomeFragment extends Fragment {
         final ArrayList<String> betsList = new ArrayList<>();
         final ArrayList<String> dealKeyLis = new ArrayList<>();
 
+        final TextView durationInfoText = (TextView) inflater.inflate(R.layout.bet_cardview,container,false).findViewById(R.id.duration);
+
 
 
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
 
-        ArrayList<BetCard> list = new ArrayList<>();
+        final ArrayList<BetCard> list = new ArrayList<>();
 
-        list.add(new BetCard("drawable://" + R.drawable.bjkts, "Arizona Dessert"));
+        /*list.add(new BetCard("drawable://" + R.drawable.bjkts, "Arizona Dessert"));
         list.add(new BetCard("drawable://" + R.drawable.fbgs, "Bamf"));
-        list.add(new BetCard("drawable://" + R.drawable.manurm, "Colorado Mountains"));
+        list.add(new BetCard("drawable://" + R.drawable.manurm, "Colorado Mountains"));*/
 
-        CardViewListAdapter adapter = new CardViewListAdapter(getApplicationContext() ,R.layout.bet_cardview, list);
+        final CustomCardAdapter adapter = new CustomCardAdapter(getApplicationContext() ,R.layout.bet_cardview, list);
         fragmentBetsListview.setAdapter(adapter);
 
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -150,8 +158,11 @@ public class HomeFragment extends Fragment {
                     }
                 };
                 arrayAdapter.clear();
+                adapter.clear();
+                adapter.notifyDataSetChanged();
                 arrayAdapter.notifyDataSetChanged();
-                fragmentBetsListview.setAdapter(arrayAdapter);
+                //fragmentBetsListview.setAdapter(arrayAdapter);
+                fragmentBetsListview.setAdapter(adapter);
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference reference = database.getReference();
@@ -171,8 +182,12 @@ public class HomeFragment extends Fragment {
                                 dealKey = child.getKey();
 
                                 String betsItem = String.valueOf(child.child("matchName").getValue());
+                                list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
                                 betsList.add(betsItem);
                                 dealKeyLis.add(dealKey);
+                                Log.e("DURATION",child.child("duration").getValue().toString());
+                                durationInfoText.setText("Bitiş Süresi: ");
+                                adapter.notifyDataSetChanged();
                                 arrayAdapter.notifyDataSetChanged();
                             }
 
@@ -182,8 +197,12 @@ public class HomeFragment extends Fragment {
                                     dealKey = child.getKey();
 
                                     String betsItem = String.valueOf(child.child("matchName").getValue());
+                                    list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
                                     betsList.add(betsItem);
                                     dealKeyLis.add(dealKey);
+                                    Log.e("DURATION",child.child("Deals").child(dealKey).child("duration").getValue().toString());
+                                    durationInfoText.setText("Bitiş Süresi: ");
+                                    adapter.notifyDataSetChanged();
                                     arrayAdapter.notifyDataSetChanged();
                                 }
 
@@ -208,6 +227,9 @@ public class HomeFragment extends Fragment {
                 swipeLayout.setRefreshing(false);
             }
         });
+
+
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference reference = database.getReference();
         final DatabaseReference dealsRef = database.getReference("Deals");
@@ -273,7 +295,9 @@ public class HomeFragment extends Fragment {
 
 
     }
+    public void setInfoText(){
 
+    }
 
 
     // TODO: Rename method, update argument and hook method into UI event
