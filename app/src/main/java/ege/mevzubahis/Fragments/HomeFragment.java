@@ -182,7 +182,13 @@ public class HomeFragment extends Fragment {
                                 dealKey = child.getKey();
 
                                 String betsItem = String.valueOf(child.child("matchName").getValue());
-                                list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
+                                if(betsItem.equals("BJK-TS")) {
+                                    list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
+                                }else if(betsItem.equals("FB-GS")){
+                                    list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem));
+                                }else if(betsItem.equals("MANU-RM")){
+                                    list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem));
+                                }
                                 betsList.add(betsItem);
                                 dealKeyLis.add(dealKey);
                                 Log.e("DURATION",child.child("duration").getValue().toString());
@@ -197,7 +203,13 @@ public class HomeFragment extends Fragment {
                                     dealKey = child.getKey();
 
                                     String betsItem = String.valueOf(child.child("matchName").getValue());
-                                    list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
+                                    if(betsItem.equals("BJK-TS")) {
+                                        list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
+                                    }else if(betsItem.equals("FB-GS")){
+                                        list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem));
+                                    }else if(betsItem.equals("MANU-RM")){
+                                        list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem));
+                                    }
                                     betsList.add(betsItem);
                                     dealKeyLis.add(dealKey);
                                     Log.e("DURATION",child.child("Deals").child(dealKey).child("duration").getValue().toString());
