@@ -9,6 +9,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +36,7 @@ public class GetCoinFragment extends Fragment  {
   private static final String ARG_PARAM1 = "param1";
   private static final String ARG_PARAM2 = "param2";
   @BindView(R.id.watch_ad_button) Button watchAdButton;
+
 
 
 
@@ -73,6 +82,7 @@ public class GetCoinFragment extends Fragment  {
     // Inflate the layout for this fragment
     View view = inflater.inflate(R.layout.fragment_get_coin, container, false);
     ButterKnife.bind(this, view);
+
 
     final Animation myAnim = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
     watchAdButton.setAnimation(myAnim);

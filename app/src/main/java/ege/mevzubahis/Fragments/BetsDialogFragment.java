@@ -180,8 +180,10 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
 
     } else {
       //if everything is ok, proceed
-
+      Bundle args = new Bundle();
+      args.putString("type","Sport");
       Intent intent = new Intent(getActivity(), FriendActivity.class);
+      intent.putExtra("type","Sport");
       intent.putExtra("coin", coinAmount);
       intent.putExtra("choice", choice);
       intent.putExtra("matchname",matchName);

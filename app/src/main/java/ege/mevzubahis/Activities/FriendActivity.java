@@ -42,12 +42,18 @@ public class FriendActivity extends AppCompatActivity {
     private ListView friendList;
     private Button sendButton1;
 
+    String type;
 
     String choice;
     String coin;
     String matchName;
     String senderName;
     String duration;
+
+    String socialchoice;
+    String socialcoin;
+    String socialbetname;
+    String socialduration;
 
     SharedPreferences sharedPreferences;
     private DatabaseReference mDatabase;
@@ -64,6 +70,9 @@ public class FriendActivity extends AppCompatActivity {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDatabase = FirebaseDatabase.getInstance().getReference();
         friendList = (ListView) findViewById(R.id.friendList);
+        Bundle b = getIntent().getExtras();
+        type= b.getString("type");
+
         friendList.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE);
         sendButton1=(Button) findViewById(R.id.sendButton1);
         sendButton1.setOnClickListener(new View.OnClickListener() {
@@ -83,7 +92,11 @@ public class FriendActivity extends AppCompatActivity {
                 }
 
                 //databasede yeni deal yarat
-                createNewDeal(senderName,matchName,coin,choice,checkedFriends,duration);
+                if(type.equals("Sport")) {
+                    createNewSportDeal(senderName, matchName, coin, choice, checkedFriends, duration);
+                }else if(type.equals("Social")){
+                    createNewSocialDeal(senderName,socialbetname,socialcoin,socialchoice,checkedFriends,socialduration);
+                }
                 //notification gönder
 
                 goMainScreen();
@@ -116,17 +129,32 @@ public class FriendActivity extends AppCompatActivity {
         });
 
 
-        Bundle b = getIntent().getExtras();
 
-        choice = b.getString("choice");
-        Log.e("Choice",choice);
-        coin = b.getString("coin");
-        Log.e("Coin:",coin.toString());
-        matchName = b.getString("matchname");
-        Log.e("MatchName",matchName);
-        senderName=sharedPreferences.getString("nameKey",null);
-        Log.e("senderName",senderName);
-        duration = b.getString("duration");
+
+        if(b.getString("type").equals("Sport")) {
+            choice = b.getString("choice");
+            Log.e("Choice", choice);
+            coin = b.getString("coin");
+            Log.e("Coin:", coin.toString());
+            matchName = b.getString("matchname");
+            Log.e("MatchName", matchName);
+            senderName = sharedPreferences.getString("nameKey", null);
+            Log.e("senderName", senderName);
+            duration = b.getString("duration");
+        }
+
+        Bundle c = getIntent().getExtras();
+        if(c.getString("type").equals("Social")) {
+            senderName = sharedPreferences.getString("nameKey", null);
+            socialbetname = c.getString("socialbetname");
+            Log.e("socialbetname", socialbetname);
+            socialchoice = c.getString("socialchoice");
+            Log.e("socialchoice", socialchoice);
+            socialcoin = c.getString("socialcoin");
+            Log.e("socialcoin", socialcoin);
+            socialduration = c.getString("socialduration");
+            Log.e("socialduration", socialduration);
+        }
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         GraphRequestBatch batch = new GraphRequestBatch(
@@ -178,8 +206,31 @@ public class FriendActivity extends AppCompatActivity {
         parameters.putString("fields", "id,name,link,picture");
 
     }
+    private void createNewSocialDeal(String senderName,String betName, String coin, String choice, ArrayList<String> arrayList, String duration){
+        String key= mDatabase.child("Deals").push().getKey();
+        Log.e("socialKEY",key);
+        if(choice.equals("yes")){
+            Log.e("socialchoice",choice);
+            Log.e("socialsender",senderName);
+            mDatabase.child("Deals").child(key).child("Yes").child(senderName).setValue("true");
+        }else if(choice.equals("no")){
+            mDatabase.child("Deals").child(key).child("No").child(senderName).setValue("true");
+        }
 
-    private void createNewDeal(String senderName,String matchName,String coin,String choice,ArrayList<String> arrayList,String duration){
+        mDatabase.child("Deals").child(key).child("sender").setValue(senderName);
+        mDatabase.child("Deals").child(key).child("matchName").setValue(betName);
+        mDatabase.child("Deals").child(key).child("coin").setValue(coin);
+        mDatabase.child("Deals").child(key).child("totalCoin").setValue(coin);
+        mDatabase.child("Deals").child(key).child("duration").setValue(duration);
+        for(int i=0;i<arrayList.size();i++){
+            mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");
+        }
+        mDatabase.child("Deals").child(key).child("type").setValue("Social");
+        BetResult betResult= new BetResult();
+        betResult.loseCond(coin);
+
+    }
+    private void createNewSportDeal(String senderName,String matchName,String coin,String choice,ArrayList<String> arrayList,String duration){
         String key=mDatabase.child("Deals").push().getKey();
         if(choice.equals("home")){
             mDatabase.child("Deals").child(key).child("Home").child(senderName).setValue("true");
@@ -196,6 +247,7 @@ public class FriendActivity extends AppCompatActivity {
         for(int i=0;i<arrayList.size();i++){
             mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");
         }
+        mDatabase.child("Deals").child(key).child("type").setValue("Sport");
         BetResult betResult= new BetResult();
         betResult.loseCond(coin);
     }

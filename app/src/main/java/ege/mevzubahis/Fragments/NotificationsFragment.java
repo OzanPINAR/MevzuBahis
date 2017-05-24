@@ -181,20 +181,30 @@ public class NotificationsFragment extends Fragment {
       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         final String betNameInPosition = fragmentNotifListview.getItemAtPosition(position).toString();
         final String dealKeyInPosition = dealKeyLis.get(position);
-        reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
           @Override
           public void onDataChange(DataSnapshot dataSnapshot) {
             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
             //String duration = (String) map.get("duration").toString();
 
             Bundle args =new Bundle();
+            Log.e("TEEST",dataSnapshot.child("Deals").child(dealKeyInPosition).child("matchName").getValue().toString());
             args.putString("betNameInPosition",betNameInPosition);
             args.putString("dealKeyInPosition",dealKeyInPosition);
+            if(dataSnapshot.child("Deals").child(dealKeyInPosition).child("type").getValue().toString().equals("Sport")){
 
             FragmentManager myManager=getFragmentManager();
             NotificationDialogFragment NotificationDialog=new NotificationDialogFragment();
             NotificationDialog.setArguments(args);
             NotificationDialog.show(myManager,"NotificationDialogFragment");
+            }
+
+            else{
+              FragmentManager myManager=getFragmentManager();
+              CustomNotificationDialogFragment CustomNotificationDialogFragment=new CustomNotificationDialogFragment();
+              CustomNotificationDialogFragment.setArguments(args);
+              CustomNotificationDialogFragment.show(myManager,"NotificationDialogFragment");
+            }
             dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
               @Override
               public void onDataChange(DataSnapshot dataSnapshot) {

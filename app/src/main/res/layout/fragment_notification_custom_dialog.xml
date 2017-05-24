@@ -1,0 +1,105 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ege.mevzubahis.Fragments.NotificationDialogFragment">
+
+    <TextView
+        android:id="@+id/customBetText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="39dp"
+        android:text="Custom Bet"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        />
+    <TextView
+        android:id="@+id/due_to_custom_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/matchText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="56dp"
+        android:text="Due to:"
+        />
+
+
+    <TextView
+        android:id="@+id/CoinAmount1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/coins24"
+        android:drawableStart="@drawable/coins24"
+        android:text="Coin Amount"
+
+        android:layout_marginTop="49dp"
+        android:layout_below="@+id/due_to_custom_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/CoinAmount1"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/radioGroup"
+        android:weightSum="1"
+        >
+
+
+
+        <RadioButton
+            android:id="@+id/radioButtonYes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:text="YES"
+            />
+
+        <RadioButton
+            android:id="@+id/radioButtonNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NO"
+            />
+
+
+
+    </RadioGroup>
+
+
+    <Button
+        android:id="@+id/AcceptButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:padding="10dp"
+        android:layout_below="@+id/radioGroup"
+        android:layout_marginTop="150dp"
+        android:text="Accept"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="52dp"
+        android:layout_marginStart="52dp"
+        android:layout_alignBaseline="@+id/RejectButton"
+        android:layout_alignBottom="@+id/RejectButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/RejectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/radioGroup"
+        android:layout_marginTop="150dp"
+        android:background="@android:color/holo_red_light"
+        android:text="Reject"
+        android:textColor="@android:color/white"
+        android:layout_alignTop="@+id/CoinAmount1"
+        android:layout_toRightOf="@+id/AcceptButton"
+        android:layout_toEndOf="@+id/AcceptButton" />
+
+</RelativeLayout>
