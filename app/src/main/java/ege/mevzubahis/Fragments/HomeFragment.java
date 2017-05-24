@@ -245,71 +245,14 @@ public class HomeFragment extends Fragment {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference reference = database.getReference();
         final DatabaseReference dealsRef = database.getReference("Deals");
-        fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String betNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
-                final String dealKeyInPosition = dealKeyLis.get(position);
-                reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                        //String duration = (String) map.get("duration").toString();
 
-                        Bundle args = new Bundle();
-                        args.putString("betNameInPosition", betNameInPosition);
-                        args.putString("dealKeyInPosition", dealKeyInPosition);
-
-                        Log.e("betNameInPos", betNameInPosition);
-                        Log.e("dealKeyInPos", dealKeyInPosition);
-
-            /*FragmentManager myManager = getFragmentManager();
-            BetViewFragment betsDialog=new BetViewFragment();
-            betsDialog.setArguments(args);
-            betsDialog.show(myManager,"BetViewFragment");*/
-                        dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                senderName = dataSnapshot.child(dealKeyInPosition).child("sender").getValue().toString();
-                                matchName = dataSnapshot.child(dealKeyInPosition).child("matchName").getValue().toString();
-                                coin = dataSnapshot.child(dealKeyInPosition).child("coin").getValue().toString();
-                                duration = dataSnapshot.child(dealKeyInPosition).child("duration").getValue().toString();
-                                Log.e("matchname: ", matchName);
-                                Log.e("sender", senderName);
-
-                                SweetAlertDialog sd = new SweetAlertDialog(getContext());
-                                sd.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                                sd.setTitleText("" + matchName);
-                                sd.setContentText("Due to:" + duration + "\n\nSent by:" + senderName + "\n\nCoin:" + coin);
-                                sd.setCancelable(true);
-                                sd.setCanceledOnTouchOutside(true);
-                                sd.show();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
 
         ButterKnife.bind(this, rootView);
         return rootView;
 
 
     }
-    public void setInfoText(){
 
-    }
 
 
     // TODO: Rename method, update argument and hook method into UI event

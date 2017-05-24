@@ -114,12 +114,7 @@ public class BetResult {
                                             }
                                         }
                                         catch (NullPointerException e){
-                                            Context context = getApplicationContext();
-                                            CharSequence text = "null";
-                                            int duration = Toast.LENGTH_SHORT;
 
-                                            Toast toast = Toast.makeText(context, text, duration);
-                                            toast.show();
                                         }
                                     }
                                 }
@@ -169,12 +164,7 @@ public class BetResult {
 
                                         }
                                         catch (NullPointerException e){
-                                            Context context = getApplicationContext();
-                                            CharSequence text = "null";
-                                            int duration = Toast.LENGTH_SHORT;
 
-                                            Toast toast = Toast.makeText(context, text, duration);
-                                            toast.show();
                                         }
                                     }
                                 }
@@ -225,12 +215,7 @@ public class BetResult {
                                             }
                                         }
                                         catch (NullPointerException e){
-                                            Context context = getApplicationContext();
-                                            CharSequence text = "null";
-                                            int duration = Toast.LENGTH_SHORT;
 
-                                            Toast toast = Toast.makeText(context, text, duration);
-                                            toast.show();
                                         }
                                     }
                                 }
@@ -281,9 +266,5 @@ public class BetResult {
 
 
     }
-    public void paid(boolean checkFlag, String child){
-        if(checkFlag){
-            //reference
-        }
-    }
+
 }
