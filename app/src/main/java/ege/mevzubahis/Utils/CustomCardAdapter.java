@@ -40,7 +40,10 @@ public class CustomCardAdapter extends ArrayAdapter<BetCard>{
      */
     private static class ViewHolder {
         TextView title;
+        TextView duration;
         ImageView image;
+        TextView coin;
+        TextView sendername;
     }
 
     /**
@@ -65,6 +68,9 @@ public class CustomCardAdapter extends ArrayAdapter<BetCard>{
         //get the persons information
         String title = getItem(position).getTitle();
         String imgUrl = getItem(position).getImgURL();
+        String duration = getItem(position).getDuration();
+        String coin = getItem(position).getCoin();
+        String sendername = getItem(position).getSenderName();
 
 
         try{
@@ -81,6 +87,9 @@ public class CustomCardAdapter extends ArrayAdapter<BetCard>{
                 convertView = inflater.inflate(mResource, parent, false);
                 holder= new ViewHolder();
                 holder.title = (TextView) convertView.findViewById(R.id.matchName);
+                holder.duration= (TextView) convertView.findViewById(R.id.duration);
+                holder.coin = (TextView) convertView.findViewById(R.id.bet_coin);
+                holder.sendername = (TextView) convertView.findViewById(R.id.sender_name);
                 holder.image = (ImageView) convertView.findViewById(R.id.cardImage);
 
                 result = convertView;
@@ -93,6 +102,9 @@ public class CustomCardAdapter extends ArrayAdapter<BetCard>{
             }
 
             holder.title.setText(title);
+            holder.duration.setText(duration);
+            holder.coin.setText(coin);
+            holder.sendername.setText(sendername);
 
             //create the imageloader object
             ImageLoader imageLoader = ImageLoader.getInstance();
