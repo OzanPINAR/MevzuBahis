@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment {
     String duration;
     String userName;
 
-    static TextView durationInfoText;
+    public TextView durationInfoText;
 
 
 
@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
 
     }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -125,18 +125,12 @@ public class HomeFragment extends Fragment {
         final ArrayList<String> betsList = new ArrayList<>();
         final ArrayList<String> dealKeyLis = new ArrayList<>();
 
-        final TextView durationInfoText = (TextView) inflater.inflate(R.layout.bet_cardview,container,false).findViewById(R.id.duration);
-
-
-
+        //final TextView durationInfoText = (TextView) inflater.inflate(R.layout.bet_cardview,container,false).findViewById(R.id.duration);
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
 
         final ArrayList<BetCard> list = new ArrayList<>();
 
-        /*list.add(new BetCard("drawable://" + R.drawable.bjkts, "Arizona Dessert"));
-        list.add(new BetCard("drawable://" + R.drawable.fbgs, "Bamf"));
-        list.add(new BetCard("drawable://" + R.drawable.manurm, "Colorado Mountains"));*/
 
         final CustomCardAdapter adapter = new CustomCardAdapter(getApplicationContext() ,R.layout.bet_cardview, list);
         fragmentBetsListview.setAdapter(adapter);
@@ -175,6 +169,7 @@ public class HomeFragment extends Fragment {
                     @Override
 
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        TextView durationInfoText = (TextView) inflater.inflate(R.layout.bet_cardview,container,false).findViewById(R.id.duration);
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
 
 
@@ -182,17 +177,21 @@ public class HomeFragment extends Fragment {
                                 dealKey = child.getKey();
 
                                 String betsItem = String.valueOf(child.child("matchName").getValue());
+                                String duration = child.child("duration").getValue().toString();
+                                String coin = child.child("totalCoin").getValue().toString();
+                                String sendername =child.child("sender").getValue().toString();
                                 if(betsItem.equals("BJK-TS")) {
-                                    list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
+                                    list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem,duration,coin,sendername));
                                 }else if(betsItem.equals("FB-GS")){
-                                    list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem));
+                                    list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem,duration,coin,sendername));
                                 }else if(betsItem.equals("MANU-RM")){
-                                    list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem));
+                                    list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem,duration,coin,sendername));
                                 }
                                 betsList.add(betsItem);
                                 dealKeyLis.add(dealKey);
                                 Log.e("DURATION",child.child("duration").getValue().toString());
-                                durationInfoText.setText("Bitiş Süresi: ");
+
+                                //durationInfoText.setText("Bitiş Süresi: ");
                                 adapter.notifyDataSetChanged();
                                 arrayAdapter.notifyDataSetChanged();
                             }
@@ -203,12 +202,15 @@ public class HomeFragment extends Fragment {
                                     dealKey = child.getKey();
 
                                     String betsItem = String.valueOf(child.child("matchName").getValue());
+                                    String duration = child.child("duration").getValue().toString();
+                                    String coin = child.child("totalCoin").getValue().toString();
+                                    String sendername =child.child("sender").getValue().toString();
                                     if(betsItem.equals("BJK-TS")) {
-                                        list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem));
+                                        list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem,duration,coin,sendername));
                                     }else if(betsItem.equals("FB-GS")){
-                                        list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem));
+                                        list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem,duration,coin,sendername));
                                     }else if(betsItem.equals("MANU-RM")){
-                                        list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem));
+                                        list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem,duration,coin,sendername));
                                     }
                                     betsList.add(betsItem);
                                     dealKeyLis.add(dealKey);
@@ -236,6 +238,7 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
+
                 swipeLayout.setRefreshing(false);
             }
         });
