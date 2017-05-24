@@ -182,6 +182,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
       //if everything is ok, proceed
 
       Intent intent = new Intent(getActivity(), FriendActivity.class);
+      intent.putExtra("type","Sport");
       intent.putExtra("coin", coinAmount);
       intent.putExtra("choice", choice);
       intent.putExtra("matchname",matchName);

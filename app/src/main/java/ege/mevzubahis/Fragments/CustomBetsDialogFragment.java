@@ -129,11 +129,11 @@ public class CustomBetsDialogFragment extends DialogFragment implements View.OnC
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
             case R.id.radioButton4:
-                choice = "home";
+                choice = "yes";
                 //Toast.makeText(getApplicationContext(), "choice: Home", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.radioButton6:
-                choice = "away";
+                choice = "no";
                 //Toast.makeText(getApplicationContext(), "choice: Away", Toast.LENGTH_SHORT).show();
                 break;
 
@@ -181,10 +181,11 @@ public class CustomBetsDialogFragment extends DialogFragment implements View.OnC
             //if everything is ok, proceed
 
             Intent intent = new Intent(getActivity(), FriendActivity.class);
-            intent.putExtra("coin", coinAmount);
-            intent.putExtra("choice", choice);
-            intent.putExtra("betname",betName);
-            intent.putExtra("duration",durationValue);
+            intent.putExtra("type","Social");
+            intent.putExtra("socialcoin", coinAmount);
+            intent.putExtra("socialchoice", choice);
+            intent.putExtra("socialbetname",betName);
+            intent.putExtra("socialduration",durationValue);
             startActivity(intent);
         }
 
