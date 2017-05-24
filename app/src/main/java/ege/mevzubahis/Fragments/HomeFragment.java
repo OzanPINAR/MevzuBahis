@@ -186,6 +186,8 @@ public class HomeFragment extends Fragment {
                                     list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem,duration,coin,sendername));
                                 }else if(betsItem.equals("MANU-RM")){
                                     list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem,duration,coin,sendername));
+                                }else {
+                                    list.add(new BetCard("drawawble://" +R.drawable.manurm, betsItem,duration,coin,sendername));
                                 }
                                 betsList.add(betsItem);
                                 dealKeyLis.add(dealKey);
@@ -211,6 +213,8 @@ public class HomeFragment extends Fragment {
                                         list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem,duration,coin,sendername));
                                     }else if(betsItem.equals("MANU-RM")){
                                         list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem,duration,coin,sendername));
+                                    }else{
+                                        list.add(new BetCard("drawable://"+ R.drawable.manurm, betsItem, duration,coin,sendername));
                                     }
                                     betsList.add(betsItem);
                                     dealKeyLis.add(dealKey);

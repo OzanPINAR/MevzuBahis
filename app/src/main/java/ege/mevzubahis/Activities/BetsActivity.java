@@ -148,8 +148,7 @@ public class BetsActivity extends AppCompatActivity {
         @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
           final String betNameInPosition =
               fragmentBetsListview.getItemAtPosition(position).toString();
-          reference.child(betNameInPosition)
-              .addListenerForSingleValueEvent(new ValueEventListener() {
+          reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override public void onDataChange(DataSnapshot dataSnapshot) {
                   Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                   String duration = (String) map.get("duration").toString();

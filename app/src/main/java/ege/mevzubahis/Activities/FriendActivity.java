@@ -225,6 +225,7 @@ public class FriendActivity extends AppCompatActivity {
         for(int i=0;i<arrayList.size();i++){
             mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");
         }
+        mDatabase.child("Deals").child(key).child("type").setValue("Social");
         BetResult betResult= new BetResult();
         betResult.loseCond(coin);
 
@@ -246,6 +247,7 @@ public class FriendActivity extends AppCompatActivity {
         for(int i=0;i<arrayList.size();i++){
             mDatabase.child("Deals").child(key).child("receiver").child(arrayList.get(i)).setValue("onhold");
         }
+        mDatabase.child("Deals").child(key).child("type").setValue("Sport");
         BetResult betResult= new BetResult();
         betResult.loseCond(coin);
     }

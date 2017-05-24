@@ -61,7 +61,7 @@
             />
 
         <RadioButton
-            android:id="@+id/radioButtonAway"
+            android:id="@+id/radioButtonNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NO"
