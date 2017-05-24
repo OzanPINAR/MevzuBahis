@@ -16,7 +16,6 @@ public class AboutActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-
     Element adsElement = new Element();
     adsElement.setTitle("Bet with friends, not with machines!");
 

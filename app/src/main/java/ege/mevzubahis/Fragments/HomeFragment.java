@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +26,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Map;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import ege.mevzubahis.R;
+import ege.mevzubahis.Utils.BetCard;
 import ege.mevzubahis.Utils.BetResult;
+import ege.mevzubahis.Utils.CustomCardAdapter;
+import ege.mevzubahis.Utils.CustomCardAdapter;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
+import static ege.mevzubahis.R.layout.bet_cardview;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +69,9 @@ public class HomeFragment extends Fragment {
     String coin;
     String duration;
     String userName;
+
+    public TextView durationInfoText;
+
 
 
     private OnFragmentInteractionListener mListener;
@@ -96,8 +107,8 @@ public class HomeFragment extends Fragment {
         senderName = sharedPreferences.getString("nameKey", null);
         userName = sharedPreferences.getString("nameKey", null);
 
-       /* BetResult betResult= new BetResult();
-        betResult.test();*/
+        BetResult betResult= new BetResult();
+        betResult.winCond();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -105,19 +116,24 @@ public class HomeFragment extends Fragment {
 
 
     }
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         final ListView fragmentBetsListview;
         final ArrayList<String> betsList = new ArrayList<>();
         final ArrayList<String> dealKeyLis = new ArrayList<>();
-        final ArrayAdapter arrayAdapter;
 
+        //final TextView durationInfoText = (TextView) inflater.inflate(R.layout.bet_cardview,container,false).findViewById(R.id.duration);
         final SwipeRefreshLayout swipeLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.swipe_container);
         fragmentBetsListview = (ListView) rootView.findViewById(R.id.betList);
+
+        final ArrayList<BetCard> list = new ArrayList<>();
+
+
+        final CustomCardAdapter adapter = new CustomCardAdapter(getApplicationContext() ,R.layout.bet_cardview, list);
+        fragmentBetsListview.setAdapter(adapter);
 
         swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -136,8 +152,11 @@ public class HomeFragment extends Fragment {
                     }
                 };
                 arrayAdapter.clear();
+                adapter.clear();
+                adapter.notifyDataSetChanged();
                 arrayAdapter.notifyDataSetChanged();
-                fragmentBetsListview.setAdapter(arrayAdapter);
+                //fragmentBetsListview.setAdapter(arrayAdapter);
+                fragmentBetsListview.setAdapter(adapter);
 
                 final FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final DatabaseReference reference = database.getReference();
@@ -150,6 +169,7 @@ public class HomeFragment extends Fragment {
                     @Override
 
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        TextView durationInfoText = (TextView) inflater.inflate(R.layout.bet_cardview,container,false).findViewById(R.id.duration);
                         for (DataSnapshot child : dataSnapshot.getChildren()) {
 
 
@@ -157,8 +177,24 @@ public class HomeFragment extends Fragment {
                                 dealKey = child.getKey();
 
                                 String betsItem = String.valueOf(child.child("matchName").getValue());
+                                String duration = child.child("duration").getValue().toString();
+                                String coin = child.child("totalCoin").getValue().toString();
+                                String sendername =child.child("sender").getValue().toString();
+                                if(betsItem.equals("BJK-TS")) {
+                                    list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem,duration,coin,sendername));
+                                }else if(betsItem.equals("FB-GS")){
+                                    list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem,duration,coin,sendername));
+                                }else if(betsItem.equals("MANU-RM")){
+                                    list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem,duration,coin,sendername));
+                                }else {
+                                    list.add(new BetCard("drawawble://" +R.drawable.manurm, betsItem,duration,coin,sendername));
+                                }
                                 betsList.add(betsItem);
                                 dealKeyLis.add(dealKey);
+                                Log.e("DURATION",child.child("duration").getValue().toString());
+
+                                //durationInfoText.setText("Bitiş Süresi: ");
+                                adapter.notifyDataSetChanged();
                                 arrayAdapter.notifyDataSetChanged();
                             }
 
@@ -168,8 +204,23 @@ public class HomeFragment extends Fragment {
                                     dealKey = child.getKey();
 
                                     String betsItem = String.valueOf(child.child("matchName").getValue());
+                                    String duration = child.child("duration").getValue().toString();
+                                    String coin = child.child("totalCoin").getValue().toString();
+                                    String sendername =child.child("sender").getValue().toString();
+                                    if(betsItem.equals("BJK-TS")) {
+                                        list.add(new BetCard("drawable://" + R.drawable.bjkts, betsItem,duration,coin,sendername));
+                                    }else if(betsItem.equals("FB-GS")){
+                                        list.add(new BetCard("drawable://" + R.drawable.fbgs, betsItem,duration,coin,sendername));
+                                    }else if(betsItem.equals("MANU-RM")){
+                                        list.add(new BetCard("drawable://" + R.drawable.manurm, betsItem,duration,coin,sendername));
+                                    }else{
+                                        list.add(new BetCard("drawable://"+ R.drawable.manurm, betsItem, duration,coin,sendername));
+                                    }
                                     betsList.add(betsItem);
                                     dealKeyLis.add(dealKey);
+                                    Log.e("DURATION",child.child("Deals").child(dealKey).child("duration").getValue().toString());
+                                    durationInfoText.setText("Bitiş Süresi: ");
+                                    adapter.notifyDataSetChanged();
                                     arrayAdapter.notifyDataSetChanged();
                                 }
 
@@ -191,68 +242,17 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
+
                 swipeLayout.setRefreshing(false);
             }
         });
+
+
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference reference = database.getReference();
         final DatabaseReference dealsRef = database.getReference("Deals");
-        fragmentBetsListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String betNameInPosition = fragmentBetsListview.getItemAtPosition(position).toString();
-                final String dealKeyInPosition = dealKeyLis.get(position);
-                reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                        //String duration = (String) map.get("duration").toString();
 
-                        Bundle args = new Bundle();
-                        args.putString("betNameInPosition", betNameInPosition);
-                        args.putString("dealKeyInPosition", dealKeyInPosition);
-
-                        Log.e("betNameInPos", betNameInPosition);
-                        Log.e("dealKeyInPos", dealKeyInPosition);
-
-            /*FragmentManager myManager = getFragmentManager();
-            BetViewFragment betsDialog=new BetViewFragment();
-            betsDialog.setArguments(args);
-            betsDialog.show(myManager,"BetViewFragment");*/
-                        dealsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                senderName = dataSnapshot.child(dealKeyInPosition).child("sender").getValue().toString();
-                                matchName = dataSnapshot.child(dealKeyInPosition).child("matchName").getValue().toString();
-                                coin = dataSnapshot.child(dealKeyInPosition).child("coin").getValue().toString();
-                                duration = dataSnapshot.child(dealKeyInPosition).child("duration").getValue().toString();
-                                Log.e("matchname: ", matchName);
-                                Log.e("sender", senderName);
-
-                                SweetAlertDialog sd = new SweetAlertDialog(getContext());
-                                sd.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                                sd.setTitleText("" + matchName);
-                                sd.setContentText("Due to:" + duration + "\n\nSent by:" + senderName + "\n\nCoin:" + coin);
-                                sd.setCancelable(true);
-                                sd.setCanceledOnTouchOutside(true);
-                                sd.show();
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
 
         ButterKnife.bind(this, rootView);
         return rootView;
@@ -260,104 +260,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-   /* public void test(){
-        DatabaseReference reference;
-        SharedPreferences sharedPreferences;
-        String userName1;
-        String dealKey;
 
-        Log.e("OZiiZİİZİZİ","deneme");
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        reference = FirebaseDatabase.getInstance().getReference();
-        userName=sharedPreferences.getString("nameKey", null);
-
-
-        Query betQuery = reference.child("Bets").child("Sports");
-        final Query dealQuery = reference.child("Deals");
-
-        final ArrayList<String> dealKeyList = new ArrayList<>();
-        final ArrayAdapter arrayAdapter;
-
-
-        betQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot child : dataSnapshot.getChildren()){
-                    if(!child.child("result").getValue().equals("undecided")){
-                        if(child.child("result").getValue().equals("Home")){
-                            dealQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot child : dataSnapshot.getChildren()) {
-
-                                        Log.e("test","1");
-                                        if (child.child("sender").getValue().toString().equals(userName)) {
-                                            if(child.child("Home").child(userName).getValue().equals("true")){
-                                                Log.e("HOME WINS","GZ");
-                                                SweetAlertDialog sd=  new SweetAlertDialog(getContext());
-                                                sd.setTitleText("CONGRATULATIONS!");
-                                                sd.setContentText("You have won a challenge!");
-                                                sd.show();
-                                            }
-                                            Log.e("test","2");
-
-                                        }
-
-                                        try {
-
-                                            if (child.child("receiver").child(userName).getValue().toString().equals("accepted")) {
-
-                                                Log.e("test","3");
-
-
-                                            }
-
-                                        }
-                                        catch (NullPointerException e){
-                                            Context context = getApplicationContext();
-                                            CharSequence text = "null";
-                                            int duration = Toast.LENGTH_SHORT;
-
-                                            Toast toast = Toast.makeText(context, text, duration);
-                                            toast.show();
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, dealKeyList) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-
-                TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                textView.setTextColor(Color.BLACK);
-
-                return view;
-            }
-        };
-
-
-
-
-
-    }*/
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

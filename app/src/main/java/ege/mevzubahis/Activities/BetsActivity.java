@@ -29,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import ege.mevzubahis.Fragments.BetsDialogFragment;
+import ege.mevzubahis.Fragments.CustomBetsDialogFragment;
 import ege.mevzubahis.MainActivity;
 import ege.mevzubahis.R;
 import java.util.ArrayList;
@@ -147,8 +148,7 @@ public class BetsActivity extends AppCompatActivity {
         @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
           final String betNameInPosition =
               fragmentBetsListview.getItemAtPosition(position).toString();
-          reference.child(betNameInPosition)
-              .addListenerForSingleValueEvent(new ValueEventListener() {
+          reference.child(betNameInPosition).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override public void onDataChange(DataSnapshot dataSnapshot) {
                   Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                   String duration = (String) map.get("duration").toString();
@@ -220,7 +220,7 @@ public class BetsActivity extends AppCompatActivity {
       reference1.addListenerForSingleValueEvent(new ValueEventListener() {
         @Override public void onDataChange(DataSnapshot dataSnapshot) {
           for (DataSnapshot child : dataSnapshot.getChildren()) {
-            String betsItem = child.getKey();
+            String betsItem = child.child("betname").getValue().toString();
             Log.e("SocialActivity", betsItem);
             betsList1.add(betsItem);
             arrayAdapter1.notifyDataSetChanged();
@@ -234,12 +234,20 @@ public class BetsActivity extends AppCompatActivity {
 
       fragmentBetsListview1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-          String quizNameInPosition = fragmentBetsListview1.getItemAtPosition(position).toString();
+          final String quizNameInPosition = fragmentBetsListview1.getItemAtPosition(position).toString();
           reference1.child(quizNameInPosition)
               .addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override public void onDataChange(DataSnapshot dataSnapshot) {
                   Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
-                  String duration = (String) map.get("duration").toString();
+                  //String duration = (String) map.get("duration").toString();
+                  Log.e("quizname",dataSnapshot.getKey());
+                  Bundle args = new Bundle();
+                  args.putString("betNameInPosition", quizNameInPosition);
+
+                  FragmentManager myManager = getFragmentManager();
+                  CustomBetsDialogFragment customBetsDialog = new CustomBetsDialogFragment();
+                  customBetsDialog.setArguments(args);
+                  customBetsDialog.show(myManager, "CustomBetsDialogFragment");
                 }
 
                 @Override public void onCancelled(DatabaseError databaseError) {

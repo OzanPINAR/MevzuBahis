@@ -40,23 +40,16 @@ import ege.mevzubahis.Utils.BetResult;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
-
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NotificationDialogFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NotificationDialogFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Created by ozan on 24.05.2017.
  */
-public class NotificationDialogFragment extends DialogFragment implements View.OnClickListener {
 
-    @BindView(R.id.matchText) TextView matchText;
-    @BindView(R.id.dueText) TextView dueText;
+public class CustomNotificationDialogFragment extends DialogFragment implements View.OnClickListener {
+    @BindView(R.id.customBetText) TextView customBetText;
+    @BindView(R.id.due_to_custom_text) TextView due_to_custom_text;
     @BindView(R.id.CoinAmount1) TextView CoinAmount1;
-    @BindView(R.id.radioButtonHome) RadioButton radioButtonHome;
-    @BindView(R.id.radioButtonDraw) RadioButton radioButtonDraw;
-    @BindView(R.id.radioButtonAway) RadioButton radioButtonAway;
+    @BindView(R.id.radioButtonYes) RadioButton radioButtonYes;
+    @BindView(R.id.radioButtonNo) RadioButton radioButtonNo;
     @BindView(R.id.AcceptButton) Button AcceptButton;
     @BindView(R.id.RejectButton) Button RejectButton;
 
@@ -78,9 +71,9 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private NotificationDialogFragment.OnFragmentInteractionListener mListener;
 
-    public NotificationDialogFragment() {
+    public CustomNotificationDialogFragment() {
         // Required empty public constructor
     }
 
@@ -114,7 +107,7 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_notification_dialog, null);
+        View view = inflater.inflate(R.layout.fragment_notification_custom_dialog, null);
         matchName = getArguments().getString("betNameInPosition");
         dealKey = getArguments().getString("dealKeyInPosition");
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -148,9 +141,9 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
                         try {
                             Map<String, Object> map = (Map<String, Object>) dataSnapshot.getValue();
                             String value = (String) map.get("matchName").toString();
-                            matchText.setText(value);
+                            customBetText.setText(value);
                             String durationValue = (String) map.get("duration").toString();
-                            dueText.setText("Due to: " + durationValue);
+                            due_to_custom_text.setText("Due to: " + durationValue);
                             coin = (String) map.get("coin").toString();
                             totalCoin = map.get("totalCoin").toString();
                             CoinAmount1.setText(""+coin);
@@ -169,21 +162,17 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
         return view;
     }
 
-    @OnClick({ R.id.radioButtonHome, R.id.radioButtonDraw, R.id.radioButtonAway})
+    @OnClick({ R.id.radioButtonYes, R.id.radioButtonNo})
     public void onClick(View view) {
         boolean checked = ((RadioButton) view).isChecked();
         switch (view.getId()) {
-            case R.id.radioButtonHome:
-                choice = "Home";
-                Toast.makeText(getApplicationContext(), "choice: Home", Toast.LENGTH_SHORT).show();
+            case R.id.radioButtonYes:
+                choice = "Yes";
+                Toast.makeText(getApplicationContext(), "choice: Yes", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.radioButtonDraw:
-                choice = "Draw";
-                Toast.makeText(getApplicationContext(), "choice: Draw", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.radioButtonAway:
-                choice = "Away";
-                Toast.makeText(getApplicationContext(), "choice: Away", Toast.LENGTH_SHORT).show();
+            case R.id.radioButtonNo:
+                choice = "No";
+                Toast.makeText(getApplicationContext(), "choice: No", Toast.LENGTH_SHORT).show();
                 break;
 
         }
@@ -206,7 +195,7 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
 
-        }
+    }
 
     //REJECT button
     @OnClick(R.id.RejectButton)
@@ -244,3 +233,4 @@ public class NotificationDialogFragment extends DialogFragment implements View.O
         void onFragmentInteraction(Uri uri);
     }
 }
+
