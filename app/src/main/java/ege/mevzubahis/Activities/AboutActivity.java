@@ -17,14 +17,14 @@ public class AboutActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
 
     Element adsElement = new Element();
-    adsElement.setTitle("Bet with friends, not with machines!");
+    adsElement.setTitle("Arkadaşlarınızla iddialaşın, makinelerle değil!");
 
     View aboutPage = new AboutPage(this)
         .isRTL(false)
-        .addItem(new Element().setTitle("Version 1.0"))
+        .addItem(new Element().setTitle("Versiyon 1.4"))
         .addItem(adsElement)
         .setDescription("MevzuBahis")
-        .addGroup("Contact")
+        .addGroup("Bize Ulaşın!")
         .addEmail("officialmevzubahis@gmail.com")
         .addFacebook("mevzubahisofficial")
         .addTwitter("mevzubahisOFC")
