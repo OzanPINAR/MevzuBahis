@@ -56,7 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_margin="20dp"
-        android:text="Kazanılan İddialaşma"
+        android:text="Kazanılan"
         android:textColor="@color/about_item_text_color" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/betsWon"
         android:layout_margin="20dp"
-        android:text="Kaybedilen İddialaşma"
+        android:text="Kaybedilen"
         android:textColor="@color/about_item_text_color" />
 
     <TextView
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/betsLost"
         android:layout_margin="20dp"
-        android:text="Kazanma/Kaybetme Oranı"
+        android:text="Oran"
         android:textColor="@color/about_item_text_color" />
 
     <TextView
@@ -83,7 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/winloseratio"
         android:layout_margin="20dp"
-        android:text="Toplam Puan Miktarı"
+        android:text="Toplam Puan"
         android:textColor="@color/about_item_text_color" />
 
     <TextView
