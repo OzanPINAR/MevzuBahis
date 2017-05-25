@@ -16,7 +16,7 @@
       android:textColor="@color/colorPrimaryText"
       android:paddingRight="32dp"
       android:textSize="28sp"
-      android:text="Challenge!"/>
+      android:text="İddialaş!"/>
 
   <LinearLayout
       android:layout_width="fill_parent"
@@ -45,7 +45,7 @@
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
       android:textSize="16sp"
-      android:text="Set coin amount, send and invite your friends to double the fun!"/>
+      android:text="Puan miktarını belirle, arkadaşlarını ekle, onlara gönder ve eğlenceyi ikiye katla!"/>
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="64dp" />

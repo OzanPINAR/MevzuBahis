@@ -16,7 +16,7 @@
       android:textColor="@color/colorPrimaryText"
       android:paddingRight="32dp"
       android:textSize="28sp"
-      android:text="Get Started, Now!"/>
+      android:text="Haydi, Şimdi!"/>
 
   <LinearLayout
       android:layout_width="fill_parent"
@@ -43,7 +43,7 @@
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
       android:textSize="16sp"
-      android:text="Challenge against your friends instead of machines!"/>
+      android:text="Arkadaşlarınızla iddialaşın, makinelerle değil!"/>
   <TextView
       android:layout_width="fill_parent"
       android:layout_height="64dp" />

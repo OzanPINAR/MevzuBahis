@@ -19,7 +19,7 @@
         android:layout_below="@+id/tv_custom_bet"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
-        android:text="Due to:"
+        android:text="Bitiş Süresi:"
         />
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Coin amount"
+            android:hint="Puan Miktarı"
             android:drawableStart="@drawable/coins24"
             android:drawableLeft="@drawable/coins24"
             />
@@ -59,13 +59,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="Yes"
+            android:text="Evet"
             />
         <RadioButton
             android:id="@+id/radioButton6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No"
+            android:text="Hayır"
             />
 
 
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
-        android:text="Send"
+        android:text="Gönder"
         android:layout_below="@+id/radioGroup"
         android:layout_centerHorizontal="true"
         android:background="@color/colorAccent"

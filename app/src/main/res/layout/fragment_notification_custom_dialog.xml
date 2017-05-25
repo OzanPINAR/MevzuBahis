@@ -20,7 +20,7 @@
         android:layout_below="@+id/matchText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
-        android:text="Due to:"
+        android:text="Bitiş Süresi:"
         />
 
 
@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/coins24"
         android:drawableStart="@drawable/coins24"
-        android:text="Coin Amount"
+        android:text="Puan Miktarı"
 
         android:layout_marginTop="49dp"
         android:layout_below="@+id/due_to_custom_text"
@@ -57,14 +57,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="YES"
+            android:text="Evet"
             />
 
         <RadioButton
             android:id="@+id/radioButtonNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="NO"
+            android:text="Hayır"
             />
 
 
@@ -80,7 +80,7 @@
         android:padding="10dp"
         android:layout_below="@+id/radioGroup"
         android:layout_marginTop="150dp"
-        android:text="Accept"
+        android:text="Kabul Et"
         android:textColor="@android:color/white"
         android:layout_marginLeft="52dp"
         android:layout_marginStart="52dp"
@@ -96,7 +96,7 @@
         android:layout_below="@+id/radioGroup"
         android:layout_marginTop="150dp"
         android:background="@android:color/holo_red_light"
-        android:text="Reject"
+        android:text="Reddet"
         android:textColor="@android:color/white"
         android:layout_alignTop="@+id/CoinAmount1"
         android:layout_toRightOf="@+id/AcceptButton"

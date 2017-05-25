@@ -19,7 +19,7 @@
         android:layout_below="@+id/tv_match"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="56dp"
-        android:text="Due to:"
+        android:text="Bitiş Süresi:"
         />
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:hint="Coin amount"
+            android:hint="Puan Miktarı"
             android:drawableStart="@drawable/coins24"
             android:drawableLeft="@drawable/coins24"
             />
@@ -59,20 +59,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="22dp"
-            android:text="Home Wins"
+            android:text="Ev Sahibi Takım Yener"
             />
         <RadioButton
             android:id="@+id/radioButton5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Draw"
+            android:text="Berabere Biter"
             android:layout_weight="0.34"
             />
         <RadioButton
             android:id="@+id/radioButton6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Away Wins"
+            android:text="Misafir Takım Yener"
             />
 
 
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="51dp"
-        android:text="Send"
+        android:text="Gönder"
         android:layout_below="@+id/radioGroup"
         android:layout_centerHorizontal="true"
         android:background="@color/colorAccent"

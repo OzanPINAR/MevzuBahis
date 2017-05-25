@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/coin_amount"
 
-        android:text="Sent By:" />
+        android:text="Gönderen:" />
 
     <TextView
         android:id="@+id/bet_sender"

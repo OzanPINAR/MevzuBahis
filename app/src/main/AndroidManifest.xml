@@ -41,7 +41,7 @@
 
     <activity
         android:name=".Activities.BetsActivity"
-        android:label="@string/title_activity_bets"
+        android:label="İddialaşmalar"
         android:parentActivityName=".MainActivity"
         >
       <meta-data

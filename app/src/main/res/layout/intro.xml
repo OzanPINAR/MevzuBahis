@@ -16,7 +16,7 @@
       android:gravity="center"
       android:paddingLeft="32dp"
       android:paddingRight="32dp"
-      android:text="Hello There!"
+      android:text="Merhaba!"
       android:textColor="@color/colorPrimaryText"
       android:textSize="32sp" />
 
@@ -45,7 +45,7 @@
       android:gravity="center"
       android:paddingLeft="64dp"
       android:paddingRight="64dp"
-      android:text="MevzuBahis is the first social betting app of Turkey!"
+      android:text="MevzuBahis Türkiyenin ilk sosyal iddalaşma platformudur!"
       android:textColor="@color/colorSecondaryText"
       android:textSize="16sp" />
 

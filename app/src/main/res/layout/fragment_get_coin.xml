@@ -29,13 +29,13 @@
       android:layout_marginStart="35dp"
       android:layout_marginTop="108dp"
       android:textStyle="bold"
-      android:text="1-Click the button below!"
+      android:text="1-Alttaki Tuşa Bas!"
       />
   <TextView
       android:id="@+id/textView3"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="2-Watch the ad!"
+      android:text="2-Reklamı İzle!"
       android:layout_above="@+id/textView4"
       android:layout_toRightOf="@+id/watch_ad_button"
       android:layout_toEndOf="@+id/watch_ad_button"
@@ -50,7 +50,7 @@
       android:layout_alignLeft="@+id/textView"
       android:layout_alignStart="@+id/textView"
       android:layout_marginBottom="72dp"
-      android:text="3-Get your free coins!"
+      android:text="3-Bedava Puan Kazan!"
       android:textStyle="bold"
       />
   <ImageView
