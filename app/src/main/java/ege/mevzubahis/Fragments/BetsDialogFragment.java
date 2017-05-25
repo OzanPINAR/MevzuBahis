@@ -103,7 +103,7 @@ public class BetsDialogFragment extends DialogFragment implements View.OnClickLi
               String value = (String) map.get("matchname").toString();
               tv_match.setText(value);
               durationValue = (String) map.get("duration").toString();
-              textView2.setText("Due to: " + durationValue);
+              textView2.setText("Bitiş Süresi: " + durationValue);
 
 
               //coinValue = (Long) dataSnapshot.child("coin").getValue();

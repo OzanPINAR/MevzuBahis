@@ -289,9 +289,9 @@ public class BetsActivity extends AppCompatActivity {
     @Override public CharSequence getPageTitle(int position) {
       switch (position) {
         case 0:
-          return "Popular Sport Events";
+          return "Popüler Spor Müsabakaları";
         case 1:
-          return "Custom Events";
+          return "Sosyal Konular";
       }
       return null;
     }
